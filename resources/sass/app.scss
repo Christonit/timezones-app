@@ -1,8 +1,14 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
-// Variables
-@import 'variables';
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css');
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+@import 'variables';
+@import 'sidebar';
+
+
+.btn{
+    display: flex;
+    align-items: center;
+}
