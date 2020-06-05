@@ -1,0 +1,32 @@
+.popup-fields-container{
+    margin: 40px 0;
+}
+
+.input-field{
+    background: white;
+    padding: 12px 36px;
+    display: flex;
+    flex-wrap: wrap;
+
+    &.slim{
+        max-width: 264px;
+        width: auto;
+    }
+}
+
+
+.input-label{
+    display: block;
+    color: $gray;
+    @include text-12-semibold;
+    width: 100%;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+input{
+    @include text-14-bold;
+    border: 0;
+    padding: 4px 0;
+    line-height: 1;
+}

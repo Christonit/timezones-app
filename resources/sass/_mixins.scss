@@ -1,0 +1,24 @@
+@mixin font{
+    font-family: 'Open Sans',sans-serif;
+}
+@mixin font-ubuntu{
+    font-family: 'Ubuntu', sans-serif;
+}
+
+@mixin text-12{
+    @include font;
+    font-size: 12px;
+}
+
+@mixin text-14{
+    @include font;
+    font-size: 14px;
+}
+@mixin text-12-semibold{
+    @include text-12;
+    font-weight: 600;
+}
+@mixin text-14-bold{
+    @include text-14;
+    font-weight: bold;
+}

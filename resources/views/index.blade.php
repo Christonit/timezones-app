@@ -4,10 +4,16 @@
         <div id="app" class="d-flex">
             <sidebar></sidebar>
             <div class="container-fluid">
+                <top-bar></top-bar>
+
                 <div class="row">
-                    xxxx
+                    <user-control-bar id="control-bar"></user-control-bar>
+                    <users-card-grid>
+                    </users-card-grid>
                 </div>
             </div>
+
+            <add-email-modal v-if='modal_visible'></add-email-modal>
         </div>
         
 
