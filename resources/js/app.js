@@ -23,9 +23,8 @@ Vue.use(Vuex);
 import store from './store/index.js'
 
 import Sidebar from './components/sidebar.vue';
-import TopBar from './components/top-bar.vue';
-import UserControlBar from './components/user-control-bar.vue';
-import UsersCardGrid from './components/users-card-grid.vue';
+import TeamProjectOverview from './components/team-project-overview.vue';
+import AddNewTeamMember from './components/add-new-team-member.vue';
 import AddEmailModal from './components/modals/add-email.vue';
 import {mapState} from 'vuex';
 /**
@@ -39,9 +38,8 @@ const app = new Vue({
     store,
     components:{
         Sidebar,
-        TopBar,
-        UserControlBar,
-        UsersCardGrid,
+        TeamProjectOverview,
+        AddNewTeamMember,     
         AddEmailModal
     },
     computed:{

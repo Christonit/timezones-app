@@ -3,16 +3,8 @@
 @section('content')
         <div id="app" class="d-flex">
             <sidebar></sidebar>
-            <div class="container-fluid">
-                <top-bar></top-bar>
-
-                <div class="row">
-                    <user-control-bar id="control-bar"></user-control-bar>
-                    <users-card-grid>
-                    </users-card-grid>
-                </div>
-            </div>
-
+            <add-new-team-member></add-new-team-member>
+            <!-- <team-project-overview></team-project-overview> -->
             <add-email-modal v-if='modal_visible'></add-email-modal>
         </div>
         

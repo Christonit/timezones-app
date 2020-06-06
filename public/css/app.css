@@ -10927,7 +10927,7 @@ a.text-dark:focus {
   height: 100vh;
   width: 100%;
   max-width: 248px;
-  background: #05060d;
+  background: #000;
   padding: 24px 20px;
   position: -webkit-sticky;
   position: sticky;
@@ -10950,6 +10950,16 @@ a.text-dark:focus {
   width: auto;
 }
 
+.add-user-input-grid-header {
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  margin: 32px 0;
+}
+
 .input-label {
   display: block;
   color: #96a3a3;
@@ -10970,8 +10980,77 @@ input {
   line-height: 1;
 }
 
+input::-moz-placeholder {
+  color: #000;
+  opacity: 0.5;
+}
+
+input:-ms-input-placeholder {
+  color: #000;
+  opacity: 0.5;
+}
+
+input::-ms-input-placeholder {
+  color: #000;
+  opacity: 0.5;
+}
+
+input::placeholder {
+  color: #000;
+  opacity: 0.5;
+}
+
+input.input-field {
+  background: white;
+  padding: 24px 36px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  border: 0;
+  line-height: 1;
+  width: 100%;
+}
+
+input.input-field::-moz-placeholder {
+  color: #000;
+  opacity: 0.5;
+}
+
+input.input-field:-ms-input-placeholder {
+  color: #000;
+  opacity: 0.5;
+}
+
+input.input-field::-ms-input-placeholder {
+  color: #000;
+  opacity: 0.5;
+}
+
+input.input-field::placeholder {
+  color: #000;
+  opacity: 0.5;
+}
+
+.input-field-group {
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+}
+
+.input-field-group .input-field {
+  margin: 0 2px;
+}
+
 body {
   background-color: #f8fbfb;
+}
+
+.section-header {
+  justify-content: space-between;
+  padding: 16px 48px;
+  align-items: center;
 }
 
 .btn {
@@ -10988,7 +11067,7 @@ body {
   font-size: 20px;
   padding: 8px;
   line-height: 1;
-  color: #05060d;
+  color: #000;
   opacity: 0.3;
 }
 
@@ -11025,7 +11104,7 @@ body {
 }
 
 .overlay {
-  background-color: #05060d;
+  background-color: #000;
   opacity: 0.85;
   position: absolute;
   top: 0;
@@ -11040,7 +11119,7 @@ body {
   font-family: "Ubuntu", sans-serif;
   font-size: 28px;
   font-weight: bold;
-  color: #05060d;
+  color: #000;
 }
 
 .btn {
@@ -11049,8 +11128,10 @@ body {
   border-radius: 0;
   text-align: center;
   display: flex;
+  font-weight: 600;
   border: 0;
   justify-content: center;
+  font-size: 14px;
 }
 
 .btn-primary {
@@ -11060,5 +11141,26 @@ body {
 .next {
   font-size: 32px;
   width: 88px;
+}
+
+.prev .material-icons {
+  margin-right: 8px;
+}
+
+.btn-secondary-link {
+  color: #b62f2f;
+}
+
+.btn-add {
+  width: 112px;
+  height: 100%;
+  font-size: 24px;
+  color: #636363;
+  min-width: 112px;
+  max-width: 112px;
+}
+
+.black {
+  color: #000;
 }
 
