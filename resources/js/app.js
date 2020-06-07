@@ -25,6 +25,7 @@ import store from './store/index.js'
 import Sidebar from './components/sidebar.vue';
 import TeamProjectOverview from './components/team-project-overview.vue';
 import AddNewTeamMember from './components/add-new-team-member.vue';
+import CreateGroup from './components/create-group.vue';
 import AddEmailModal from './components/modals/add-email.vue';
 import {mapState} from 'vuex';
 /**
@@ -40,7 +41,8 @@ const app = new Vue({
         Sidebar,
         TeamProjectOverview,
         AddNewTeamMember,     
-        AddEmailModal
+        AddEmailModal,
+        CreateGroup
     },
     computed:{
         ...mapState(['modal_visible'])

@@ -10927,7 +10927,7 @@ a.text-dark:focus {
   height: 100vh;
   width: 100%;
   max-width: 248px;
-  background: #000;
+  background: #05060d;
   padding: 24px 20px;
   position: -webkit-sticky;
   position: sticky;
@@ -10981,22 +10981,22 @@ input {
 }
 
 input::-moz-placeholder {
-  color: #000;
+  color: #05060d;
   opacity: 0.5;
 }
 
 input:-ms-input-placeholder {
-  color: #000;
+  color: #05060d;
   opacity: 0.5;
 }
 
 input::-ms-input-placeholder {
-  color: #000;
+  color: #05060d;
   opacity: 0.5;
 }
 
 input::placeholder {
-  color: #000;
+  color: #05060d;
   opacity: 0.5;
 }
 
@@ -11014,23 +11014,66 @@ input.input-field {
 }
 
 input.input-field::-moz-placeholder {
-  color: #000;
+  color: #05060d;
   opacity: 0.5;
 }
 
 input.input-field:-ms-input-placeholder {
-  color: #000;
+  color: #05060d;
   opacity: 0.5;
 }
 
 input.input-field::-ms-input-placeholder {
-  color: #000;
+  color: #05060d;
   opacity: 0.5;
 }
 
 input.input-field::placeholder {
-  color: #000;
+  color: #05060d;
   opacity: 0.5;
+}
+
+.checkbox {
+  position: relative;
+  display: flex;
+  line-height: 1;
+  align-items: center;
+  margin-left: auto;
+}
+
+.checkbox label {
+  margin-bottom: 0;
+}
+
+.checkbox input[type=checkbox] {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 9;
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+}
+
+.checkbox input[type=checkbox] + label:before {
+  content: " ";
+  position: relative;
+  height: 20px;
+  width: 20px;
+  border-radius: 6px;
+  display: block;
+}
+
+.checkbox input[type=checkbox]:not(:checked) + label:before {
+  border: 1px solid rgba(5, 6, 13, 0.43);
+}
+
+.checkbox input[type=checkbox]:checked + label:before {
+  border: 1px solid #0e963f;
+  background-color: #0e963f;
 }
 
 .input-field-group {
@@ -11041,6 +11084,15 @@ input.input-field::placeholder {
 
 .input-field-group .input-field {
   margin: 0 2px;
+  overflow: hidden;
+}
+
+.add-clients-form {
+  max-width: 582px;
+}
+
+.timezone-field {
+  max-width: 200px;
 }
 
 body {
@@ -11051,6 +11103,7 @@ body {
   justify-content: space-between;
   padding: 16px 48px;
   align-items: center;
+  background-color: #f2f8f8;
 }
 
 .btn {
@@ -11067,7 +11120,7 @@ body {
   font-size: 20px;
   padding: 8px;
   line-height: 1;
-  color: #000;
+  color: #05060d;
   opacity: 0.3;
 }
 
@@ -11087,6 +11140,11 @@ body {
   justify-content: center;
 }
 
+.content {
+  padding: 0 64px;
+  margin: 36px 0;
+}
+
 .modal-popup {
   display: flex;
   justify-content: center;
@@ -11104,7 +11162,7 @@ body {
 }
 
 .overlay {
-  background-color: #000;
+  background-color: #05060d;
   opacity: 0.85;
   position: absolute;
   top: 0;
@@ -11119,7 +11177,20 @@ body {
   font-family: "Ubuntu", sans-serif;
   font-size: 28px;
   font-weight: bold;
-  color: #000;
+  color: #05060d;
+}
+
+.subtitle {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 22px;
+  color: #05060d;
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.subtitle .clear-btn {
+  margin: 0 12px;
 }
 
 .btn {
@@ -11132,6 +11203,14 @@ body {
   border: 0;
   justify-content: center;
   font-size: 14px;
+}
+
+.clear-btn {
+  background-color: transparent;
+  border: none;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .btn-primary {
@@ -11161,6 +11240,90 @@ body {
 }
 
 .black {
-  color: #000;
+  color: #05060d;
+}
+
+.contact-list {
+  width: auto;
+  min-width: 260px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  margin-left: -15px;
+  border-right: 2px solid #e0f3f3;
+}
+
+.contact-search-icon {
+  position: absolute;
+  left: 32px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.contact-list-searchbar {
+  position: relative;
+  background-color: #f2f8f8;
+  border-bottom: 2px solid #e0f3f3;
+}
+
+.contact-list-input {
+  width: 100%;
+  padding: 16px 16px 16px 80px;
+  height: 88px;
+  background-color: transparent;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px 12px 32px;
+  background-color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.new-members-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 276px));
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+@media (min-width: 1500px) {
+  .new-members-grid {
+    grid-template-columns: repeat(4, minmax(220px, 276px));
+  }
+}
+
+@media (min-width: 1800px) {
+  .new-members-grid {
+    grid-template-columns: repeat(5, minmax(220px, 312px));
+  }
+}
+
+.new-member-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #ffffff;
+}
+
+.contact-name {
+  margin-left: 16px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.contact-img {
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-bottom: 0;
+}
+
+.contact-img img {
+  height: 100%;
 }
 
