@@ -27,6 +27,7 @@ import TeamProjectOverview from './components/team-project-overview.vue';
 import AddNewTeamMember from './components/add-new-team-member.vue';
 import CreateGroup from './components/create-group.vue';
 import AddEmailModal from './components/modals/add-email.vue';
+import ChangeGroupNameModal from './components/modals/change-group-name.vue';
 import {mapState} from 'vuex';
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -42,10 +43,11 @@ const app = new Vue({
         TeamProjectOverview,
         AddNewTeamMember,     
         AddEmailModal,
-        CreateGroup
+        CreateGroup,
+        ChangeGroupNameModal
     },
     computed:{
-        ...mapState(['modal_visible'])
+        ...mapState(['modal_visible','modal'])
     }
     
 });

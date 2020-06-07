@@ -6,7 +6,8 @@
             <create-group></create-group>
             <!-- <add-new-team-member></add-new-team-member> -->
             <!-- <team-project-overview></team-project-overview> -->
-            <add-email-modal v-if='modal_visible'></add-email-modal>
+            <change-group-name-modal v-if="modal.new_team_name"></change-group-name-modal>
+            <!-- <add-email-modal v-if='modal_visible'></add-email-modal> -->
         </div>
         
 

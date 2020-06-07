@@ -16,10 +16,24 @@
 <script>
 export default {
     name:'modal-template',
-    props:['widthType'],
+    props:
+    {
+        widthType:{
+          default:'',
+          type:String
+        },
+        modal_name:{
+            default:'',
+            type:String
+        }
+    },
     methods:{
         close(){
-            this.$store.commit('closeModal')
+            if(this.modal_name == ''){
+                return;
+            }
+
+            this.$store.commit('closeModal', this.modal_name)
         }
     }
 }
