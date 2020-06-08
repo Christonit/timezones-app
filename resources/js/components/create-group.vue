@@ -44,8 +44,10 @@
                 <div class="content ">
                     <div class="add-clients-form">
                         <h3 class="subtitle">Clients <button class="clear-btn">Clear All</button></h3>
-
-                        <div class="add-user-input-grid-header input-field-group">
+                        <button class="btn-dashed">
+                           Add client 
+                        </button>
+                        <!-- <div class="add-user-input-grid-header input-field-group">
                             <input class="input-field" type="text" placeholder="Full Name">
                             <input class="input-field timezone-field" type="text" placeholder="Timezones">
                             <button class="btn btn-add "> 
@@ -56,7 +58,7 @@
                         </div>
                         <div class="add-user-input-grid">
                             <new-client-item></new-client-item>
-                        </div>
+                        </div> -->
 
                     </div>
                     

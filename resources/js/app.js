@@ -28,6 +28,8 @@ import AddNewTeamMember from './components/add-new-team-member.vue';
 import CreateGroup from './components/create-group.vue';
 import AddEmailModal from './components/modals/add-email.vue';
 import ChangeGroupNameModal from './components/modals/change-group-name.vue';
+import UsersCreatedModal from './components/modals/users-created-successfully.vue';
+import DeleteProjectModal from './components/modals/delete-project.vue';
 import {mapState} from 'vuex';
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -44,7 +46,9 @@ const app = new Vue({
         AddNewTeamMember,     
         AddEmailModal,
         CreateGroup,
-        ChangeGroupNameModal
+        ChangeGroupNameModal,
+        UsersCreatedModal,
+        DeleteProjectModal
     },
     computed:{
         ...mapState(['modal_visible','modal'])

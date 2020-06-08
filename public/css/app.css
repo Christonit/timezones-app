@@ -11179,6 +11179,7 @@ body {
   font-size: 28px;
   font-weight: bold;
   color: #05060d;
+  line-height: 1.5;
 }
 
 .subtitle {
@@ -11214,8 +11215,37 @@ body {
   font-weight: 600;
 }
 
+.btn-cancel {
+  font-family: "Ubuntu", sans-serif;
+  color: #05060d;
+  min-width: 112px;
+}
+
 .btn-primary {
   background-color: #0e963f;
+}
+
+.btn-secondary {
+  background-color: #b62f2f;
+}
+
+.btn-dashed {
+  border: 2px dashed rgba(5, 6, 13, 0.43);
+  padding: 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  background: transparent;
+  min-width: 232px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+}
+
+.btn-dashed:hover {
+  background-color: #f5f5f5;
+}
+
+.btn-dashed:active {
+  background-color: #d9d9d9;
 }
 
 .next {
