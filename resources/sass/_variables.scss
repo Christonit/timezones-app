@@ -2,6 +2,7 @@
 $body-bg: #f8fbfb;
 $secondary-bg: #f2f8f8;
 $border-color: #e0f3f3;
+$faint-border-color:#f1f5f5;
 $link: #93c5ff;
 $focus-bg: #b1d9f1;
 $white: #ffffff;
@@ -11,10 +12,14 @@ $highlight: #187a80;
 $secondary-highlight: #b62f2f;
 $success: #0e963f;
 $black:#05060d;
+$black10:rgba(5,6,13,0.14);
 $black50:rgba(5,6,13,0.43);
+$black80:rgba(5,6,13,0.77);
 
 // Typography
 $font-family-sans-serif: 'Nunito', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
+$inactive: #b04a33;
+$active: #13bd97;

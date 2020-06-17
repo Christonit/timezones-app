@@ -13,9 +13,7 @@
 
 
             <div class="w-100 ">
-                <button class="btn btn-primary next material-icons mx-auto">
-                    trending_flat 
-                </button>
+                <continue-btn centered="true"></continue-btn>
             </div>
         </template>
         
@@ -25,10 +23,12 @@
 
 <script>
 import ModalTemplate from './template.vue';
+import ContinueBtn from '../utils/buttons/continue-btn';
 export default {
     name: 'users-created-modal',
     components:{
-        ModalTemplate
+        ModalTemplate,
+        ContinueBtn
     },
     data(){
         return {

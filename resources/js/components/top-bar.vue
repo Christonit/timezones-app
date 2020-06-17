@@ -1,37 +1,36 @@
 <template>
-    <div class="row">
-        <div class="col-12 col-md-3"></div>
-        <div class="col-9 col-md-6">
+    <header class="top-bar">
             <div id='top-searchbar' class="input-group">
+                <div class="top-searchbar-content">
+                    <i class="search-icon"></i>
 
-                <span class="material-icons">
-                    search
-                </span>
+                    <input  class="form-control top-searchbar-input" 
+                        type="text" 
+                        placeholder="Employee name, New York, GTM-1, project 01"/>
+                </div>
 
-                <input  class="form-control" type="text" placeholder="Search"/>
+                <!-- <searchbox></searchbox> -->
             
             </div>
-        </div>
-        <div class="col-3 col-md-3">
             <div class="view-toggle">
-                <button class="material-icons">
-                    view_module
-                </button>
-                <button class="material-icons">
-                    view_stream
-                </button>
+                <span class="grid-view view-toggle-btn"></span>
+                <span class="list-view view-toggle-btn"></span>
             </div>
             
-        </div>
-    </div>
+    </header>
 </template>
 
 <script>
+import Searchbox from '../components/utils/searchbox.vue';
+
 export default {
     data(){
         return {
 
         }
+    },
+    components:{
+        Searchbox
     }
 }
 </script>

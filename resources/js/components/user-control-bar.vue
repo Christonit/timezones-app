@@ -1,28 +1,25 @@
 <template>
     <div class="col-12 col-md-3">
-        <user-item class="card active">
-        </user-item>
-        <div id="user-type-filters">
-            <button class="btn btn-link btn-filter">
-                All
-                <span class="material-icons">
-                    arrow_right_alt
-                </span>
-            </button>
-            <button class="btn btn-link btn-filter">
-                Teammates
-                <span class="material-icons">
-                    arrow_right_alt
-                </span>
-            </button>
-            <button class="btn btn-link btn-filter">
-                Clients
-                <span class="material-icons">
-                    arrow_right_alt
-                </span>
-            </button>
-        </div>
+        <div class="control-bar">
+            <user-item class="card active">
+            </user-item>
+            <div id="user-type-filters">
+                <button class="btn btn-link btn-filter active">
+                    All
+                    <span class="small-right-arrow-icon"></span>
+                </button>
+                <button class="btn btn-link btn-filter">
+                    Teammates
+                    <span class="small-right-arrow-icon"></span>
+                </button>
+                <button class="btn btn-link btn-filter">
+                    Clients
+                    <span class="small-right-arrow-icon"></span>
+                </button>
+            </div>
 
+        </div>
+        
     </div>
 </template>
 

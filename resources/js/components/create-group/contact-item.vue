@@ -5,10 +5,16 @@
         </figure>
         <span class="contact-name">Minnie Person</span>
 
-        <span  class="checkbox" >
-            <input type="checkbox" name="contact-1" value="minie person">
-            <label for="checkbox"></label>
-
-        </span>
+        <checkbox></checkbox>
+        
     </div>
 </template>
+
+<script>
+import Checkbox from '../utils/checkbox-input.vue'
+export default {
+ components:{
+     Checkbox
+ }   
+}
+</script>

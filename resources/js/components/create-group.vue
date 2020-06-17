@@ -35,6 +35,11 @@
 
                     <div class="new-members-grid">
                         <new-team-member></new-team-member>
+                        <new-team-member></new-team-member>
+                        <new-team-member></new-team-member>
+                        <new-team-member></new-team-member>
+                        <new-team-member></new-team-member>
+                        <new-team-member></new-team-member>
                     </div>
 
                 </div>
@@ -71,18 +76,14 @@
 <script>
 import {mapMutations} from 'vuex';
 import TopBar from './top-bar.vue';
-import UserControlBar from './user-control-bar.vue';
-import UsersCardGrid from './users-card-grid.vue';
-import NewTeamMember from './new-team-member-item.vue';
-import ContactItem from './contact-item.vue';
-import NewClientItem from './new-client-item.vue';
+import NewTeamMember from './create-group/new-team-member-item.vue';
+import ContactItem from './create-group/contact-item.vue';
+import NewClientItem from './create-group/new-client-item.vue';
 
 export default {
 
     components:{
         TopBar,
-        UserControlBar,
-        UsersCardGrid,
         NewTeamMember,
         ContactItem,
         NewClientItem

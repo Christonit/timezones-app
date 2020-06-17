@@ -1,0 +1,100 @@
+.more-option-btn{
+    position: relative;
+    background-image: url('../img/more-icon.svg');
+    width: 20px;
+    height: 24px;
+    background-position: center;
+    background-size: initial;
+    background-repeat: no-repeat;
+    &.dark{
+        background-image: url('../img/more-options-icon-dark.svg');
+    }
+
+    
+
+    &:hover .more-options{
+        top: 26px;
+        opacity: 1;
+        z-index: 99;
+    }
+}
+.more-options{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 40px;
+    background-color: $black;
+    // right: 0;
+    width: 180px;
+    opacity: 0;   
+    z-index: -1;
+    transition: all 200ms ease;
+    @include font;
+}
+
+.more-options-item{
+    padding: 12px 20px;
+    color: white;
+    @include text-14-semibold;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    &:hover{
+        background-color: #171b54;
+    }
+    &.delete:hover{
+        background-color: #b13d2c;
+    }
+}
+
+.more-options-icon{
+    max-width: 18px;
+    margin-right: 8px;
+    top: -1px;
+    position: relative;
+}
+
+.user-item .more-option-btn{
+    position: absolute;
+    bottom: 4px;
+    right: 2px;
+    opacity: 0;
+    z-index: -1;
+    
+}
+.user-item .more-options{
+    right: 0;    
+    
+}
+.user-item:hover .more-option-btn{
+    
+    opacity: 1;
+    z-index: 1;
+    &:hover{
+        background-color: #f8f8f8;
+    }
+    
+}
+
+
+.timeline-card .more-option-btn {
+    bottom: 0;
+    right: 12px;
+    // opacity: 1;
+    z-index: 0;
+    top: 0;
+    margin: auto;
+    
+}
+.timeline-card .more-option-btn .more-options{
+    z-index: -1;
+    pointer-events: none;
+
+}
+
+.timeline-card .more-option-btn:hover .more-options{
+    z-index: 99;
+    pointer-events: initial;
+    top: 24px;
+}
+

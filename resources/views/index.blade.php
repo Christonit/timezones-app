@@ -3,13 +3,17 @@
 @section('content')
         <div id="app" class="d-flex">
             <sidebar></sidebar>
-            <create-group></create-group>
+            <!-- <create-group></create-group> -->
             <!-- <add-new-team-member></add-new-team-member> -->
-            <!-- <team-project-overview></team-project-overview> -->
+            <team-project-overview></team-project-overview>
             <!-- <users-created-modal  v-if="modal.user_created_successfully"></users-created-modal> -->
             <!-- <delete-project-modal></delete-project-modal> -->
             <!-- <change-group-name-modal v-if="modal.new_team_name"></change-group-name-modal> -->
-            <!-- <add-email-modal v-if='modal_visible'></add-email-modal> -->
+            <!-- <add-email-modal ></add-email-modal> -->
+            <!-- <team-created-modal></team-created-modal> -->
+            <!-- <add-teammate-modal></add-teammate-modal> -->
+            <!-- <edit-team-profile-modal></edit-team-profile-modal> -->
+            <!-- <edit-profile-modal></edit-profile-modal> -->
         </div>
         
 

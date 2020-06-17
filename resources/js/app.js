@@ -27,8 +27,12 @@ import TeamProjectOverview from './components/team-project-overview.vue';
 import AddNewTeamMember from './components/add-new-team-member.vue';
 import CreateGroup from './components/create-group.vue';
 import AddEmailModal from './components/modals/add-email.vue';
+import EditTeamProfileModal from './components/modals/edit-team-profile.vue';
+import EditProfileModal from './components/modals/edit-profile.vue';
 import ChangeGroupNameModal from './components/modals/change-group-name.vue';
 import UsersCreatedModal from './components/modals/users-created-successfully.vue';
+import TeamCreatedModal from './components/modals/team-created.vue'
+import AddTeammateModal from './components/modals/add-teammate.vue'
 import DeleteProjectModal from './components/modals/delete-project.vue';
 import {mapState} from 'vuex';
 /**
@@ -48,6 +52,10 @@ const app = new Vue({
         CreateGroup,
         ChangeGroupNameModal,
         UsersCreatedModal,
+        TeamCreatedModal,
+        AddTeammateModal,
+        EditTeamProfileModal,
+        EditProfileModal,
         DeleteProjectModal
     },
     computed:{
