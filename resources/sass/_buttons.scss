@@ -164,11 +164,17 @@
     &:hover{
         background-image: url('../img/grid-view-icon-hover.svg');
     }
+    &.active{
+        background-image: url('../img/grid-view-icon-hover.svg');
+    }
 
 }
 .list-view{
     background-image: url('../img/list-view-icon.svg');
     &:hover{
+        background-image: url('../img/list-view-icon-hover.svg');
+    }
+    &.active{
         background-image: url('../img/list-view-icon-hover.svg');
     }
 

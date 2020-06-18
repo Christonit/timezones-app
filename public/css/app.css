@@ -11776,6 +11776,7 @@ input.input-field::placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 99;
 }
 
 .modal-popup {
@@ -11999,11 +12000,19 @@ input.input-field::placeholder {
   background-image: url(/images/grid-view-icon-hover.svg?66f739e11404561ec0d35b0ea39edbde);
 }
 
+.grid-view.active {
+  background-image: url(/images/grid-view-icon-hover.svg?66f739e11404561ec0d35b0ea39edbde);
+}
+
 .list-view {
   background-image: url(/images/list-view-icon.svg?50f36eee5887fcc188a381de8b8f80df);
 }
 
 .list-view:hover {
+  background-image: url(/images/list-view-icon-hover.svg?6171fd85350507e05ad4f3f0b9b740f7);
+}
+
+.list-view.active {
   background-image: url(/images/list-view-icon-hover.svg?6171fd85350507e05ad4f3f0b9b740f7);
 }
 
@@ -12231,6 +12240,7 @@ body {
   padding: 16px 48px;
   align-items: center;
   background-color: #f2f8f8;
+  margin-bottom: 24px;
 }
 
 .btn {

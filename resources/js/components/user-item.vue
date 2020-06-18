@@ -7,7 +7,7 @@
                 <span class="user-status-dot"></span>
             </figure>
             <span v-if="viewMode == 'card'" class="user-item-info">
-                <b class="user-item-name">Minnie Pearson</b>
+                <b class="user-item-name">{{name}}</b>
                 <h4 class="user-item-current-hour">05:06 PM</h4>
                 <span class="user-item-current-day">Wed 5th</span>
                 <span class="user-item-available-time">Av: 4 AM - 5 PM</span>
@@ -46,6 +46,10 @@ export default {
     props:{
         viewMode:{
             type:String
+        },
+        name:{
+            type:String,
+            default:'Minnie Person'
         }
     },
     computed:{

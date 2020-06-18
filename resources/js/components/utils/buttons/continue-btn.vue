@@ -1,5 +1,5 @@
 <template>
-    <button class="btn btn-primary next" :class="alignment">
+    <button class="btn btn-primary next" :class="alignment" @click="click">
         <img src="/img/long-arrow.svg"/> 
     </button>
 </template>
@@ -10,6 +10,10 @@ export default {
         centered:{
             type: [Boolean,String],
             default: false
+        },
+        click:{
+            type:Function,
+            default:false
         }
     },
     computed:{

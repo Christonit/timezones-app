@@ -1,25 +1,33 @@
 <template>
     <aside class="app-sidebar">
         <div class="app-brading">
-            <img src="https://via.placeholder.com/140x80" alt="Horatio App" class="logo">
+            <img src="https://via.placeholder.com/140x80" alt="Orca" class="logo">
         </div>
+
     <div class="teams-contain">
         <div class="dropdown team-dropdown">
-            <button class="btn btn-secondary dropdown-toggle team-dropdown-btn" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Scopic Software
-
-                
+            <button class="btn btn-secondary dropdown-toggle team-dropdown-btn" role="button" id="teams-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{team_project.name}}
             </button>
 
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <button class="dropdown-item active">Action</button>
-                <button class="dropdown-item">Another action</button>
-                <button class="dropdown-item">Something else here</button>
-                <button class="dropdown-item" > 
+            <div class="dropdown-menu" aria-labelledby="teams-list">
+
+                <template v-for="(team,key) in teams">
+
+                    <button class="dropdown-item" 
+                        ref="selectTeam"
+                        @click="selectTeam(team.name, team.id)">
+                            {{team.name}}
+                    </button>
+
+                </template>
+
+                <button class="dropdown-item" @click="openModal('new-team')"> 
                     <i class="square-add-icon material-icons ">
                         add
                     </i>        
-                New Team</button>
+                    New Team
+                </button>
             </div>
             
         </div>
@@ -41,7 +49,7 @@
                 Proyects
             </b>
 
-            <button class="btn-add-fill material-icons ml-3">
+            <button class="btn-add-fill material-icons ml-3" >
                 add
             </button>
 
@@ -76,9 +84,24 @@
 </template>
 
 <script>
+import {mapMutations,mapActions, mapState} from 'vuex';
     export default {
         mounted() {
             console.log('Component mounted.')
+        },
+        computed:{
+            ...mapState(['teams','team_project'])
+        },
+        methods:{
+            ...mapMutations(['openModal','setActiveTeam']),
+            selectTeam(name,key){
+
+                document.querySelector('.team-dropdown .dropdown-item').classList.remove('active');
+                event.target.classList.add('active')
+                this.setActiveTeam({name,key});
+
+            }
         }
+
     }
 </script>

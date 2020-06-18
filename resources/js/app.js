@@ -25,6 +25,7 @@ import store from './store/index.js'
 import Sidebar from './components/sidebar.vue';
 import TeamProjectOverview from './components/team-project-overview.vue';
 import AddNewTeamMember from './components/add-new-team-member.vue';
+import NewTeamModal from './components/modals/new-team.vue';
 import CreateGroup from './components/create-group.vue';
 import AddEmailModal from './components/modals/add-email.vue';
 import EditTeamProfileModal from './components/modals/edit-team-profile.vue';
@@ -34,7 +35,7 @@ import UsersCreatedModal from './components/modals/users-created-successfully.vu
 import TeamCreatedModal from './components/modals/team-created.vue'
 import AddTeammateModal from './components/modals/add-teammate.vue'
 import DeleteProjectModal from './components/modals/delete-project.vue';
-import {mapState} from 'vuex';
+import {mapState,mapActions} from 'vuex';
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -44,6 +45,9 @@ import {mapState} from 'vuex';
 const app = new Vue({
     el: '#app',
     store,
+    created(){
+        this.getUserTeams();
+    },
     components:{
         Sidebar,
         TeamProjectOverview,
@@ -56,10 +60,14 @@ const app = new Vue({
         AddTeammateModal,
         EditTeamProfileModal,
         EditProfileModal,
-        DeleteProjectModal
+        DeleteProjectModal,
+        NewTeamModal
     },
     computed:{
         ...mapState(['modal_visible','modal'])
+    },
+    methods:{
+        ...mapActions(['getUserTeams'])
     }
     
 });

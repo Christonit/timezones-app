@@ -4,11 +4,13 @@
         <div id="app" class="d-flex">
             <sidebar></sidebar>
             <!-- <create-group></create-group> -->
-            <!-- <add-new-team-member></add-new-team-member> -->
-            <team-project-overview></team-project-overview>
+            <!-- <team-project-overview></team-project-overview> -->
+            <add-new-team-member></add-new-team-member>
+
             <!-- <users-created-modal  v-if="modal.user_created_successfully"></users-created-modal> -->
             <!-- <delete-project-modal></delete-project-modal> -->
-            <!-- <change-group-name-modal v-if="modal.new_team_name"></change-group-name-modal> -->
+            <new-team-modal v-if='modal.new_team'></new-team-modal>
+            <!-- <change-group-name-modal ></change-group-name-modal> -->
             <!-- <add-email-modal ></add-email-modal> -->
             <!-- <team-created-modal></team-created-modal> -->
             <!-- <add-teammate-modal></add-teammate-modal> -->
