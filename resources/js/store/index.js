@@ -4,6 +4,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state:{
+        screen_sizes:{
+
+        },
         modal:{
             new_team:false,
             user_created_successfully: true,

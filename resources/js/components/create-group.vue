@@ -14,14 +14,15 @@
 
         <div class="new-group-container w-100">
             <header class="row section-header">
-                    <button class="btn btn-secondary-link prev">
+                    <router-link to="/" tag="button" class="btn btn-secondary-link prev">
                         <span class="material-icons">
                             keyboard_backspace
                         </span> 
                         <span>
                             Cancel
                         </span>
-                    </button>
+                    </router-link>
+                    
                     <h2 class="title text-center mb-0 btn-dashed-link" @click="openModal('new_team_name')">Group name</h2>
                     <button class="btn btn-primary next material-icons">
                         trending_flat 

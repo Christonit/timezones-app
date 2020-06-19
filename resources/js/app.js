@@ -8,8 +8,10 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import Vuex from 'vuex';
+import VueRouter from 'vue-router';
 
 Vue.use(Vuex);
+Vue.use(VueRouter)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -21,6 +23,7 @@ Vue.use(Vuex);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 import store from './store/index.js'
+import router from './routes/routes.js'
 
 import Sidebar from './components/sidebar.vue';
 import TeamProjectOverview from './components/team-project-overview.vue';
@@ -45,6 +48,7 @@ import {mapState,mapActions} from 'vuex';
 const app = new Vue({
     el: '#app',
     store,
+    router,
     created(){
         this.getUserTeams();
     },

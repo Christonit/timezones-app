@@ -1,14 +1,17 @@
 <template>
     <div class="container-fluid">
         <header class="row section-header">
-                <button class="btn btn-secondary-link prev">
-                    <span class="material-icons">
-                        keyboard_backspace
-                    </span> 
-                    <span>
-                        Cancel
-                    </span>
-                </button>
+
+            <router-link to='/' tag='button' class="btn btn-secondary-link prev">
+                <span class="material-icons">
+                    keyboard_backspace
+                </span> 
+                <span>
+                    Cancel
+                </span>
+            </router-link>
+                
+
                 <h2 class="title text-center mb-0">Add new members</h2>
                  <button class="btn btn-primary next material-icons">
                     trending_flat 
@@ -28,6 +31,7 @@
                         </button>
                 </div>
                 <div class="add-user-input-grid">
+
                       <div class="input-field-group  my-3"
                         v-if="new_members.length > 0" 
                         v-for="member in new_members">

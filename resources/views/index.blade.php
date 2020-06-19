@@ -4,8 +4,9 @@
         <div id="app" class="d-flex">
             <sidebar></sidebar>
             <!-- <create-group></create-group> -->
+            <router-view></router-view>
             <!-- <team-project-overview></team-project-overview> -->
-            <add-new-team-member></add-new-team-member>
+            <!-- <add-new-team-member></add-new-team-member> -->
 
             <!-- <users-created-modal  v-if="modal.user_created_successfully"></users-created-modal> -->
             <!-- <delete-project-modal></delete-project-modal> -->

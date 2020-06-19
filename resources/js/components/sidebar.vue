@@ -31,12 +31,14 @@
             </div>
             
         </div>
-        <button class="btn btn-link white">
+
+        <router-link :to="`/team/${team_project.name.split(' ').join('-').toLowerCase()}`" tag='button' class="btn btn-link white">
             <button class="btn-add-fill material-icons mr-3">
                 add
             </button>
             Add teammate
-        </button>
+        </router-link>
+      
     </div>
 
     <button class="btn btn-link white">
@@ -49,10 +51,10 @@
                 Proyects
             </b>
 
-            <button class="btn-add-fill material-icons ml-3" >
+            <router-link :to="`/${team_project.name.split(' ').join('-').toLowerCase()}/new-project`" tag='button' class="btn-add-fill material-icons ml-3">
                 add
-            </button>
-
+            </router-link>
+             
         </div>
 
         <ul class="item-lists">
