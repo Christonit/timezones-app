@@ -25,25 +25,29 @@
 
             </template>
 
-            <span class="more-option-btn">
-                    <div class="more-options">
-                        <span class="more-options-item">Add teammate</span>
-                        <span class="more-options-item">Edit name </span>
-                        <span class="more-options-item delete"><img src="../../img/delete-icon-white.svg" class="more-options-icon" alt="More options delete icon"> Delete project</span>
-                    </div>
-                </span>
+            <more-option-btn :edit-btn='true' :delete-btn='false' v-if="loggedUser"></more-option-btn>
+            <more-option-btn :edit-btn='true' v-if="loggedUser == false"></more-option-btn>
 
         </div>
 </template>
 
 <script>
+import MoreOptionBtn from "./utils/more-option-btn.vue";
+
 export default {
     data(){
         return {
 
         };
     },
+    components:{
+        MoreOptionBtn
+    },
     props:{
+        loggedUser:{
+            type:Boolean,
+            default:false
+        },
         viewMode:{
             type:String
         },

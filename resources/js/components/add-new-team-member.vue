@@ -3,9 +3,6 @@
         <header class="row section-header">
 
             <router-link to='/' tag='button' class="btn btn-secondary-link prev">
-                <span class="material-icons">
-                    keyboard_backspace
-                </span> 
                 <span>
                     Cancel
                 </span>
@@ -47,11 +44,7 @@
                                 <label class="input-label  black" for="time-zone">Time-zone</label>
                                 <input type="text" :value="member.timezone">
                             </div>
-                            <button class="btn btn-add "> 
-                                <span class="material-icons">
-                                    add
-                                </span>
-                            </button>
+                            <delete-btn class="large"></delete-btn>
                       </div>
                 </div>
             </div>
@@ -62,6 +55,7 @@
 import TopBar from './top-bar.vue';
 import UserControlBar from './user-control-bar.vue';
 import UsersCardGrid from './users-card-grid.vue';
+import DeleteBtn from "./utils/buttons/delete-btn.vue";
 
 export default {
     data(){
@@ -72,7 +66,8 @@ export default {
     components:{
         TopBar,
         UserControlBar,
-        UsersCardGrid
+        UsersCardGrid,
+        DeleteBtn
     },
     methods:{
         addNew(){

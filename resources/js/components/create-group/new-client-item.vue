@@ -8,10 +8,18 @@
             <label class="input-label  black" for="email">Timezones</label>
             <input type="text" value="GTM + 1">
         </div>
-        <button class="btn btn-add "> 
-            <span class="material-icons">
-                add
-            </span>
-        </button>
+        <delete-btn class="large"></delete-btn>
     </div>
 </template>
+
+<script>
+import DeleteBtn from '../utils/buttons/delete-btn.vue';
+
+export default {
+    components:{
+
+        DeleteBtn,
+        
+    },
+}
+</script>

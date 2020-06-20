@@ -13,9 +13,7 @@ export default {
         },
         click:{
             type:Function,
-            default: () =>{
-                return false
-            }
+            default:false
         }
     },
     computed:{

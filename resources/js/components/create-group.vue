@@ -5,7 +5,7 @@
 
             <div class="contact-list-searchbar">
                 <input type="text" class="contact-list-input" placeholder="Search"/>
-                <img src="https://via.placeholder.com/24" alt="" class="contact-search-icon">
+                <img src="../../img/search-icon.svg" alt="" class="contact-search-icon">
             </div>
 
             <contact-item></contact-item>
@@ -15,18 +15,13 @@
         <div class="new-group-container w-100">
             <header class="row section-header">
                     <router-link to="/" tag="button" class="btn btn-secondary-link prev">
-                        <span class="material-icons">
-                            keyboard_backspace
-                        </span> 
                         <span>
                             Cancel
                         </span>
                     </router-link>
                     
                     <h2 class="title text-center mb-0 btn-dashed-link" @click="openModal('new_team_name')">Group name</h2>
-                    <button class="btn btn-primary next material-icons">
-                        trending_flat 
-                    </button>
+                    <continue-btn></continue-btn>
             </header>
             <div class="row">
                 <div class="content ">
@@ -53,7 +48,7 @@
                         <button class="btn-dashed">
                            Add client 
                         </button>
-                        <!-- <div class="add-user-input-grid-header input-field-group">
+                        <div class="add-user-input-grid-header input-field-group">
                             <input class="input-field" type="text" placeholder="Full Name">
                             <input class="input-field timezone-field" type="text" placeholder="Timezones">
                             <button class="btn btn-add "> 
@@ -64,7 +59,7 @@
                         </div>
                         <div class="add-user-input-grid">
                             <new-client-item></new-client-item>
-                        </div> -->
+                        </div>
 
                     </div>
                     
@@ -76,7 +71,9 @@
 </template>
 <script>
 import {mapMutations} from 'vuex';
-import TopBar from './top-bar.vue';
+
+import ContinueBtn from './utils/buttons/continue-btn.vue';
+
 import NewTeamMember from './create-group/new-team-member-item.vue';
 import ContactItem from './create-group/contact-item.vue';
 import NewClientItem from './create-group/new-client-item.vue';
@@ -84,10 +81,10 @@ import NewClientItem from './create-group/new-client-item.vue';
 export default {
 
     components:{
-        TopBar,
         NewTeamMember,
         ContactItem,
-        NewClientItem
+        NewClientItem,
+        ContinueBtn
     },
     methods:{
         ...mapMutations(['openModal']),

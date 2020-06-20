@@ -1,13 +1,12 @@
 <template>
-    <button class="btn btn-primary next" :class="alignment" @click="click">
-        <img src="/img/long-arrow.svg"/> 
+    <button class="btn-del" :class="el_alignment" @click="click">
     </button>
 </template>
 
 <script>
 export default {
     props:{
-        centered:{
+        alignment:{
             type: [Boolean,String],
             default: false
         },
@@ -19,10 +18,16 @@ export default {
         }
     },
     computed:{
-        alignment(){
+        el_alignment(){
 
-            if(this.centered ){ 
+            if(this.alignment == 'center'){ 
                 return 'mx-auto';
+            };
+            if(this.alignment == 'left'){ 
+                return 'mr-auto';
+            };
+            if(this.alignment == 'right'){ 
+                return 'ml-auto';
             };
 
         }

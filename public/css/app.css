@@ -11503,12 +11503,22 @@ input.input-field::placeholder {
 }
 
 .checkbox input[type=checkbox]:not(:checked) + label:before {
+  background-image: url(/images/check.svg?a4c9d137b9bccce369919d5f516efbe9);
+  background-position: center;
+  background-repeat: no-repeat;
   border: 1px solid rgba(5, 6, 13, 0.43);
+}
+
+.checkbox input[type=checkbox]:not(:checked):hover + label:before {
+  background-color: rgba(5, 6, 13, 0.1);
 }
 
 .checkbox input[type=checkbox]:checked + label:before {
   border: 1px solid #0e963f;
   background-color: #0e963f;
+  background-image: url(/images/check-white.svg?4f2c47d2678cb109decdf15f30229718);
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .input-field-group {
@@ -11520,6 +11530,10 @@ input.input-field::placeholder {
 .input-field-group .input-field {
   margin: 0 2px;
   overflow: hidden;
+}
+
+.input-field-group .input-field:first-child {
+  margin-left: 0;
 }
 
 .add-clients-form {
@@ -11891,6 +11905,36 @@ input.input-field::placeholder {
   font-weight: 600;
 }
 
+.btn-del {
+  content: "";
+  background-image: url(/images/delete-icon.svg?7884534c57170134c03f9f1584fc8f26);
+  height: 32px;
+  width: 32px;
+  background-position: center;
+  display: block;
+  background-repeat: no-repeat;
+  padding: 4px;
+  border: none;
+  background-color: transparent;
+}
+
+.btn-del:hover {
+  background-image: url(/images/delete-icon-hover.svg?515a53ea24dcb675966b65fa09b91c3e);
+}
+
+.btn-del:active {
+  background-image: url(/images/delete-icon-active.svg?23f3321153d8200c04599a1079438faf);
+}
+
+.btn-del.large {
+  width: 112px;
+  height: 66px;
+  font-size: 24px;
+  color: #636363;
+  min-width: 112px;
+  max-width: 112px;
+}
+
 .btn-cancel {
   font-family: "Ubuntu", sans-serif;
   color: #05060d;
@@ -11902,7 +11946,7 @@ input.input-field::placeholder {
 }
 
 .btn-secondary {
-  background-color: #b62f2f;
+  background-color: #e14848;
 }
 
 .btn-dashed {
@@ -11951,12 +11995,37 @@ input.input-field::placeholder {
   width: 88px;
 }
 
-.prev .material-icons {
+.btn.prev::before {
+  height: 20px;
+  width: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
   margin-right: 8px;
+  display: inline-block;
+  content: " ";
+  background-image: url(/images/back-arrow.svg?1f532eac2d4828e732f2301db813b87b);
+}
+
+.btn.prev:hover::before {
+  background-image: url(/images/back-arrow-hover.svg?1d717250f97891279440e6b23cced9e8);
 }
 
 .btn-secondary-link {
-  color: #b62f2f;
+  color: #e14848;
+}
+
+.btn-secondary-link:hover {
+  background-color: #e7efef;
+  color: #FF0909;
+}
+
+.btn-secondary-link:focus {
+  background-color: #e7efef;
+}
+
+.btn-secondary-link:active {
+  background-color: #d8e3e3;
+  color: #FF0909;
 }
 
 .btn-add {
@@ -12170,6 +12239,10 @@ input.input-field::placeholder {
   background-color: #b13d2c;
 }
 
+.more-options-item .material-icons {
+  line-height: 1.2;
+}
+
 .more-options-icon {
   max-width: 18px;
   margin-right: 8px;
@@ -12368,6 +12441,7 @@ body {
   top: 0;
   bottom: 0;
   margin: auto;
+  height: 20px;
 }
 
 .contact-list-searchbar {

@@ -160,14 +160,23 @@ input.input-field{
         display: block;
     }
     input[type="checkbox"]:not(:checked) + label:before{
-
-        border:1px solid $black50;
-
+        background-image: url("../img/check.svg");
+        background-position: center;
+        background-repeat: no-repeat;
+        border:1px solid $black50; 
+    }
+    input[type="checkbox"]:not(:checked):hover + label:before{
+        background-color:rgba($color: $black, $alpha: 0.1);
     }
     input[type="checkbox"]:checked + label:before{
         border:1px solid $success;
         background-color: $success;
+        background-image: url("../img/check-white.svg");
+        background-position: center;
+        background-repeat: no-repeat;
+
     }
+    
 }
 
 .input-field-group{ 
@@ -178,6 +187,9 @@ input.input-field{
 .input-field-group .input-field{ 
     margin: 0 2px;
     overflow: hidden;
+    &:first-child{
+        margin-left: 0;
+    }
 }
 
 .add-clients-form{

@@ -1,7 +1,7 @@
 <template>
     <div class="col-12 col-md-3">
         <div class="control-bar">
-            <user-item view-mode='card'  class="active"
+            <user-item view-mode='card'  class="active" :logged-user='true'
             :name='username'>
             </user-item>
             <div id="user-type-filters">

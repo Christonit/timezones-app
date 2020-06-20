@@ -5,16 +5,29 @@
         </figure>
         <span class="contact-name">Minnie Person</span>
 
-        <button class="ml-auto">
-            <img src="https://via.placeholder.com/20" alt="User X profile pic" >
-        </button>
+        <delete-btn alignment="right" :click="deleteMember"></delete-btn>
+
+        
+        
     </div>
                         
 </template>
 
 <script>
+import DeleteBtn from "../utils/buttons/delete-btn.vue";
+
 export default {
-    name:'new-team-member'
+    name:'new-team-member',
+    components:{
+        DeleteBtn
+    },
+    methods:{
+        deleteMember(){
+            console.log('ddd')
+            return '';
+
+        }
+    }
     
 }
 </script>
