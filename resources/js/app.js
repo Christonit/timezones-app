@@ -38,7 +38,7 @@ import UsersCreatedModal from './components/modals/users-created-successfully.vu
 import TeamCreatedModal from './components/modals/team-created.vue'
 import AddTeammateModal from './components/modals/add-teammate.vue'
 import DeleteProjectModal from './components/modals/delete-project.vue';
-import {mapState,mapActions} from 'vuex';
+import {mapState,mapActions, mapMutations} from 'vuex';
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -68,9 +68,17 @@ const app = new Vue({
         NewTeamModal
     },
     computed:{
-        ...mapState(['modal_visible','modal'])
+        ...mapState(['modal_visible','modal','sidebar_visible']),
+        
+    },
+    mounted(){
+        this.setDeviceWidth();
+        window.addEventListener("orientationchange", () => {
+            this.setDeviceWidth();
+        })
     },
     methods:{
+        ...mapMutations(['toggleSidebar','setDeviceWidth']),
         ...mapActions(['getUserTeams'])
     }
     

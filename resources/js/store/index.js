@@ -5,11 +5,20 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state:{
         screen_sizes:{
-
+            xs:576,
+            sm:720,
+            md:1024,
+            lg:1200
         },
+        device_width:null,
+        sidebar_visible:false,
         modal:{
             new_team:false,
-            user_created_successfully: true,
+            user_created_successfully: false,
+            change_name:false,
+            delete_group:false,
+            edit_my_profile:false,
+            invite_people:false,
             
         },
         team_project:{
@@ -55,6 +64,9 @@ export default new Vuex.Store({
 
     },
     mutations:{
+        setDeviceWidth(state){
+            state.device_width = window.innerWidth; 
+        },
         toggleTeamViewMode(state){
             if(state.team_project.view_mode == 'card'){
                 return state.team_project.view_mode = 'timeline';
@@ -70,7 +82,23 @@ export default new Vuex.Store({
             return state.team_project.searchbox_visible = true;
             
         },
+        toggleSidebar(state){
+
+            if(state.sidebar_visible){
+
+                return state.sidebar_visible = false
+            }
+
+            return state.sidebar_visible = true;
+        },
         openModal(state,payload){
+
+            if(window.innerWidth <= state.screen_sizes.lg){
+
+                state.sidebar_visible = false
+
+            }
+            
             if(payload == 'new_team_name'){
                 return state.modal.new_team = true;
             }
@@ -80,6 +108,15 @@ export default new Vuex.Store({
             }
             if(payload == 'user_created_successfully'){
                 return state.modal.user_created_successfully = true;
+            }
+            if(payload == 'delete-group'){
+                return state.modal.delete_group = true;
+            }
+            if(payload == 'change-name'){
+                return state.modal.change_name = true;
+            }
+            if(payload == 'edit-info'){
+                return state.modal.edit_my_profile = true;
             }
             state.modal_visible = true;
 
@@ -94,6 +131,15 @@ export default new Vuex.Store({
             }
             if(payload == 'user_created_successfully'){
                return state.modal.user_created_successfully = false;
+            }
+            if(payload == 'delete-group'){
+               return state.modal.delete_group = false;
+            }
+            if(payload == 'change-name'){
+               return state.modal.change_name = false;
+            }
+            if(payload == 'edit-info'){
+               return state.modal.edit_my_profile = false;
             }
             state.modal_visible = false;
 

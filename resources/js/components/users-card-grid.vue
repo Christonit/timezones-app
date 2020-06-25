@@ -1,6 +1,6 @@
 <template>
-    <div class="col-12 col-md-9 card-grid">
-        <user-item view-mode='card' v-for="{number,key} in numbers" :key='key'></user-item>
+    <div class="card-grid">
+        <user-item view-mode='card' v-for="(number,key) in numbers" :key='key' :user-id="key"></user-item>
     </div>
 </template>
 <script>

@@ -1,5 +1,5 @@
 <template>
-    <button class="btn btn-primary next" :class="alignment" @click="click">
+    <button class="btn btn-primary next" :class="alignment_direction" @click="click">
         <img src="/img/long-arrow.svg"/> 
     </button>
 </template>
@@ -7,8 +7,8 @@
 <script>
 export default {
     props:{
-        centered:{
-            type: [Boolean,String],
+        alignment:{
+            type: String,
             default: false
         },
         click:{
@@ -19,10 +19,16 @@ export default {
         }
     },
     computed:{
-        alignment(){
+        alignment_direction(){
 
-            if(this.centered ){ 
+            if(this.alignment == 'center' ){ 
                 return 'mx-auto';
+            };
+            if(this.alignment == 'left' ){ 
+                return 'mr-auto';
+            };
+            if(this.alignment == 'right' ){ 
+                return 'ml-auto';
             };
 
         }

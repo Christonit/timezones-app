@@ -14,7 +14,7 @@
     padding: 10px 20px; 
 }
 
-.searchbox-keyboards{
+.searchbox-keywords{
     padding: 12px 16px;
     border-bottom: 1px solid rgba($color: #979797, $alpha: 0.08);
 }
@@ -24,7 +24,7 @@
     border-bottom: 1px solid rgba($color: #979797, $alpha: 0.08);
 }
 
-.keyboard-chip-del{
+.keyword-chip-del{
     font-family: 'Material Icons';
     font-size: 16px;
     color: $black;
@@ -38,7 +38,7 @@
     line-height: 1;
 }
 
-.keyboard-chip{
+.keyword-chip{
     @include text-12;
     display: inline-block;
     padding: 6px 24px 6px 12px;
@@ -46,4 +46,5 @@
     position: relative;
     color: $black;
     margin: 6px 4px;
+    cursor: pointer;
 }

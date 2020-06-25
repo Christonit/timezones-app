@@ -1,6 +1,6 @@
 <template>
 
-    <modal-template width-type='slim'>
+    <modal-template modal_name="edit-info" width-type='slim'>
 
         <template>
             <h2 class="subtitle text-center mb-3">Edit Profile</h2>
@@ -38,7 +38,7 @@
                 
             </div>
             <div class="w-100 ">
-                <continue-btn centered="true"></continue-btn>
+                <continue-btn alignment="center"></continue-btn>
             </div>
         </template>
         

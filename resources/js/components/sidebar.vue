@@ -1,7 +1,7 @@
 <template>
-    <aside class="app-sidebar">
+    <aside class="app-sidebar" :class="mobile_sidebar_visible">
         <div class="app-brading">
-            <img src="https://via.placeholder.com/140x80" alt="Orca" class="logo">
+            <img src="../../img/logo-placeholder.png" alt="Orca" class="logo">
         </div>
 
         <div class="teams-contain">
@@ -32,7 +32,7 @@
                 
             </div>
 
-            <router-link :to="`/team/${team_project.name.split(' ').join('-').toLowerCase()}`" tag='button' class="btn btn-link white">
+            <router-link :to="`/team/${team_project.name.split(' ').join('-').toLowerCase()}`" tag='button' class="btn btn-link btn-add-teammte ">
                 <button class="btn-add-fill material-icons mr-3">
                     add
                 </button>
@@ -41,7 +41,7 @@
         
         </div>
 
-    <button class="btn btn-link white">
+    <button class="btn btn-link white justify-content-start">
         All team members
     </button>
 
@@ -60,11 +60,11 @@
         <ul class="item-lists">
             <li class="item">
                 Parametrics Cabinet
-                <more-option-btn mode="dark" :edit-name="true" :add-btn="true"></more-option-btn>
+                <more-option-btn mode="dark" :edit-name="true" :delete-project-btn="true" :add-btn="true"></more-option-btn>
             </li>
             <li class="item active">
                 Parametrics Cabinet
-                <more-option-btn mode="dark" :edit-name="true" :add-btn="true"></more-option-btn>
+                <more-option-btn mode="dark" :edit-name="true" :delete-project-btn="true" :add-btn="true"></more-option-btn>
             </li>
         </ul>
         
@@ -83,7 +83,10 @@ export default {
         console.log('Component mounted.')
     },
     computed:{
-        ...mapState(['teams','team_project'])
+        ...mapState(['teams','team_project','sidebar_visible']),
+        mobile_sidebar_visible(){
+            return this.sidebar_visible == true ? 'active' : '';
+        }
     },
     methods:{
         ...mapMutations(['openModal','setActiveTeam']),

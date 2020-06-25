@@ -22,6 +22,9 @@
     @else if $class == xxl {
       @media (min-width: 1800px) { @content; }
     }
+    @else if $class == fhd {
+      @media (min-width: 1900px) { @content; }
+    }
    
     @else {
       @warn "Breakpoint mixin supports: xs, sm, md, lg, xl";

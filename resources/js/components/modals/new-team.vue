@@ -17,7 +17,7 @@
             </div>
 
             <div class="w-100 ">
-                <continue-btn centered='true' :click="createTeam"></continue-btn>
+                <continue-btn alignment='center' :click="createTeam"></continue-btn>
             </div>
         </template>
         

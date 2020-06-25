@@ -25,7 +25,7 @@
     top: 40px;
     background-color: $black;
     // right: 0;
-    width: 180px;
+    width: 196px;
     opacity: 0;   
     z-index: -1;
     transition: all 200ms ease;
@@ -61,7 +61,7 @@
 .user-item .more-option-btn{
     position: absolute;
     bottom: 4px;
-    right: 2px;
+    right: 0;
     opacity: 0;
     z-index: -1;
     

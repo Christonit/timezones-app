@@ -27,6 +27,33 @@
     box-shadow:unset;
 }
 
+.btn-link.white{
+    width: 100%;
+}
+.btn-link.white:hover{
+    text-decoration: none;
+    border: none;
+    outline: none;
+    box-shadow:unset;
+    color:#b1d6ff;
+    background-color: #090a16;
+}
+.btn-link.white:active{
+    text-decoration: none;
+    border: none;
+    outline: none;
+    box-shadow:unset;
+    color: white;
+}
+
+.btn-link.white:focus{
+    text-decoration: none;
+    border: none;
+    outline: none;
+    box-shadow:unset;
+    color: white;
+}
+
 
 .btn-link:hover{
     text-decoration: none;
@@ -202,6 +229,19 @@
     line-height: 0;
     text-align: center;
     font-size: 18px;
+}
+
+.btn-add-teammte{
+    width: 100%;
+    justify-content: start;
+    color: $white;
+    border-radius: 12px;
+    height: 44px;
+    margin: 16px 0;
+    &:hover{
+        background-color: #090b17;
+        color: $white;        
+    }
 }
 .view-toggle-btn{
     height: 24px;

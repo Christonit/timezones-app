@@ -9,10 +9,10 @@
             </router-link>
                 
 
-                <h2 class="title text-center mb-0">Add new members</h2>
-                 <button class="btn btn-primary next material-icons">
-                    trending_flat 
-                </button>
+                <h2 class="title text-center mb-0 ml-auto">Add new members</h2>
+
+                <continue-btn alignment="right" @click.native="openModal('user_created_successfully')"></continue-btn>
+               
         </header>
         
         <div class="row justify-content-center">
@@ -52,10 +52,14 @@
     </div>
 </template>
 <script>
+import {mapMutations} from 'vuex';
+
 import TopBar from './top-bar.vue';
 import UserControlBar from './user-control-bar.vue';
 import UsersCardGrid from './users-card-grid.vue';
 import DeleteBtn from "./utils/buttons/delete-btn.vue";
+import ContinueBtn from "./utils/buttons/continue-btn.vue";
+
 
 export default {
     data(){
@@ -67,9 +71,11 @@ export default {
         TopBar,
         UserControlBar,
         UsersCardGrid,
-        DeleteBtn
+        DeleteBtn,
+        ContinueBtn
     },
     methods:{
+        ...mapMutations(['openModal']),
         addNew(){
             let name = this.$refs.name.value;
             let email = this.$refs.email.value;
@@ -81,6 +87,11 @@ export default {
             this.$refs.email.value = '';
             this.$refs.timezone.value = '';
             
+        },
+        addNewMembers(){
+
+            this.openModal('user_created_successfully')
+
         }
     }
     

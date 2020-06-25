@@ -1,6 +1,6 @@
 <template>
 
-    <modal-template  modal_name="new_team_name">
+    <modal-template  modal_name="change-name">
 
         <template>
 

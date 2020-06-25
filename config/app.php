@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Horatio'),
+    'name' => env('APP_NAME', 'Orca - Timezones'),
 
     /*
     |--------------------------------------------------------------------------

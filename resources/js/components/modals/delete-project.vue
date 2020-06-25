@@ -1,6 +1,6 @@
 <template>
 
-    <modal-template  modal_name="user_created_successfully" width-type='slim'>
+    <modal-template  modal_name="delete-group" width-type='slim'>
 
         <template>
 

@@ -1908,10 +1908,18 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _top_bar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./top-bar.vue */ "./resources/js/components/top-bar.vue");
-/* harmony import */ var _user_control_bar_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user-control-bar.vue */ "./resources/js/components/user-control-bar.vue");
-/* harmony import */ var _users_card_grid_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./users-card-grid.vue */ "./resources/js/components/users-card-grid.vue");
-/* harmony import */ var _utils_buttons_delete_btn_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/buttons/delete-btn.vue */ "./resources/js/components/utils/buttons/delete-btn.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _top_bar_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./top-bar.vue */ "./resources/js/components/top-bar.vue");
+/* harmony import */ var _user_control_bar_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./user-control-bar.vue */ "./resources/js/components/user-control-bar.vue");
+/* harmony import */ var _users_card_grid_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./users-card-grid.vue */ "./resources/js/components/users-card-grid.vue");
+/* harmony import */ var _utils_buttons_delete_btn_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/buttons/delete-btn.vue */ "./resources/js/components/utils/buttons/delete-btn.vue");
+/* harmony import */ var _utils_buttons_continue_btn_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/buttons/continue-btn.vue */ "./resources/js/components/utils/buttons/continue-btn.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -1965,6 +1973,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
 
 
 
@@ -1976,12 +1986,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   components: {
-    TopBar: _top_bar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    UserControlBar: _user_control_bar_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    UsersCardGrid: _users_card_grid_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    DeleteBtn: _utils_buttons_delete_btn_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    TopBar: _top_bar_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    UserControlBar: _user_control_bar_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    UsersCardGrid: _users_card_grid_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    DeleteBtn: _utils_buttons_delete_btn_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+    ContinueBtn: _utils_buttons_continue_btn_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
-  methods: {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal'])), {}, {
     addNew: function addNew() {
       var name = this.$refs.name.value;
       var email = this.$refs.email.value;
@@ -1994,8 +2005,11 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs.name.value = '';
       this.$refs.email.value = '';
       this.$refs.timezone.value = '';
+    },
+    addNewMembers: function addNewMembers() {
+      this.openModal('user_created_successfully');
     }
-  }
+  })
 });
 
 /***/ }),
@@ -2968,7 +2982,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mounted: function mounted() {
     console.log('Component mounted.');
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['teams', 'team_project'])),
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['teams', 'team_project', 'sidebar_visible'])), {}, {
+    mobile_sidebar_visible: function mobile_sidebar_visible() {
+      return this.sidebar_visible == true ? 'active' : '';
+    }
+  }),
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal', 'setActiveTeam'])), {}, {
     selectTeam: function selectTeam(name, key) {
       document.querySelector('.team-dropdown .dropdown-item').classList.remove('active');
@@ -3006,6 +3024,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3093,22 +3116,84 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
   },
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['team_project'])), {}, {
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['team_project', 'screen_sizes', 'device_width'])), {}, {
     viewModeToggle: function viewModeToggle() {
       this.team_project.view_mode;
+    },
+    screen_width: function screen_width() {
+      return window.innerWidth;
     }
   }),
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['toggleTeamViewMode', 'toggleSearchbox'])), {}, {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['toggleTeamViewMode', 'toggleSearchbox', 'toggleSidebar'])), {}, {
     openSearchbox: function openSearchbox() {
       if (this.team_project.searchbox_visible == false) {
         return this.toggleSearchbox();
       }
+    },
+    toggleClock: function toggleClock(e) {
+      document.querySelector('.clock-type-switch .active').classList.remove('active');
+      e.target.classList.add('active');
     }
   }),
   components: {
@@ -3158,24 +3243,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
   },
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['user'])), {}, {
-    username: function username() {
-      if (this.user.name.length > 20) {
-        return "".concat(this.user.name.substring(0, 18), "...");
-      }
-
-      return this.user.name;
-    }
-  }),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['user'])),
   components: {
     UserItem: _user_item_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
@@ -3193,6 +3267,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_more_option_btn_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/more-option-btn.vue */ "./resources/js/components/utils/more-option-btn.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3227,14 +3325,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      marked_for_deletion: true
+    };
   },
+  mounted: function mounted() {},
   components: {
     MoreOptionBtn: _utils_more_option_btn_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
+    userId: {
+      type: Number
+    },
     loggedUser: {
       type: Boolean,
       "default": false
@@ -3247,7 +3352,23 @@ __webpack_require__.r(__webpack_exports__);
       "default": 'Minnie Person'
     }
   },
-  computed: {
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['screen_sizes', 'device_width'])), {}, {
+    username: function username() {
+      if (this.device_width < this.screen_sizes.md) {
+        if (this.name.length >= 16) {
+          return "".concat(this.name.substring(0, 16), "...");
+        }
+      } else {
+        if (this.name.length > 20) {
+          return "".concat(this.name.substring(0, 18), "...");
+        }
+      }
+
+      return this.name;
+    },
+    isMarkedForDeletion: function isMarkedForDeletion() {
+      return this.marked_for_deletion == true & this.userId == 2 ? 'marked-for-deletion' : '';
+    },
     itemType: function itemType() {
       if (this.viewMode == 'card') {
         return 'card';
@@ -3256,6 +3377,11 @@ __webpack_require__.r(__webpack_exports__);
       if (this.viewMode == 'timeline') {
         return 'timeline-card';
       }
+    }
+  }),
+  methods: {
+    undoDeletion: function undoDeletion() {
+      this.marked_for_deletion = false;
     }
   }
 });
@@ -3411,6 +3537,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3442,8 +3578,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    centered: {
-      type: [Boolean, String],
+    alignment: {
+      type: String,
       "default": false
     },
     click: {
@@ -3454,9 +3590,21 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
-    alignment: function alignment() {
-      if (this.centered) {
+    alignment_direction: function alignment_direction() {
+      if (this.alignment == 'center') {
         return 'mx-auto';
+      }
+
+      ;
+
+      if (this.alignment == 'left') {
+        return 'mr-auto';
+      }
+
+      ;
+
+      if (this.alignment == 'right') {
+        return 'ml-auto';
       }
 
       ;
@@ -3549,6 +3697,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3560,6 +3715,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     mode: {
@@ -3571,18 +3731,24 @@ __webpack_require__.r(__webpack_exports__);
       "default": false
     },
     editName: {
-      type: String,
+      type: Boolean,
       "default": false
     },
-    deleteBtn: {
+    deleteMemberBtn: {
       type: Boolean,
-      "default": true
+      "default": false
+    },
+    deleteProjectBtn: {
+      type: Boolean,
+      "default": false
     },
     editBtn: {
       type: Boolean,
       "default": false
     }
-  }
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['team_project'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal']))
 });
 
 /***/ }),
@@ -39264,13 +39430,18 @@ var render = function() {
           [_c("span", [_vm._v("\n                Cancel\n            ")])]
         ),
         _vm._v(" "),
-        _c("h2", { staticClass: "title text-center mb-0" }, [
+        _c("h2", { staticClass: "title text-center mb-0 ml-auto" }, [
           _vm._v("Add new members")
         ]),
         _vm._v(" "),
-        _c("button", { staticClass: "btn btn-primary next material-icons" }, [
-          _vm._v("\n                trending_flat \n            ")
-        ])
+        _c("continue-btn", {
+          attrs: { alignment: "right" },
+          nativeOn: {
+            click: function($event) {
+              return _vm.openModal("user_created_successfully")
+            }
+          }
+        })
       ],
       1
     ),
@@ -39875,7 +40046,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "modal-template",
-    { attrs: { modal_name: "new_team_name" } },
+    { attrs: { modal_name: "change-name" } },
     [
       [
         _c("div", { staticClass: "type-text-field mb-5" }, [
@@ -39945,9 +40116,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "modal-template",
-    {
-      attrs: { modal_name: "user_created_successfully", "width-type": "slim" }
-    },
+    { attrs: { modal_name: "delete-group", "width-type": "slim" } },
     [
       [
         _c("h2", { ref: "title", staticClass: "title text-center mb-5" }, [
@@ -39996,7 +40165,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "modal-template",
-    { attrs: { "width-type": "slim" } },
+    { attrs: { modal_name: "edit-info", "width-type": "slim" } },
     [
       [
         _c("h2", { staticClass: "subtitle text-center mb-0" }, [
@@ -40134,7 +40303,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "modal-template",
-    { attrs: { "width-type": "slim" } },
+    { attrs: { modal_name: "edit-info", "width-type": "slim" } },
     [
       [
         _c("h2", { staticClass: "subtitle text-center mb-3" }, [
@@ -40232,7 +40401,7 @@ var render = function() {
         _c(
           "div",
           { staticClass: "w-100 " },
-          [_c("continue-btn", { attrs: { centered: "true" } })],
+          [_c("continue-btn", { attrs: { alignment: "center" } })],
           1
         )
       ]
@@ -40303,7 +40472,7 @@ var render = function() {
           { staticClass: "w-100 " },
           [
             _c("continue-btn", {
-              attrs: { centered: "true", click: _vm.createTeam }
+              attrs: { alignment: "center", click: _vm.createTeam }
             })
           ],
           1
@@ -40470,7 +40639,7 @@ var render = function() {
         _c(
           "div",
           { staticClass: "w-100 " },
-          [_c("continue-btn", { attrs: { centered: "true" } })],
+          [_c("continue-btn", { attrs: { alignment: "center" } })],
           1
         )
       ]
@@ -40500,180 +40669,202 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("aside", { staticClass: "app-sidebar" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "teams-contain" },
-      [
-        _c("div", { staticClass: "dropdown team-dropdown" }, [
-          _c(
-            "button",
-            {
-              staticClass:
-                "btn btn-secondary dropdown-toggle team-dropdown-btn",
-              attrs: {
-                role: "button",
-                id: "teams-list",
-                "data-toggle": "dropdown",
-                "aria-haspopup": "true",
-                "aria-expanded": "false"
-              }
-            },
-            [
-              _vm._v(
-                "\n                " +
-                  _vm._s(_vm.team_project.name) +
-                  "\n            "
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "dropdown-menu",
-              attrs: { "aria-labelledby": "teams-list" }
-            },
-            [
-              _vm._l(_vm.teams, function(team, key) {
-                return [
-                  _c(
-                    "button",
-                    {
-                      ref: "selectTeam",
-                      refInFor: true,
-                      staticClass: "dropdown-item",
-                      on: {
-                        click: function($event) {
-                          return _vm.selectTeam(team.name, team.id)
-                        }
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(team.name) +
-                          "\n                    "
-                      )
-                    ]
-                  )
-                ]
-              }),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "dropdown-item",
-                  on: {
-                    click: function($event) {
-                      return _vm.openModal("new-team")
-                    }
-                  }
-                },
-                [
-                  _c("i", { staticClass: "square-add-icon material-icons " }, [
-                    _vm._v(
-                      "\n                        add\n                    "
-                    )
-                  ]),
-                  _vm._v(
-                    "        \n                    New Team\n                "
-                  )
-                ]
-              )
-            ],
-            2
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "router-link",
-          {
-            staticClass: "btn btn-link white",
-            attrs: {
-              to:
-                "/team/" +
-                _vm.team_project.name
-                  .split(" ")
-                  .join("-")
-                  .toLowerCase(),
-              tag: "button"
-            }
-          },
-          [
-            _c("button", { staticClass: "btn-add-fill material-icons mr-3" }, [
-              _vm._v("\n                add\n            ")
-            ]),
-            _vm._v("\n            Add teammate\n        ")
-          ]
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("button", { staticClass: "btn btn-link white" }, [
-      _vm._v("\n    All team members\n")
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "project-list" }, [
+  return _c(
+    "aside",
+    { staticClass: "app-sidebar", class: _vm.mobile_sidebar_visible },
+    [
+      _vm._m(0),
+      _vm._v(" "),
       _c(
         "div",
-        { staticClass: "d-flex pl-3 my-3 align-items-center" },
+        { staticClass: "teams-contain" },
         [
-          _c("b", { staticClass: "sidebar-label" }, [
-            _vm._v("\n            Proyects\n        ")
+          _c("div", { staticClass: "dropdown team-dropdown" }, [
+            _c(
+              "button",
+              {
+                staticClass:
+                  "btn btn-secondary dropdown-toggle team-dropdown-btn",
+                attrs: {
+                  role: "button",
+                  id: "teams-list",
+                  "data-toggle": "dropdown",
+                  "aria-haspopup": "true",
+                  "aria-expanded": "false"
+                }
+              },
+              [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.team_project.name) +
+                    "\n            "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "dropdown-menu",
+                attrs: { "aria-labelledby": "teams-list" }
+              },
+              [
+                _vm._l(_vm.teams, function(team, key) {
+                  return [
+                    _c(
+                      "button",
+                      {
+                        ref: "selectTeam",
+                        refInFor: true,
+                        staticClass: "dropdown-item",
+                        on: {
+                          click: function($event) {
+                            return _vm.selectTeam(team.name, team.id)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(team.name) +
+                            "\n                    "
+                        )
+                      ]
+                    )
+                  ]
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "dropdown-item",
+                    on: {
+                      click: function($event) {
+                        return _vm.openModal("new-team")
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "i",
+                      { staticClass: "square-add-icon material-icons " },
+                      [
+                        _vm._v(
+                          "\n                        add\n                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(
+                      "        \n                    New Team\n                "
+                    )
+                  ]
+                )
+              ],
+              2
+            )
           ]),
           _vm._v(" "),
           _c(
             "router-link",
             {
-              staticClass: "btn-add-fill material-icons ml-3",
+              staticClass: "btn btn-link btn-add-teammte ",
               attrs: {
                 to:
-                  "/" +
+                  "/team/" +
                   _vm.team_project.name
                     .split(" ")
                     .join("-")
-                    .toLowerCase() +
-                  "/new-project",
+                    .toLowerCase(),
                 tag: "button"
               }
             },
-            [_vm._v("\n            add\n        ")]
+            [
+              _c(
+                "button",
+                { staticClass: "btn-add-fill material-icons mr-3" },
+                [_vm._v("\n                add\n            ")]
+              ),
+              _vm._v("\n            Add teammate\n        ")
+            ]
           )
         ],
         1
       ),
       _vm._v(" "),
-      _c("ul", { staticClass: "item-lists" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-link white justify-content-start" },
+        [_vm._v("\n    All team members\n")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "project-list" }, [
         _c(
-          "li",
-          { staticClass: "item" },
+          "div",
+          { staticClass: "d-flex pl-3 my-3 align-items-center" },
           [
-            _vm._v("\n            Parametrics Cabinet\n            "),
-            _c("more-option-btn", {
-              attrs: { mode: "dark", "edit-name": true, "add-btn": true }
-            })
+            _c("b", { staticClass: "sidebar-label" }, [
+              _vm._v("\n            Proyects\n        ")
+            ]),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                staticClass: "btn-add-fill material-icons ml-3",
+                attrs: {
+                  to:
+                    "/" +
+                    _vm.team_project.name
+                      .split(" ")
+                      .join("-")
+                      .toLowerCase() +
+                    "/new-project",
+                  tag: "button"
+                }
+              },
+              [_vm._v("\n            add\n        ")]
+            )
           ],
           1
         ),
         _vm._v(" "),
-        _c(
-          "li",
-          { staticClass: "item active" },
-          [
-            _vm._v("\n            Parametrics Cabinet\n            "),
-            _c("more-option-btn", {
-              attrs: { mode: "dark", "edit-name": true, "add-btn": true }
-            })
-          ],
-          1
-        )
+        _c("ul", { staticClass: "item-lists" }, [
+          _c(
+            "li",
+            { staticClass: "item" },
+            [
+              _vm._v("\n            Parametrics Cabinet\n            "),
+              _c("more-option-btn", {
+                attrs: {
+                  mode: "dark",
+                  "edit-name": true,
+                  "delete-project-btn": true,
+                  "add-btn": true
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            { staticClass: "item active" },
+            [
+              _vm._v("\n            Parametrics Cabinet\n            "),
+              _c("more-option-btn", {
+                attrs: {
+                  mode: "dark",
+                  "edit-name": true,
+                  "delete-project-btn": true,
+                  "add-btn": true
+                }
+              })
+            ],
+            1
+          )
+        ])
       ])
-    ])
-  ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
@@ -40683,7 +40874,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "app-brading" }, [
       _c("img", {
         staticClass: "logo",
-        attrs: { src: "https://via.placeholder.com/140x80", alt: "Orca" }
+        attrs: { src: __webpack_require__(/*! ../../img/logo-placeholder.png */ "./resources/img/logo-placeholder.png"), alt: "Orca" }
       })
     ])
   }
@@ -40724,16 +40915,22 @@ var render = function() {
       _vm._v(" "),
       _vm.team_project.view_mode == "timeline"
         ? _c("users-timeline-grid")
-        : _c("div", { staticClass: "container-fluid" }, [
+        : [
+            _c("div", { staticClass: "team-title" }, [
+              _c("h1", { staticClass: "title" }, [
+                _vm._v("Parametrics Cabinet")
+              ])
+            ]),
+            _vm._v(" "),
             _c(
               "div",
-              { staticClass: "row" },
+              { staticClass: "card-grid-timeline" },
               [_c("user-control-bar"), _vm._v(" "), _c("users-card-grid")],
               1
             )
-          ])
+          ]
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -40758,45 +40955,172 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("header", { staticClass: "top-bar" }, [
-    _c(
-      "div",
-      { staticClass: "input-group", attrs: { id: "top-searchbar" } },
-      [
-        _c("div", { staticClass: "top-searchbar-content" }, [
-          _c("i", { staticClass: "search-icon" }),
+  return _vm.device_width <= _vm.screen_sizes.lg
+    ? _c("header", { staticClass: "top-bar-mobile" }, [
+        _c(
+          "button",
+          { staticClass: "menu-btn", on: { click: _vm.toggleSidebar } },
+          [
+            _c("img", {
+              attrs: { src: __webpack_require__(/*! ../../img/menu-mobile-icon.svg */ "./resources/img/menu-mobile-icon.svg") }
+            })
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "top-bar" }, [
+          _c("div", { staticClass: "clock-type-switch" }, [
+            _c(
+              "span",
+              { staticClass: "active", on: { click: _vm.toggleClock } },
+              [_vm._v("24")]
+            ),
+            _vm._v(" "),
+            _c("span", { on: { click: _vm.toggleClock } }, [_vm._v("12")])
+          ]),
           _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control top-searchbar-input",
-            attrs: {
-              type: "text",
-              placeholder: "Employee name, New York, GTM-1, project 01"
-            },
-            on: { click: _vm.openSearchbox }
-          })
+          _c(
+            "div",
+            { staticClass: "input-group", attrs: { id: "top-searchbar" } },
+            [
+              _c("div", { staticClass: "top-searchbar-content" }, [
+                _c("i", { staticClass: "search-icon" }),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control top-searchbar-input",
+                  attrs: {
+                    type: "text",
+                    placeholder: "Employee name, New York, GTM-1, project 01"
+                  },
+                  on: { click: _vm.openSearchbox }
+                })
+              ]),
+              _vm._v(" "),
+              _vm._m(0),
+              _vm._v(" "),
+              _vm.team_project.searchbox_visible ? _c("searchbox") : _vm._e()
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "view-toggle" }, [
+            _c("span", {
+              staticClass: "grid-view view-toggle-btn",
+              class: _vm.team_project.view_mode == "card" ? "active" : "",
+              on: { click: _vm.toggleTeamViewMode }
+            }),
+            _vm._v(" "),
+            _c("span", {
+              staticClass: "list-view view-toggle-btn",
+              class: _vm.team_project.view_mode == "timeline" ? "active" : "",
+              on: { click: _vm.toggleTeamViewMode }
+            })
+          ])
+        ])
+      ])
+    : _c("header", { staticClass: "top-bar" }, [
+        _c("div", { staticClass: "clock-type-switch" }, [
+          _c(
+            "span",
+            { staticClass: "active", on: { click: _vm.toggleClock } },
+            [_vm._v("24")]
+          ),
+          _vm._v(" "),
+          _c("span", { on: { click: _vm.toggleClock } }, [_vm._v("12")])
         ]),
         _vm._v(" "),
-        _vm.team_project.searchbox_visible ? _c("searchbox") : _vm._e()
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "view-toggle" }, [
-      _c("span", {
-        staticClass: "grid-view view-toggle-btn",
-        class: _vm.team_project.view_mode == "card" ? "active" : "",
-        on: { click: _vm.toggleTeamViewMode }
-      }),
-      _vm._v(" "),
-      _c("span", {
-        staticClass: "list-view view-toggle-btn",
-        class: _vm.team_project.view_mode == "timeline" ? "active" : "",
-        on: { click: _vm.toggleTeamViewMode }
-      })
-    ])
-  ])
+        _c(
+          "div",
+          { staticClass: "input-group", attrs: { id: "top-searchbar" } },
+          [
+            _c("div", { staticClass: "top-searchbar-content" }, [
+              _c("i", { staticClass: "search-icon" }),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control top-searchbar-input",
+                attrs: {
+                  type: "text",
+                  placeholder: "Employee name, New York, GTM-1, project 01"
+                },
+                on: { click: _vm.openSearchbox }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(1),
+            _vm._v(" "),
+            _vm.team_project.searchbox_visible ? _c("searchbox") : _vm._e()
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "view-toggle" }, [
+          _c("span", {
+            staticClass: "grid-view view-toggle-btn",
+            class: _vm.team_project.view_mode == "card" ? "active" : "",
+            on: { click: _vm.toggleTeamViewMode }
+          }),
+          _vm._v(" "),
+          _c("span", {
+            staticClass: "list-view view-toggle-btn",
+            class: _vm.team_project.view_mode == "timeline" ? "active" : "",
+            on: { click: _vm.toggleTeamViewMode }
+          })
+        ])
+      ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "selected-keywords" }, [
+      _c("span", { staticClass: "keyword-chip" }, [
+        _vm._v("GMT + 1 "),
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "keyword-chip" }, [
+        _vm._v("GMT + 1 "),
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "keyword-chip" }, [
+        _vm._v("GMT + 1 "),
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "keyword-chip" }, [
+        _vm._v("GMT + 1 "),
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "selected-keywords" }, [
+      _c("span", { staticClass: "keyword-chip" }, [
+        _vm._v("GMT + 1 "),
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "keyword-chip" }, [
+        _vm._v("GMT + 1 "),
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "keyword-chip" }, [
+        _vm._v("GMT + 1 "),
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "keyword-chip" }, [
+        _vm._v("GMT + 1 "),
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -40818,25 +41142,19 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-12 col-md-3" }, [
-    _c(
-      "div",
-      { staticClass: "control-bar" },
-      [
-        _c("user-item", {
-          staticClass: "active",
-          attrs: {
-            "view-mode": "card",
-            "logged-user": true,
-            name: _vm.username
-          }
-        }),
-        _vm._v(" "),
-        _vm._m(0)
-      ],
-      1
-    )
-  ])
+  return _c(
+    "div",
+    { staticClass: "control-bar" },
+    [
+      _c("user-item", {
+        staticClass: "active",
+        attrs: { "view-mode": "card", "logged-user": true, name: _vm.user.name }
+      }),
+      _vm._v(" "),
+      _vm._m(0)
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -40845,17 +41163,17 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { attrs: { id: "user-type-filters" } }, [
       _c("button", { staticClass: "btn btn-link btn-filter active" }, [
-        _vm._v("\n                All\n                "),
+        _vm._v("\n            All\n            "),
         _c("span", { staticClass: "small-right-arrow-icon" })
       ]),
       _vm._v(" "),
       _c("button", { staticClass: "btn btn-link btn-filter" }, [
-        _vm._v("\n                Teammates\n                "),
+        _vm._v("\n            Teammates\n            "),
         _c("span", { staticClass: "small-right-arrow-icon" })
       ]),
       _vm._v(" "),
       _c("button", { staticClass: "btn btn-link btn-filter" }, [
-        _vm._v("\n                Clients\n                "),
+        _vm._v("\n            Clients\n            "),
         _c("span", { staticClass: "small-right-arrow-icon" })
       ])
     ])
@@ -40884,53 +41202,92 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "user-item", class: _vm.itemType },
+    {
+      staticClass: "user-item ",
+      class: _vm.itemType + " " + _vm.isMarkedForDeletion
+    },
     [
-      _vm._m(0),
-      _vm._v(" "),
-      _vm.viewMode == "card"
-        ? _c("span", { staticClass: "user-item-info" }, [
-            _c("b", { staticClass: "user-item-name" }, [
-              _vm._v(_vm._s(_vm.name))
-            ]),
-            _vm._v(" "),
-            _c("h4", { staticClass: "user-item-current-hour" }, [
-              _vm._v("05:06 PM")
-            ]),
-            _vm._v(" "),
-            _c("span", { staticClass: "user-item-current-day" }, [
-              _vm._v("Wed 5th")
-            ]),
-            _vm._v(" "),
-            _c("span", { staticClass: "user-item-available-time" }, [
-              _vm._v("Av: 4 AM - 5 PM")
-            ])
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.viewMode == "timeline"
+      _vm.marked_for_deletion & (_vm.userId == 2)
         ? [
-            _vm._m(1),
-            _vm._v(" "),
-            _c("h4", { staticClass: "user-item-current-hour" }, [
-              _vm._v("05:06 PM")
+            _c("span", { staticClass: "text" }, [
+              _vm._v(
+                "\n            “Francis Pujols” was deleted. You can still \n            "
+              ),
+              _c(
+                "span",
+                { staticClass: "text-link", on: { click: _vm.undoDeletion } },
+                [_vm._v("Undo.")]
+              )
             ]),
             _vm._v(" "),
-            _c("span", { staticClass: "user-item-current-day" }, [
-              _vm._v("Wed 5th")
-            ])
+            _c("span", { staticClass: "time-counter" }, [_vm._v("12s")]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "material-icons modal-btn-close",
+                on: { click: _vm.undoDeletion }
+              },
+              [_vm._v("\n            close\n        ")]
+            )
           ]
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.loggedUser
-        ? _c("more-option-btn", {
-            attrs: { "edit-btn": true, "delete-btn": false }
-          })
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.loggedUser == false
-        ? _c("more-option-btn", { attrs: { "edit-btn": true } })
-        : _vm._e()
+        : [
+            _vm._m(0),
+            _vm._v(" "),
+            _vm.viewMode == "card"
+              ? _c("span", { staticClass: "user-item-info" }, [
+                  _c("b", { staticClass: "user-item-name" }, [
+                    _vm._v(_vm._s(_vm.username))
+                  ]),
+                  _vm._v(" "),
+                  _c("h4", { staticClass: "user-item-current-hour" }, [
+                    _vm._v("05:06 PM")
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "user-item-current-day" }, [
+                    _vm._v("Wed 5th")
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "user-item-available-time" }, [
+                    _vm._v("Av: 4 AM - 5 PM")
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.viewMode == "timeline"
+              ? [
+                  _c("span", { staticClass: "user-item-info" }, [
+                    _c("b", { staticClass: "user-item-name" }, [
+                      _vm._v(_vm._s(_vm.name))
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "user-item-available-time" }, [
+                      _vm._v("Av: 4 AM - 5 PM")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("h4", { staticClass: "user-item-current-hour" }, [
+                    _vm._v("05:06 PM")
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "user-item-current-day" }, [
+                    _vm._v("Wed 5th")
+                  ])
+                ]
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.loggedUser
+              ? _c("more-option-btn", {
+                  attrs: { mode: "dark", "edit-btn": true, "delete-btn": false }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.loggedUser == false
+              ? _c("more-option-btn", {
+                  attrs: { "edit-btn": true, "delete-member-btn": true }
+                })
+              : _vm._e()
+          ]
     ],
     2
   )
@@ -40951,18 +41308,6 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("span", { staticClass: "user-status-dot" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "user-item-info" }, [
-      _c("b", { staticClass: "user-item-name" }, [_vm._v("Minnie Pearson")]),
-      _vm._v(" "),
-      _c("span", { staticClass: "user-item-available-time" }, [
-        _vm._v("Av: 4 AM - 5 PM")
-      ])
     ])
   }
 ]
@@ -40989,11 +41334,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "col-12 col-md-9 card-grid" },
-    _vm._l(_vm.numbers, function(ref) {
-      var number = ref.number
-      var key = ref.key
-      return _c("user-item", { key: key, attrs: { "view-mode": "card" } })
+    { staticClass: "card-grid" },
+    _vm._l(_vm.numbers, function(number, key) {
+      return _c("user-item", {
+        key: key,
+        attrs: { "view-mode": "card", "user-id": key }
+      })
     }),
     1
   )
@@ -41136,7 +41482,17 @@ var render = function() {
             _vm._v(" "),
             _c("span", { staticClass: "hour-time" }, [_vm._v("38")]),
             _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("39")])
+            _c("span", { staticClass: "hour-time" }, [_vm._v("39")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "hour-time" }, [_vm._v("40")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "hour-time" }, [_vm._v("41")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "hour-time" }, [_vm._v("42")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "hour-time" }, [_vm._v("43")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "hour-time" }, [_vm._v("44")])
           ])
         })
       ],
@@ -41244,7 +41600,17 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("span", { staticClass: "hour-time" }, [_vm._v("38")]),
         _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("39")])
+        _c("span", { staticClass: "hour-time" }, [_vm._v("39")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "hour-time" }, [_vm._v("40")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "hour-time" }, [_vm._v("41")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "hour-time" }, [_vm._v("42")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "hour-time" }, [_vm._v("43")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "hour-time" }, [_vm._v("44")])
       ])
     ])
   }
@@ -41274,7 +41640,7 @@ var render = function() {
     "button",
     {
       staticClass: "btn btn-primary next",
-      class: _vm.alignment,
+      class: _vm.alignment_direction,
       on: { click: _vm.click }
     },
     [_c("img", { attrs: { src: "/img/long-arrow.svg" } })]
@@ -41368,55 +41734,136 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("span", { staticClass: "more-option-btn", class: _vm.mode }, [
-    _c("div", { staticClass: "more-options" }, [
-      _vm.addBtn
-        ? _c("span", { staticClass: "more-options-item" }, [
-            _c("span", { staticClass: "btn-add-fill material-icons mr-2" }, [
-              _vm._v("add")
-            ]),
-            _vm._v(" Add teammate")
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.editBtn
-        ? _c("span", { staticClass: "more-options-item" }, [
-            _c("img", {
-              staticClass: "more-options-icon",
-              attrs: {
-                src: __webpack_require__(/*! ../../../img/edit-icon.svg */ "./resources/img/edit-icon.svg"),
-                alt: "More options delete icon"
-              }
-            }),
-            _vm._v(" Edit info ")
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.editName
-        ? _c("span", { staticClass: "more-options-item" }, [
-            _c("img", {
-              staticClass: "more-options-icon",
-              attrs: {
-                src: __webpack_require__(/*! ../../../img/edit-icon.svg */ "./resources/img/edit-icon.svg"),
-                alt: "More options delete icon"
-              }
-            }),
-            _vm._v(" Edit name ")
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.deleteBtn
-        ? _c("span", { staticClass: "more-options-item delete" }, [
-            _c("img", {
-              staticClass: "more-options-icon",
-              attrs: {
-                src: __webpack_require__(/*! ../../../img/delete-icon-white.svg */ "./resources/img/delete-icon-white.svg"),
-                alt: "More options delete icon"
-              }
-            }),
-            _vm._v(" Delete project")
-          ])
-        : _vm._e()
-    ])
+    _c(
+      "div",
+      { staticClass: "more-options" },
+      [
+        _vm.addBtn
+          ? _c(
+              "router-link",
+              {
+                staticClass: "more-options-item",
+                attrs: {
+                  to:
+                    "/team/" +
+                    _vm.team_project.name
+                      .split(" ")
+                      .join("-")
+                      .toLowerCase(),
+                  tag: "span"
+                }
+              },
+              [
+                _c("img", {
+                  staticClass: "more-options-icon",
+                  attrs: {
+                    src: __webpack_require__(/*! ../../../img/add-icon.svg */ "./resources/img/add-icon.svg"),
+                    alt: "More options delete icon"
+                  }
+                }),
+                _vm._v("\n            Add teammate\n        ")
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.editBtn
+          ? _c(
+              "span",
+              {
+                staticClass: "more-options-item",
+                on: {
+                  click: function($event) {
+                    return _vm.openModal("edit-info")
+                  }
+                }
+              },
+              [
+                _c("img", {
+                  staticClass: "more-options-icon",
+                  attrs: {
+                    src: __webpack_require__(/*! ../../../img/edit-icon.svg */ "./resources/img/edit-icon.svg"),
+                    alt: "More options delete icon"
+                  }
+                }),
+                _vm._v(" Edit info ")
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.editName
+          ? _c(
+              "span",
+              {
+                staticClass: "more-options-item",
+                on: {
+                  click: function($event) {
+                    return _vm.openModal("change-name")
+                  }
+                }
+              },
+              [
+                _c("img", {
+                  staticClass: "more-options-icon",
+                  attrs: {
+                    src: __webpack_require__(/*! ../../../img/edit-icon.svg */ "./resources/img/edit-icon.svg"),
+                    alt: "More options delete icon"
+                  }
+                }),
+                _vm._v(" Edit name ")
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.deleteMemberBtn
+          ? _c(
+              "span",
+              {
+                staticClass: "more-options-item delete",
+                on: {
+                  click: function($event) {
+                    return _vm.openModal("delete-group")
+                  }
+                }
+              },
+              [
+                _c("img", {
+                  staticClass: "more-options-icon",
+                  attrs: {
+                    src: __webpack_require__(/*! ../../../img/delete-icon-white.svg */ "./resources/img/delete-icon-white.svg"),
+                    alt: "More options delete icon"
+                  }
+                }),
+                _vm._v(" Delete teammate")
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.deleteProjectBtn
+          ? _c(
+              "span",
+              {
+                staticClass: "more-options-item delete",
+                on: {
+                  click: function($event) {
+                    return _vm.openModal("delete-group")
+                  }
+                }
+              },
+              [
+                _c("img", {
+                  staticClass: "more-options-icon",
+                  attrs: {
+                    src: __webpack_require__(/*! ../../../img/delete-icon-white.svg */ "./resources/img/delete-icon-white.svg"),
+                    alt: "More options delete icon"
+                  }
+                }),
+                _vm._v(" Delete project")
+              ]
+            )
+          : _vm._e()
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []
@@ -41493,7 +41940,7 @@ var render = function() {
     _c(
       "div",
       { staticClass: "w-100 my-4" },
-      [_c("continue-btn", { attrs: { centered: "true" } })],
+      [_c("continue-btn", { attrs: { alignment: "center" } })],
       1
     )
   ])
@@ -41503,50 +41950,50 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "searchbox-keyboards" }, [
-      _c("span", { staticClass: "keyboard-chip" }, [
+    return _c("div", { staticClass: "searchbox-keywords" }, [
+      _c("span", { staticClass: "keyword-chip" }, [
         _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyboard-chip-del" }, [_vm._v("close")])
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
       ]),
       _vm._v(" "),
-      _c("span", { staticClass: "keyboard-chip" }, [
+      _c("span", { staticClass: "keyword-chip" }, [
         _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyboard-chip-del" }, [_vm._v("close")])
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
       ]),
       _vm._v(" "),
-      _c("span", { staticClass: "keyboard-chip" }, [
+      _c("span", { staticClass: "keyword-chip" }, [
         _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyboard-chip-del" }, [_vm._v("close")])
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
       ]),
       _vm._v(" "),
-      _c("span", { staticClass: "keyboard-chip" }, [
+      _c("span", { staticClass: "keyword-chip" }, [
         _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyboard-chip-del" }, [_vm._v("close")])
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
       ]),
       _vm._v(" "),
-      _c("span", { staticClass: "keyboard-chip" }, [
+      _c("span", { staticClass: "keyword-chip" }, [
         _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyboard-chip-del" }, [_vm._v("close")])
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
       ]),
       _vm._v(" "),
-      _c("span", { staticClass: "keyboard-chip" }, [
+      _c("span", { staticClass: "keyword-chip" }, [
         _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyboard-chip-del" }, [_vm._v("close")])
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
       ]),
       _vm._v(" "),
-      _c("span", { staticClass: "keyboard-chip" }, [
+      _c("span", { staticClass: "keyword-chip" }, [
         _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyboard-chip-del" }, [_vm._v("close")])
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
       ]),
       _vm._v(" "),
-      _c("span", { staticClass: "keyboard-chip" }, [
+      _c("span", { staticClass: "keyword-chip" }, [
         _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyboard-chip-del" }, [_vm._v("close")])
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
       ]),
       _vm._v(" "),
-      _c("span", { staticClass: "keyboard-chip" }, [
+      _c("span", { staticClass: "keyword-chip" }, [
         _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyboard-chip-del" }, [_vm._v("close")])
+        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
       ])
     ])
   }
@@ -57925,6 +58372,17 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./resources/img/add-icon.svg":
+/*!************************************!*\
+  !*** ./resources/img/add-icon.svg ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/add-icon.svg?dd9203493ba764c95bacd4124239bccd";
+
+/***/ }),
+
 /***/ "./resources/img/arrow-tip.svg":
 /*!*************************************!*\
   !*** ./resources/img/arrow-tip.svg ***!
@@ -57955,6 +58413,28 @@ module.exports = "/images/delete-icon-white.svg?ac1f4637f87621bf178269231e5c8322
 /***/ (function(module, exports) {
 
 module.exports = "/images/edit-icon.svg?56bb3552d32173cfa7a8b913753f217f";
+
+/***/ }),
+
+/***/ "./resources/img/logo-placeholder.png":
+/*!********************************************!*\
+  !*** ./resources/img/logo-placeholder.png ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/logo-placeholder.png?86225bc4189da1436cbd9acf6aadf7db";
+
+/***/ }),
+
+/***/ "./resources/img/menu-mobile-icon.svg":
+/*!********************************************!*\
+  !*** ./resources/img/menu-mobile-icon.svg ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/menu-mobile-icon.svg?d3ccff70d5a21460b0d84560b3b3d673";
 
 /***/ }),
 
@@ -58067,8 +58547,16 @@ var app = new Vue({
     DeleteProjectModal: _components_modals_delete_project_vue__WEBPACK_IMPORTED_MODULE_16__["default"],
     NewTeamModal: _components_modals_new_team_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['modal_visible', 'modal'])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getUserTeams']))
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['modal_visible', 'modal', 'sidebar_visible'])),
+  mounted: function mounted() {
+    var _this = this;
+
+    this.setDeviceWidth();
+    window.addEventListener("orientationchange", function () {
+      _this.setDeviceWidth();
+    });
+  },
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['toggleSidebar', 'setDeviceWidth'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getUserTeams']))
 });
 
 /***/ }),
@@ -60099,10 +60587,21 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
-    screen_sizes: {},
+    screen_sizes: {
+      xs: 576,
+      sm: 720,
+      md: 1024,
+      lg: 1200
+    },
+    device_width: null,
+    sidebar_visible: false,
     modal: {
       new_team: false,
-      user_created_successfully: true
+      user_created_successfully: false,
+      change_name: false,
+      delete_group: false,
+      edit_my_profile: false,
+      invite_people: false
     },
     team_project: {
       view_mode: 'card',
@@ -60154,6 +60653,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     }]
   },
   mutations: {
+    setDeviceWidth: function setDeviceWidth(state) {
+      state.device_width = window.innerWidth;
+    },
     toggleTeamViewMode: function toggleTeamViewMode(state) {
       if (state.team_project.view_mode == 'card') {
         return state.team_project.view_mode = 'timeline';
@@ -60168,7 +60670,18 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
       return state.team_project.searchbox_visible = true;
     },
+    toggleSidebar: function toggleSidebar(state) {
+      if (state.sidebar_visible) {
+        return state.sidebar_visible = false;
+      }
+
+      return state.sidebar_visible = true;
+    },
     openModal: function openModal(state, payload) {
+      if (window.innerWidth <= state.screen_sizes.lg) {
+        state.sidebar_visible = false;
+      }
+
       if (payload == 'new_team_name') {
         return state.modal.new_team = true;
       }
@@ -60180,6 +60693,18 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
       if (payload == 'user_created_successfully') {
         return state.modal.user_created_successfully = true;
+      }
+
+      if (payload == 'delete-group') {
+        return state.modal.delete_group = true;
+      }
+
+      if (payload == 'change-name') {
+        return state.modal.change_name = true;
+      }
+
+      if (payload == 'edit-info') {
+        return state.modal.edit_my_profile = true;
       }
 
       state.modal_visible = true;
@@ -60195,6 +60720,18 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
       if (payload == 'user_created_successfully') {
         return state.modal.user_created_successfully = false;
+      }
+
+      if (payload == 'delete-group') {
+        return state.modal.delete_group = false;
+      }
+
+      if (payload == 'change-name') {
+        return state.modal.change_name = false;
+      }
+
+      if (payload == 'edit-info') {
+        return state.modal.edit_my_profile = false;
       }
 
       state.modal_visible = false;

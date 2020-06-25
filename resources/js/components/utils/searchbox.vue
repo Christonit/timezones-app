@@ -1,15 +1,15 @@
 <template>
     <div class="searchbox">
-        <div class="searchbox-keyboards">
-            <span class="keyboard-chip">GMT + 1 <i class="keyboard-chip-del">close</i> </span>
-            <span class="keyboard-chip">GMT + 1 <i class="keyboard-chip-del">close</i> </span>
-            <span class="keyboard-chip">GMT + 1 <i class="keyboard-chip-del">close</i> </span>
-            <span class="keyboard-chip">GMT + 1 <i class="keyboard-chip-del">close</i> </span>
-            <span class="keyboard-chip">GMT + 1 <i class="keyboard-chip-del">close</i> </span>
-            <span class="keyboard-chip">GMT + 1 <i class="keyboard-chip-del">close</i> </span>
-            <span class="keyboard-chip">GMT + 1 <i class="keyboard-chip-del">close</i> </span>
-            <span class="keyboard-chip">GMT + 1 <i class="keyboard-chip-del">close</i> </span>
-            <span class="keyboard-chip">GMT + 1 <i class="keyboard-chip-del">close</i> </span>
+        <div class="searchbox-keywords">
+            <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
+            <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
+            <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
+            <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
+            <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
+            <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
+            <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
+            <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
+            <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
         </div>
 
         <div class="searchbox-results">
@@ -32,7 +32,7 @@
         </div>
 
         <div class="w-100 my-4">
-                <continue-btn centered="true"></continue-btn>
+                <continue-btn alignment="center"></continue-btn>
         </div>
         
     </div>

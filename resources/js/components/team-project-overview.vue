@@ -6,12 +6,17 @@
         <div class="overlay" v-if="team_project.searchbox_visible" @click="toggleSearchbox"></div>
 
         <users-timeline-grid v-if="team_project.view_mode == 'timeline'"></users-timeline-grid>
-        <div class="container-fluid" v-else>
-            <div class="row">
+        <template v-else>
+            <div class="team-title">
+                <h1 class="title">Parametrics Cabinet</h1>
+            </div>
+             <div class="card-grid-timeline" >
                 <user-control-bar ></user-control-bar>
                 <users-card-grid></users-card-grid>
             </div>
-        </div>
+
+        </template>
+       
         
     </div>
     

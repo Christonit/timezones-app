@@ -13,7 +13,7 @@
 
 
             <div class="w-100 ">
-                <continue-btn centered="true"></continue-btn>
+                <continue-btn alignment="center"></continue-btn>
             </div>
         </template>
         

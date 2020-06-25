@@ -1,6 +1,6 @@
 <template>
 
-    <modal-template width-type='slim'>
+    <modal-template modal_name="edit-info" width-type='slim'>
 
         <template>
             <h2 class="subtitle text-center mb-0">Edit Profile</h2>

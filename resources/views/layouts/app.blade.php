@@ -7,7 +7,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Horatio') }}</title>
+        <title>{{ config('app.name', 'Orca - Timezones') }}</title>
 
         <!-- Scripts -->
 

@@ -29,6 +29,7 @@ export default {
     },
     methods:{
         close(){
+
             if(this.modal_name == ''){
                 return;
             }
