@@ -30,7 +30,7 @@ import TeamProjectOverview from './components/team-project-overview.vue';
 import AddNewTeamMember from './components/add-new-team-member.vue';
 import NewTeamModal from './components/modals/new-team.vue';
 import CreateGroup from './components/create-group.vue';
-import AddEmailModal from './components/modals/add-email.vue';
+import SignInSignUp from './components/modals/sign-in-sign-up.vue';
 import EditTeamProfileModal from './components/modals/edit-team-profile.vue';
 import EditProfileModal from './components/modals/edit-profile.vue';
 import ChangeGroupNameModal from './components/modals/change-group-name.vue';
@@ -56,7 +56,7 @@ const app = new Vue({
         Sidebar,
         TeamProjectOverview,
         AddNewTeamMember,     
-        AddEmailModal,
+        SignInSignUp,
         CreateGroup,
         ChangeGroupNameModal,
         UsersCreatedModal,
@@ -81,5 +81,6 @@ const app = new Vue({
         ...mapMutations(['toggleSidebar','setDeviceWidth']),
         ...mapActions(['getUserTeams'])
     }
+
     
 });

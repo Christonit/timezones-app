@@ -9,14 +9,14 @@ export default {
     props:{
         alignment:{
             type: String,
-            default: false
+            default: 'none'
         },
-        click:{
-            type:Function,
-            default: () =>{
-                return false
-            }
-        }
+        // click:{
+        //     type:Function,
+        //     default: () =>{
+        //         return false
+        //     }
+        // }
     },
     computed:{
         alignment_direction(){
@@ -31,6 +31,16 @@ export default {
                 return 'ml-auto';
             };
 
+            if(this.alignment == 'none'){
+                return ''
+            }
+
+        }
+    },
+    methods:{
+        click(){
+            console.log('1')
+            this.$emit('click');
         }
     }
 }

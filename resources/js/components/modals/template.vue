@@ -1,7 +1,7 @@
 <template>
     <div class="modal-container">
         <div class="modal-popup" :class='widthType'>
-            <button class="material-icons modal-btn-close"
+            <button v-if="has_close == true" class="material-icons modal-btn-close"
                 @click="close">
                 close
             </button>
@@ -25,6 +25,10 @@ export default {
         modal_name:{
             default:'',
             type:String
+        },
+        has_close:{
+            default: true,
+            type:Boolean
         }
     },
     methods:{

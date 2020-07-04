@@ -10943,6 +10943,7 @@ a.text-dark:focus {
     position: sticky;
     z-index: 9;
     left: initial;
+    opacity: 1;
   }
 }
 
