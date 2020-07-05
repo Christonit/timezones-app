@@ -10,6 +10,7 @@ export default new Vuex.Store({
             md:1024,
             lg:1200
         },
+        csrf:'',
         device_width:null,
         sidebar_visible:false,
         modal:{
@@ -63,7 +64,18 @@ export default new Vuex.Store({
         ]
 
     },
+    getters:{
+        basic_header(state){
+            return {
+                'Content-Type':'application/json',
+                'X-CSRF-TOKEN':state.csrf
+            }
+        }
+    },
     mutations:{
+        setCsrf(state,payload){
+            state.csrf = payload;
+        },
         setDeviceWidth(state){
             state.device_width = window.innerWidth; 
         },

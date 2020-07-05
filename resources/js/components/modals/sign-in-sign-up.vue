@@ -2,44 +2,81 @@
 
     <modal-template width-type='slim' :has_close="false">
 
-        <h2 class="title">Sign or Signup</h2>
 
-        <template v-if="step == 1">
+        <template v-if="step == 'email'">
+
+            <h2 class="title">Sign in or Signup</h2>
 
             <div class="popup-fields-container">
                 <div class="input-field slim">
                     <label class="input-label" for="email">Email</label>
-                    <input type="text" value="pujolsfrancis@gmail.com">
+                    <input type="text" placeholder="pujolsfrancis@gmail.com" v-model='email'>
                 </div>
+            </div>
+            <div class="w-100" v-if="error == 'bad email'">
+                <p>Please, insert a valid email</p>
             </div>
             <div class="w-100 ">
                 <continue-btn alignment="center" @click="checkEmail"></continue-btn>
             </div>
 
         </template>
-        <template v-if="step == 2">
+
+        <template v-if="step == 'new user'">
+
+            <h2 class="title">New user</h2>
 
             <div class="popup-fields-container">
                 <div class="input-field slim">
-                    <label class="input-label" for="email">Password</label>
-                    <input type="password" value="xxxxxx">
+                    <label class="input-label" for="name">Name</label>
+                    <input type="text" value="" v-model="name">
                 </div>
             </div>
+            <div class="w-100 ">
+                <continue-btn alignment="center" @click="checkName"></continue-btn>
+            </div>
+
+        </template>
+
+        <template v-if="step == 'type password'">
+
+            <h2 class="title" v-if="user_type == 'new user'">New user</h2>
+            <h2 class="title" v-else>Sign in or Signup</h2>
+
+            <div class="popup-fields-container">
+                <div class="input-field slim">
+                    <label class="input-label" for="password">Password</label>
+                    <input type="password" value="xxxxxx" v-model="password">
+                </div>
+            </div>
+
+            <div class="w-100" v-if="error == 'invalid password'">
+                <p>Password has to be at least 6 characters length.</p>
+            </div>
+
             <div class="w-100 ">
                 <continue-btn alignment="center" @click="checkPassword"></continue-btn>
             </div>
 
         </template>
-        <template v-if="step == 3">
+
+        <template v-if="step == 'confirm password'">
+
+            <h2 class="title">New user</h2>
 
             <div class="popup-fields-container">
                 <div class="input-field slim">
-                    <label class="input-label" for="email">Confirm password</label>
-                    <input type="password" value="xxxxxx">
+                    <label class="input-label" for="confirm password">Confirm password</label>
+                    <input type="password" value="xxxxxx" v-model="password_confirm">
                 </div>
             </div>
+
+            <div class="w-100" v-if="error == 'password dont match'">
+                <p>Passwords doesnt match.</p>
+            </div>
+
             <div class="w-100 ">
-                <continue-btn alignment="center" @click="validatePassword"></continue-btn>
+                <continue-btn alignment="center" @click="createUser"></continue-btn>
             </div>
 
         </template>
@@ -51,32 +88,116 @@
 <script>
 import ModalTemplate from './template.vue';
 import ContinueBtn from './../utils/buttons/continue-btn';
+import { mapState, mapGetters } from 'vuex';
+import validators from '../../mixins/validators';
 
 export default {
     // name: 'add-email-modal',
     data(){
         return {
-            step: 1
+            step: 'email',
+            email:'',
+            name:'',
+            password:'',
+            password_confirm:'',
+            error:null,
+            user_type: null
         }
+    },
+    mixins:[validators],
+    computed:{
+        ...mapState(['csrf']),
+        ...mapGetters(['basic_header'])
     },
     components:{
         ModalTemplate,
         ContinueBtn
     },
     methods:{
-        emit_check(){
-            this.$emit('validate_data');
-            // console.log('xx')
-        },
         checkEmail(){
+            if( this.validateEmail(this.email) ){
+                this.error = null
+                fetch('/check-email', {
+                    method:'POST',
+                    headers:this.basic_header,
+                    body: JSON.stringify({'email':this.email})
+                }).then( res => {
 
-            this.step = 2
+                    if(res.status == 200){
+                        return res.text()
+                    }
+
+                }).then( data => {
+                    this.user_type = data;
+
+                    if(data == 'new user'){
+                        this.step = 'new user'
+                    }else{
+                        this.step = 'type password'
+                    }
+
+                })
+
+            }else{
+                return this.error ="bad email"
+            }
+            
         },
         checkPassword(){
-            this.step = 3
+            if(this.password.length >= 6){
+
+                if(this.user_type == 'new user'){
+
+                    return this.step = 'confirm password';
+
+                }else{
+                    this.logUser();
+                }
+            }else{
+                return this.error = 'invalid password';
+            }
+
         },
-        validatePassword(){
-            alert('exito')
+        checkName(){
+            if(this.name.length > 5){
+                this.step = 'type password'
+            }else{
+                return this.error = 'invalid name';
+            }
+        },
+        createUser(){
+            let form = {
+                name:this.name,
+                email: this.email,
+                password: this.password,
+                password_confirmation: this.password_confirm
+            };
+
+            if(this.password_confirm == this.password){
+                
+                return fetch('register', {
+                    method: 'POST',
+                    headers: this.basic_header,
+                    body: JSON.stringify(form)
+                })
+                .then( res => {
+                    console.log(res.status)
+                    return res.text()
+                })
+                .then( data => console.log(data))
+
+            }else{
+                return this.error = 'password dont match';
+            }
+        },
+        logUser(){
+
+            let form = new FormData({
+                email: this.email,
+                password: this.password
+            });
+
+
         } 
     }
 }

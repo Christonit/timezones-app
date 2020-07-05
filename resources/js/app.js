@@ -76,6 +76,11 @@ const app = new Vue({
         window.addEventListener("orientationchange", () => {
             this.setDeviceWidth();
         })
+
+        let csrf= document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        this.$store.commit('setCsrf', csrf);
+
     },
     methods:{
         ...mapMutations(['toggleSidebar','setDeviceWidth']),
