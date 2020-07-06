@@ -69,7 +69,7 @@
         </ul>
         
     </div>
-        <!-- <a href="/logout">Logout user</a> -->
+        <a href="/logout">Logout user</a>
     </aside>
 </template>
 

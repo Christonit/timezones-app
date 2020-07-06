@@ -23,8 +23,7 @@ Route::get('/', function () {
 
     return view('index');
 
-});
-// ->middleware(['verified']);
+})->middleware(['verified']);
 
 
 
