@@ -1,0 +1,53 @@
+.searchbox{
+    position: absolute;
+    width: 456px;
+    height: auto;
+    min-height: 324px;
+    max-height: 532px;
+    top: 52px;
+    background: white;
+    border: solid 1px #f1f5f5;
+    margin: auto;
+    left: 0;
+    right: 0;
+}
+
+.searchbox-result-item{
+    display: flex;
+    padding: 10px 20px; 
+}
+
+.searchbox-keywords{
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba($color: #979797, $alpha: 0.08);
+}
+
+.searchbox-results{
+    padding: 10px 0;
+    border-bottom: 1px solid rgba($color: #979797, $alpha: 0.08);
+}
+
+.keyword-chip-del{
+    font-family: 'Material Icons';
+    font-size: 16px;
+    color: $black;
+    opacity: 0.3;
+    font-style: normal;
+    position: absolute;
+    right: 4px;
+    margin: auto;
+    display: inline-block;
+    height: 20px;
+    line-height: 1;
+}
+
+.keyword-chip{
+    @include text-12;
+    display: inline-block;
+    padding: 6px 24px 6px 12px;
+    background-color: rgba(241, 245, 245, 0.35);
+    position: relative;
+    color: $black;
+    margin: 6px 4px;
+    cursor: pointer;
+}
