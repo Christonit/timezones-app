@@ -1,6 +1,9 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
+use Illuminate\Auth\Middleware\Authenticate;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,21 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Auth::routes();
+Auth::routes(['verify' => true]);
+
 Route::get('/', function () {
 
-    // if(Auth::check()){
-
-        return view('index');
-
-    // }else{
-
-    //     return redirect('/login') ;
-
-    // }
+    return view('index');
 
 });
+// ->middleware(['verified']);
 
-// Auth::routes();
 
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -35,5 +33,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/check-email','Auth\RegisterController@findUser');
 
-Route::get('/login','Auth\RegisterController@signInSignUp');
+Route::get('/login','Auth\LoginController@showRegistrationForm')->name('login');
+Route::post('/login','Auth\LoginController@login');
+
 Route::post('/register','Auth\RegisterController@create');
+
+Route::get('/logout', function (){
+    Auth::logout();
+
+    return redirect('/login'); 
+});

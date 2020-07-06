@@ -3,7 +3,7 @@
     <div class="app-container">
         
         <top-bar></top-bar>
-        <div class="overlay" v-if="team_project.searchbox_visible" @click="toggleSearchbox"></div>
+        <div class="partial-overlay " v-if="team_project.searchbox_visible" @click="toggleSearchbox"></div>
 
         <users-timeline-grid v-if="team_project.view_mode == 'timeline'"></users-timeline-grid>
         <template v-else>

@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class LoginController extends Controller
 {
@@ -37,4 +42,28 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+    public function showRegistrationForm()
+    {
+        return view('auth.login');
+    }
+
+    public function login(Request $request){
+
+        $user = $request->only('email','password');
+
+    
+        if( Auth::attempt($user) ){
+            return response(200);
+        }else{
+            return 'invalid information';
+        };
+    }
+
+    protected function validator(array $data){
+        return Validator::make($data, [
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+        ]);
+    }
+
 }

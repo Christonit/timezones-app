@@ -122,6 +122,13 @@
     @include font-ubuntu;
     color: $black;
     min-width: 112px;
+    &:hover{
+        background-color: $btn-bg;
+    }
+    &:focus{
+        background-color: $btn-bg;
+        box-shadow: none;
+    }
 }
 .btn-primary{
     background-color: $success;

@@ -32,7 +32,8 @@
                     <input type="text" value="" v-model="name">
                 </div>
             </div>
-            <div class="w-100 ">
+            <div class="footnote-buttons">
+                <cancel-btn btn-type='back' text="Previews"></cancel-btn>
                 <continue-btn alignment="center" @click="checkName"></continue-btn>
             </div>
 
@@ -54,8 +55,15 @@
                 <p>Password has to be at least 6 characters length.</p>
             </div>
 
-            <div class="w-100 ">
-                <continue-btn alignment="center" @click="checkPassword"></continue-btn>
+            <div class="footnote-buttons">
+
+                <cancel-btn btn-type='back' text="Previews" 
+                    @click="(user_type == 'new user' ? previewsStep('new user') : previewsStep('email'))"></cancel-btn>
+                
+                <continue-btn alignment="center" 
+                    @click="(user_type == 'existing user')? logUser() : checkPassword()"
+                    :disabled="password.length < 6 ? true : false "></continue-btn>
+
             </div>
 
         </template>
@@ -75,8 +83,10 @@
                 <p>Passwords doesnt match.</p>
             </div>
 
-            <div class="w-100 ">
-                <continue-btn alignment="center" @click="createUser"></continue-btn>
+            <div class="footnote-buttons">
+                <cancel-btn btn-type='back' text="Previews" 
+                @click="previewsStep('type password')"></cancel-btn>
+                <continue-btn alignment="center" @click="createUser" :disabled="password_confirm.length < 6 ? true : false "></continue-btn>
             </div>
 
         </template>
@@ -88,6 +98,7 @@
 <script>
 import ModalTemplate from './template.vue';
 import ContinueBtn from './../utils/buttons/continue-btn';
+import CancelBtn from './../utils/buttons/cancel-btn';
 import { mapState, mapGetters } from 'vuex';
 import validators from '../../mixins/validators';
 
@@ -111,9 +122,13 @@ export default {
     },
     components:{
         ModalTemplate,
-        ContinueBtn
+        ContinueBtn,
+        CancelBtn
     },
     methods:{
+        previewsStep(step){
+            return this.step = step;
+        },
         checkEmail(){
             if( this.validateEmail(this.email) ){
                 this.error = null
@@ -122,11 +137,9 @@ export default {
                     headers:this.basic_header,
                     body: JSON.stringify({'email':this.email})
                 }).then( res => {
-
                     if(res.status == 200){
                         return res.text()
                     }
-
                 }).then( data => {
                     this.user_type = data;
 
@@ -135,7 +148,6 @@ export default {
                     }else{
                         this.step = 'type password'
                     }
-
                 })
 
             }else{
@@ -143,6 +155,7 @@ export default {
             }
             
         },
+
         checkPassword(){
             if(this.password.length >= 6){
 
@@ -175,16 +188,18 @@ export default {
 
             if(this.password_confirm == this.password){
                 
-                return fetch('register', {
+                return fetch('/register', {
                     method: 'POST',
                     headers: this.basic_header,
                     body: JSON.stringify(form)
                 })
                 .then( res => {
-                    console.log(res.status)
-                    return res.text()
+                    let status = res.status;
+                    let url = window.location.host;
+                    if(status == 200){
+                        window.location.replace('/')
+                    }
                 })
-                .then( data => console.log(data))
 
             }else{
                 return this.error = 'password dont match';
@@ -192,11 +207,25 @@ export default {
         },
         logUser(){
 
-            let form = new FormData({
+            let form = {
                 email: this.email,
                 password: this.password
-            });
+            };
 
+            return fetch('/login', {
+                    method: 'POST',
+                    headers: this.basic_header,
+                    body: JSON.stringify(form)
+                })
+                .then( res => res.text() )
+                .then(data=>{
+                    if(data == 200){
+                        return window.location.replace('/')
+                    }else{
+                        this.password = '';
+                        this.error = data;
+                    }
+                })
 
         } 
     }

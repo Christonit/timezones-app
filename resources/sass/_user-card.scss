@@ -65,11 +65,9 @@
         grid-template-columns: repeat(3, minmax(232px,352px));
     }
     @include breakpoint(xxl){
-        grid-template-columns: repeat(4, minmax(232px,312px));
+        grid-template-columns: repeat(4, minmax(232px,324px));
     }
-    @include breakpoint(fhd){
-        grid-template-columns: repeat(5, minmax(232px,312px));
-    }
+    
 }
 
 .user-item.card.active{

@@ -2697,8 +2697,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _template_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./template.vue */ "./resources/js/components/modals/template.vue");
 /* harmony import */ var _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../utils/buttons/continue-btn */ "./resources/js/components/utils/buttons/continue-btn.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _mixins_validators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../mixins/validators */ "./resources/js/mixins/validators.vue");
+/* harmony import */ var _utils_buttons_cancel_btn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../utils/buttons/cancel-btn */ "./resources/js/components/utils/buttons/cancel-btn.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _mixins_validators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../mixins/validators */ "./resources/js/mixins/validators.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2792,6 +2793,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -2809,13 +2821,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       user_type: null
     };
   },
-  mixins: [_mixins_validators__WEBPACK_IMPORTED_MODULE_3__["default"]],
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapState"])(['csrf'])), Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])(['basic_header'])),
+  mixins: [_mixins_validators__WEBPACK_IMPORTED_MODULE_4__["default"]],
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapState"])(['csrf'])), Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])(['basic_header'])),
   components: {
     ModalTemplate: _template_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    ContinueBtn: _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_1__["default"]
+    ContinueBtn: _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_1__["default"],
+    CancelBtn: _utils_buttons_cancel_btn__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   methods: {
+    previewsStep: function previewsStep(step) {
+      return this.step = step;
+    },
     checkEmail: function checkEmail() {
       var _this = this;
 
@@ -2871,24 +2887,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       };
 
       if (this.password_confirm == this.password) {
-        return fetch('register', {
+        return fetch('/register', {
           method: 'POST',
           headers: this.basic_header,
           body: JSON.stringify(form)
         }).then(function (res) {
-          console.log(res.status);
-          return res.text();
-        }).then(function (data) {
-          return console.log(data);
+          var status = res.status;
+          var url = window.location.host;
+
+          if (status == 200) {
+            window.location.replace('/');
+          }
         });
       } else {
         return this.error = 'password dont match';
       }
     },
     logUser: function logUser() {
-      var form = new FormData({
+      var _this2 = this;
+
+      var form = {
         email: this.email,
         password: this.password
+      };
+      return fetch('/login', {
+        method: 'POST',
+        headers: this.basic_header,
+        body: JSON.stringify(form)
+      }).then(function (res) {
+        return res.text();
+      }).then(function (data) {
+        if (data == 200) {
+          return window.location.replace('/');
+        } else {
+          _this2.password = '';
+          _this2.error = data;
+        }
       });
     }
   }
@@ -3730,6 +3764,74 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/buttons/cancel-btn.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/utils/buttons/cancel-btn.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    alignment: {
+      type: String,
+      "default": 'none'
+    },
+    btnType: {
+      type: String,
+      "default": 'destructive'
+    },
+    text: {
+      type: String,
+      "default": 'Cancel'
+    }
+  },
+  computed: {
+    alignment_direction: function alignment_direction() {
+      if (this.alignment == 'center') {
+        return 'mx-auto';
+      }
+
+      ;
+
+      if (this.alignment == 'left') {
+        return 'mr-auto';
+      }
+
+      ;
+
+      if (this.alignment == 'right') {
+        return 'ml-auto';
+      }
+
+      ;
+
+      if (this.alignment == 'none') {
+        return '';
+      }
+    }
+  },
+  methods: {
+    click: function click() {
+      this.$emit('click');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/buttons/continue-btn.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/utils/buttons/continue-btn.vue?vue&type=script&lang=js& ***!
@@ -3785,7 +3887,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     click: function click() {
-      console.log('1');
       this.$emit('click');
     }
   }
@@ -40747,8 +40848,12 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "w-100 " },
+              { staticClass: "footnote-buttons" },
               [
+                _c("cancel-btn", {
+                  attrs: { "btn-type": "back", text: "Previews" }
+                }),
+                _vm._v(" "),
                 _c("continue-btn", {
                   attrs: { alignment: "center" },
                   on: { click: _vm.checkName }
@@ -40808,11 +40913,31 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "w-100 " },
+              { staticClass: "footnote-buttons" },
               [
+                _c("cancel-btn", {
+                  attrs: { "btn-type": "back", text: "Previews" },
+                  on: {
+                    click: function($event) {
+                      _vm.user_type == "new user"
+                        ? _vm.previewsStep("new user")
+                        : _vm.previewsStep("email")
+                    }
+                  }
+                }),
+                _vm._v(" "),
                 _c("continue-btn", {
-                  attrs: { alignment: "center" },
-                  on: { click: _vm.checkPassword }
+                  attrs: {
+                    alignment: "center",
+                    disabled: _vm.password.length < 6 ? true : false
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.user_type == "existing user"
+                        ? _vm.logUser()
+                        : _vm.checkPassword()
+                    }
+                  }
                 })
               ],
               1
@@ -40866,10 +40991,22 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "w-100 " },
+              { staticClass: "footnote-buttons" },
               [
+                _c("cancel-btn", {
+                  attrs: { "btn-type": "back", text: "Previews" },
+                  on: {
+                    click: function($event) {
+                      return _vm.previewsStep("type password")
+                    }
+                  }
+                }),
+                _vm._v(" "),
                 _c("continue-btn", {
-                  attrs: { alignment: "center" },
+                  attrs: {
+                    alignment: "center",
+                    disabled: _vm.password_confirm.length < 6 ? true : false
+                  },
                   on: { click: _vm.createUser }
                 })
               ],
@@ -41309,7 +41446,7 @@ var render = function() {
       _vm._v(" "),
       _vm.team_project.searchbox_visible
         ? _c("div", {
-            staticClass: "overlay",
+            staticClass: "partial-overlay ",
             on: { click: _vm.toggleSearchbox }
           })
         : _vm._e(),
@@ -42016,6 +42153,43 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/buttons/cancel-btn.vue?vue&type=template&id=dd052280&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/utils/buttons/cancel-btn.vue?vue&type=template&id=dd052280& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "button",
+    {
+      staticClass: "btn",
+      class:
+        _vm.alignment_direction +
+        " " +
+        (_vm.btnType == " prev destructive"
+          ? "btn-secondary-link"
+          : "btn-cancel"),
+      on: { click: _vm.click }
+    },
+    [_c("span", [_vm._v("\n        " + _vm._s(_vm.text) + "\n    ")])]
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -60522,6 +60696,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_users_timeline_grid_vue_vue_type_template_id_8dea7c5c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_users_timeline_grid_vue_vue_type_template_id_8dea7c5c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/utils/buttons/cancel-btn.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/components/utils/buttons/cancel-btn.vue ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _cancel_btn_vue_vue_type_template_id_dd052280___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cancel-btn.vue?vue&type=template&id=dd052280& */ "./resources/js/components/utils/buttons/cancel-btn.vue?vue&type=template&id=dd052280&");
+/* harmony import */ var _cancel_btn_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cancel-btn.vue?vue&type=script&lang=js& */ "./resources/js/components/utils/buttons/cancel-btn.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _cancel_btn_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _cancel_btn_vue_vue_type_template_id_dd052280___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _cancel_btn_vue_vue_type_template_id_dd052280___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/utils/buttons/cancel-btn.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/utils/buttons/cancel-btn.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/utils/buttons/cancel-btn.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_cancel_btn_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./cancel-btn.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/buttons/cancel-btn.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_cancel_btn_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/utils/buttons/cancel-btn.vue?vue&type=template&id=dd052280&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/utils/buttons/cancel-btn.vue?vue&type=template&id=dd052280& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_cancel_btn_vue_vue_type_template_id_dd052280___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./cancel-btn.vue?vue&type=template&id=dd052280& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/buttons/cancel-btn.vue?vue&type=template&id=dd052280&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_cancel_btn_vue_vue_type_template_id_dd052280___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_cancel_btn_vue_vue_type_template_id_dd052280___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -1,29 +1,53 @@
 <template>
-    <button class="btn btn-primary next" :class="alignment" @click="click">
-        <img src="/img/long-arrow.svg"/> 
+    <button  class="btn" 
+        :class="alignment_direction + ' ' + (btnType == ' prev destructive' ? 'btn-secondary-link': 'btn-cancel')"
+        @click="click">
+        <span>
+            {{text}}
+        </span>
     </button>
 </template>
 
 <script>
 export default {
     props:{
-        centered:{
-            type: [Boolean,String],
-            default: false
+        alignment:{
+            type: String,
+            default: 'none'
         },
-        click:{
-            type:Function,
-            default:false
+        btnType:{
+            type:String,
+            default:'destructive'
+        },
+        text:{
+            type:String,
+            default:'Cancel'
         }
     },
     computed:{
-        alignment(){
+        alignment_direction(){
 
-            if(this.centered ){ 
+            if(this.alignment == 'center' ){ 
                 return 'mx-auto';
             };
+            if(this.alignment == 'left' ){ 
+                return 'mr-auto';
+            };
+            if(this.alignment == 'right' ){ 
+                return 'ml-auto';
+            };
+
+            if(this.alignment == 'none'){
+                return ''
+            }
 
         }
+    },
+    methods:{
+        click(){
+            this.$emit('click');
+        }
     }
+    
 }
 </script>

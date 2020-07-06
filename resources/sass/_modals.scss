@@ -56,6 +56,17 @@
     z-index: 9;
     display: block;
 }
+.partial-overlay{
+    background-color: $black;
+    opacity: .85;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 8;
+    display: block;
+}
 
 .invite-created-modal .modal-popup{
     padding-left: 0;

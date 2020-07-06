@@ -11039,13 +11039,7 @@ a.text-dark:focus {
 
 @media (min-width: 1800px) {
   .card-grid {
-    grid-template-columns: repeat(4, minmax(232px, 312px));
-  }
-}
-
-@media (min-width: 1900px) {
-  .card-grid {
-    grid-template-columns: repeat(5, minmax(232px, 312px));
+    grid-template-columns: repeat(4, minmax(232px, 324px));
   }
 }
 
@@ -11386,6 +11380,9 @@ a.text-dark:focus {
   top: 52px;
   background: white;
   border: solid 1px #f1f5f5;
+  margin: auto;
+  left: 0;
+  right: 0;
 }
 
 .searchbox-result-item {
@@ -11951,6 +11948,18 @@ input.input-field::placeholder {
   display: block;
 }
 
+.partial-overlay {
+  background-color: #05060d;
+  opacity: 0.85;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 8;
+  display: block;
+}
+
 .invite-created-modal .modal-popup {
   padding-left: 0;
   padding-right: 0;
@@ -12097,6 +12106,15 @@ input.input-field::placeholder {
   font-family: "Ubuntu", sans-serif;
   color: #05060d;
   min-width: 112px;
+}
+
+.btn-cancel:hover {
+  background-color: #e7efef;
+}
+
+.btn-cancel:focus {
+  background-color: #e7efef;
+  box-shadow: none;
 }
 
 .btn-primary {
@@ -12523,6 +12541,15 @@ body {
 .content {
   padding: 0 64px;
   margin: 36px 0;
+}
+
+.footnote-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.footnote-buttons .btn {
+  margin: 0 8px;
 }
 
 .top-bar {

@@ -39,7 +39,6 @@ export default {
     },
     methods:{
         click(){
-            console.log('1')
             this.$emit('click');
         }
     }
