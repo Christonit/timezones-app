@@ -2803,6 +2803,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -2822,7 +2827,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   mixins: [_mixins_validators__WEBPACK_IMPORTED_MODULE_4__["default"]],
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapState"])(['csrf'])), Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])(['basic_header'])),
+  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapState"])(['csrf'])), Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])(['basic_header'])), {}, {
+    url: function url() {
+      return window.location.host;
+    }
+  }),
   components: {
     ModalTemplate: _template_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     ContinueBtn: _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -40900,13 +40909,29 @@ var render = function() {
                     }
                   }
                 })
-              ])
+              ]),
+              _vm._v(" "),
+              !(_vm.user_type == "new user")
+                ? _c("a", { attrs: { href: "/password/reset" } }, [
+                    _vm._v("Forgot password?")
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _vm.error == "invalid password"
               ? _c("div", { staticClass: "w-100" }, [
                   _c("p", [
                     _vm._v("Password has to be at least 6 characters length.")
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.error == "invalid information"
+              ? _c("div", { staticClass: "w-100" }, [
+                  _c("p", [
+                    _vm._v(
+                      "Invalid credentials. Please review your email & password."
+                    )
                   ])
                 ])
               : _vm._e(),

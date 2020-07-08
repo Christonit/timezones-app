@@ -42,3 +42,5 @@ Route::get('/logout', function (){
 
     return redirect('/login'); 
 });
+
+Route::post('/upload-timezones','TimezonesController@upload');

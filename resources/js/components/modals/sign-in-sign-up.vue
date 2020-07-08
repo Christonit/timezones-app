@@ -49,10 +49,15 @@
                     <label class="input-label" for="password">Password</label>
                     <input type="password" value="xxxxxx" v-model="password">
                 </div>
+
+                <a :href="'/password/reset'" v-if="!(user_type == 'new user')">Forgot password?</a>
             </div>
 
             <div class="w-100" v-if="error == 'invalid password'">
                 <p>Password has to be at least 6 characters length.</p>
+            </div>
+            <div class="w-100" v-if="error == 'invalid information'">
+                <p>Invalid credentials. Please review your email & password.</p>
             </div>
 
             <div class="footnote-buttons">
@@ -118,7 +123,10 @@ export default {
     mixins:[validators],
     computed:{
         ...mapState(['csrf']),
-        ...mapGetters(['basic_header'])
+        ...mapGetters(['basic_header']),
+        url(){
+            return window.location.host;   
+        }
     },
     components:{
         ModalTemplate,
