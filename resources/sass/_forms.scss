@@ -22,6 +22,18 @@
     left: 0;
     right: 0; 
 
+    input[type="file"]{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        margin: auto;
+        z-index: 9999;
+        opacity: 0;
+
+    }
+
     img{
         height: 100%;
         position: relative;
@@ -210,8 +222,11 @@ input.input-field{
 
 .input-timezone{
     position: relative;
+    width: 100%;
+    margin-bottom: 16px;
     .input-field{
         padding: 15px 36px;
+        margin-bottom: 0;
     }
 }
 
@@ -219,18 +234,20 @@ input.input-field{
     height: 0;
     opacity: 0;
     z-index: -1;
-
+    pointer-events: none;
+    display: none;
 }
+
 .timezone-picker-container.active{
     transition: height 200ms;
-
+    pointer-events: initial;
     position: absolute;
     width: 100%;
     margin: auto;
     left: 0;
     right: 0;
     border-top: 1px solid $faint-border-color;
-    height: 154px;
+    height: 200px;
     top: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -238,8 +255,6 @@ input.input-field{
     overflow-y: scroll;
     z-index: 5;
     opacity: 1;
-
-
 }
 
 .timezone-input-search{
@@ -304,6 +319,7 @@ input.input-field{
     border-radius: 1px;
     border: solid 1px rgba(151, 151, 151, 0.39);
     @include font-ubuntu;
+    text-align: center;
     font-size: 14px;
     font-weight: bold;
     color: $black;

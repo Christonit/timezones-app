@@ -43,4 +43,13 @@ Route::get('/logout', function (){
     return redirect('/login'); 
 });
 
+
+Route::middleware('auth')->group( function (){
+
+    Route::get('/user-information', 'HomeController@getUser');
+
+});
+
 Route::post('/upload-timezones','TimezonesController@upload');
+Route::post('/search-timezones','TimezonesController@search_timezone');
+Route::post('/update-user','HomeController@updateUser');

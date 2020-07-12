@@ -1,7 +1,11 @@
 <template>
-    <div class="control-bar">
-        <user-item view-mode='card'  class="active" :logged-user='true'
-        :name='user.name'>
+    <div class="control-bar" v-if="user != null">
+        <user-item view-mode='card'  class="active" 
+        :logged-user='true'
+        :name='user.name'
+        :avatar="user.avatar"
+        :start_hour="user.start_hour"
+        :end_hour="user.end_hour">
         </user-item>
         <div id="user-type-filters">
             <button class="btn btn-link btn-filter active">
@@ -27,7 +31,7 @@ import {mapState} from 'vuex';
 export default {
     data(){
         return {
-
+            avatar: null
         }
     },
     computed:{
@@ -36,6 +40,9 @@ export default {
     },
     components:{
         UserItem
+    },
+    mounted(){
+        this.avatar = window.location.host;
     }
 }
 </script>

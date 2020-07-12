@@ -18,7 +18,8 @@
         <template v-else>
             <figure class="user-item-pic">
                 <span class="user-img">
-                    <img src="https://via.placeholder.com/32" alt="User X profile pic" >
+                    <img v-if='avatar != null || avatar == ""' :src="avatar" >
+                    <span v-else>CH</span>
                 </span>
                 <span class="user-status-dot"></span>
             </figure>
@@ -26,13 +27,13 @@
                 <b class="user-item-name">{{username}}</b>
                 <h4 class="user-item-current-hour">05:06 PM</h4>
                 <span class="user-item-current-day">Wed 5th</span>
-                <span class="user-item-available-time">Av: 4 AM - 5 PM</span>
+                <span class="user-item-available-time">Av: {{start_hour}} - {{end_hour}}</span>
             </span>
             <template v-if="viewMode == 'timeline'">
                 <span class="user-item-info">
 
                     <b class="user-item-name">{{name}}</b>
-                    <span class="user-item-available-time">Av: 4 AM - 5 PM</span>
+                    <span class="user-item-available-time">Av: {{start_hour}} - {{end_hour}}</span>
 
                 </span>
 
@@ -64,6 +65,10 @@ export default {
         MoreOptionBtn
     },
     props:{
+        timezone:{
+            type:String,
+            default:null
+        },
         userId:{
             type:Number,
         },
@@ -76,8 +81,21 @@ export default {
         },
         name:{
             type:String,
-            default:'Minnie Person'
+            default:'---'
+        },
+        avatar:{
+            type:String,
+            default:null
+        },
+        start_hour:{
+            type:String,
+            default: '--'
+        },
+        end_hour:{
+            type:String,
+            default: '--'
         }
+
     },
     computed:{
         ...mapState(['screen_sizes','device_width']),

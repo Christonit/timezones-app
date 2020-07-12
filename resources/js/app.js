@@ -7,7 +7,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-import Vuex from 'vuex';
+import Vuex, { mapGetters } from 'vuex';
 import VueRouter from 'vue-router';
 
 Vue.use(Vuex);
@@ -69,6 +69,7 @@ const app = new Vue({
     },
     computed:{
         ...mapState(['modal_visible','modal','sidebar_visible']),
+        ...mapGetters(['header'])
         
     },
     mounted(){
@@ -80,6 +81,17 @@ const app = new Vue({
         let csrf= document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         this.$store.commit('setCsrf', csrf);
+
+        fetch('/user-information', {
+            method:'GET',
+            headers: this.header
+        }).then(res => res.text()).then( data => {
+            
+            let user = JSON.parse(data)
+            this.$store.commit('setUserInformation',user);
+
+        })
+
 
     },
     methods:{

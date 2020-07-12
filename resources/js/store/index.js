@@ -4,6 +4,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state:{
+        user:null,
         screen_sizes:{
             xs:576,
             sm:720,
@@ -33,15 +34,6 @@ export default new Vuex.Store({
             {name:'Parametrics',id:'1'},
             {name:'Orca',id:'2'}
         ],
-        user:{
-            name:'Christopher Santanass',
-            timezone:'GMT-4',
-            available_hours:{
-                start:'8:30',
-                end:'17:00'
-            },
-            email:'christopher.alesan@gmail.com',
-        },
         team_members:[
             {name:'Christopher Santana',
             timezone:'GMT-4',
@@ -70,9 +62,22 @@ export default new Vuex.Store({
                 'Content-Type':'application/json',
                 'X-CSRF-TOKEN':state.csrf
             }
+        },
+        basic_header_form(state){
+            return {
+                'X-CSRF-TOKEN':state.csrf
+            }
+        },
+        header(state){
+            return {
+                'X-CSRF-TOKEN':state.csrf
+            }
         }
     },
     mutations:{
+        setUserInformation(state,payload){
+            state.user = payload;
+        },
         setCsrf(state,payload){
             state.csrf = payload;
         },

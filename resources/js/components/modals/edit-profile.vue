@@ -7,6 +7,7 @@
 
             <div class="popup-fields-container">
                 <span class="profile-pic-btn">
+                    <input type="file" name="profile-pic" @change="get_profile_pic"/>
                     <img src="https://via.placeholder.com/70" alt="" class="profile-pic-thumbnail">
                 </span>
                 <div class="input-field ">
@@ -16,34 +17,38 @@
                 <div class="input-timezone">
                     <div class="input-field " @click="openPicker">
                         <label class="input-label" >Timezone</label>
-                        <span class="input-timezone-text">AST +1</span>
+                        <span class="input-timezone-text">{{timezone.name}}</span>
                         <button class="btn-timezone-arrow" ref='btnArrow'></button>
                     </div>
                     <div class="timezone-picker-container" ref='timezonePicker'>
                         <span class="timezone-input-search">
-                            <input type="text"  value='GMT+1'>
+                            <input type="text"  placeholder='GMT+1' v-model="timezone_input" 
+                                @keyup="searchTimezones">
                         </span>
-                        <span class="timezone-item" @click="selectTimezones">GMT + 1</span>
-                        <span class="timezone-item" @click="selectTimezones">GMT + 2</span>
-                        <span class="timezone-item" @click="selectTimezones">GMT + 3</span>
+
+                        <template v-for="item in timezones">
+                            <span class="timezone-item" 
+                            :data-timezone-id="item.id"
+                            @click="selectTimezones(item.name)">
+                                {{item.name}}
+                            </span>
+                        </template>
                     </div>
                     
                 </div>
 
                 <div class="time-picker-container">
                         <label class="inline-input-label">Avalability</label>
-                        <time-picker></time-picker>
+                        <time-picker @time-pick="start_time = $event">{{start_time}}</time-picker>
                             <hr/>
-                        <time-picker></time-picker>
+                        <time-picker@time-pick="end_time = $event">{{end_time}}</time-picker>
 
                 </div>
                 
                 
             </div>
             <div class="w-100 ">
-                <button class="btn btn-primary next material-icons mx-auto">
-                    trending_flat 
-                </button>
+                <continue-btn @click="updateProfile" alignment="center" ></continue-btn>
             </div>
         </template>
         
@@ -54,14 +59,20 @@
 <script>
 import ModalTemplate from './template.vue';
 import TimePicker from '../utils/time-picker-comp.vue'
+import utils from '../../mixins/utils.vue';
+import ContinueBtn from '../utils/buttons/continue-btn';
 export default {
     name: 'edit-profile-modal',
     components:{
         ModalTemplate,
-        TimePicker
+        TimePicker,
+        ContinueBtn
     },
+    mixins:[utils],
     methods:{
-        
+        updateTimePick(e){
+            console.log(e)
+        },
         openPicker(e){
             let el =  this.$refs.timezonePicker;
 
@@ -74,8 +85,13 @@ export default {
             el.classList.add('active')
             e.stopPropagation();
         },
-        selectTimezones(){
+        selectTimezones(name){
            let el =  this.$refs.timezonePicker;
+
+           let id = event.target.getAttribute('data-timezone-id');
+
+           this.timezone.id = id;
+           this.timezone.name = name;
 
            if(el.classList.contains('active')){
                 this.$refs.btnArrow.classList.remove('active');

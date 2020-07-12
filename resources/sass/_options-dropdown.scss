@@ -8,6 +8,10 @@
     background-repeat: no-repeat;
     &.dark{
         background-image: url('../img/more-options-icon-dark.svg');
+    
+        &:hover{
+            background-color: rgba($color: #fff, $alpha: 0.1)!important;
+        }
     }
 
     

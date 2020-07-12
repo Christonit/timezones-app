@@ -2415,6 +2415,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _template_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./template.vue */ "./resources/js/components/modals/template.vue");
 /* harmony import */ var _utils_time_picker_comp_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/time-picker-comp.vue */ "./resources/js/components/utils/time-picker-comp.vue");
+/* harmony import */ var _mixins_utils_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/utils.vue */ "./resources/js/mixins/utils.vue");
+/* harmony import */ var _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/buttons/continue-btn */ "./resources/js/components/utils/buttons/continue-btn.vue");
 //
 //
 //
@@ -2468,15 +2470,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'edit-profile-modal',
   components: {
     ModalTemplate: _template_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    TimePicker: _utils_time_picker_comp_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    TimePicker: _utils_time_picker_comp_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ContinueBtn: _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
+  mixins: [_mixins_utils_vue__WEBPACK_IMPORTED_MODULE_2__["default"]],
   methods: {
+    updateTimePick: function updateTimePick(e) {
+      console.log(e);
+    },
     openPicker: function openPicker(e) {
       var el = this.$refs.timezonePicker;
 
@@ -2489,8 +2503,11 @@ __webpack_require__.r(__webpack_exports__);
       el.classList.add('active');
       e.stopPropagation();
     },
-    selectTimezones: function selectTimezones() {
+    selectTimezones: function selectTimezones(name) {
       var el = this.$refs.timezonePicker;
+      var id = event.target.getAttribute('data-timezone-id');
+      this.timezone.id = id;
+      this.timezone.name = name;
 
       if (el.classList.contains('active')) {
         this.$refs.btnArrow.classList.remove('active');
@@ -3455,15 +3472,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      avatar: null
+    };
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['user'])),
   components: {
     UserItem: _user_item_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  mounted: function mounted() {
+    this.avatar = window.location.host;
   }
 });
 
@@ -3536,6 +3562,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3549,6 +3576,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     MoreOptionBtn: _utils_more_option_btn_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
+    timezone: {
+      type: String,
+      "default": null
+    },
     userId: {
       type: Number
     },
@@ -3561,7 +3592,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     name: {
       type: String,
-      "default": 'Minnie Person'
+      "default": '---'
+    },
+    avatar: {
+      type: String,
+      "default": null
+    },
+    start_hour: {
+      type: String,
+      "default": '--'
+    },
+    end_hour: {
+      type: String,
+      "default": '--'
     }
   },
   computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['screen_sizes', 'device_width'])), {}, {
@@ -4135,6 +4178,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'time-picker',
   methods: {
@@ -4150,12 +4229,218 @@ __webpack_require__.r(__webpack_exports__);
     },
     selectTimePicker: function selectTimePicker(e) {
       var el = this.$refs.timePickerSelect;
+      var time = e.target.getAttribute('data-time');
+      this.$emit('time-pick', time);
 
       if (el.classList.contains('active')) {
         el.classList.remove('active');
       }
 
       e.stopPropagation();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/mixins/utils.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/mixins/utils.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      timezone_input: '',
+      user: "Christopher Santana",
+      timezone: {
+        id: "America/Detroit",
+        name: "EST - Eastern Standard Time"
+      },
+      start_time: null,
+      end_time: null,
+      timezones_list: [],
+      profile_pic: null,
+      default_gmt: [{
+        name: 'GMT',
+        id: 'America/Danmarkshavn'
+      }, {
+        name: 'GMT-2',
+        id: 'America/South_Georgia'
+      }, {
+        name: 'GMT-3',
+        id: 'America/Montevideo'
+      }, {
+        name: 'GMT-4',
+        id: 'America/New_York'
+      }, {
+        name: 'GMT-5',
+        id: 'America/Panama'
+      }, {
+        name: 'GMT-6',
+        id: 'America/Mexico_City'
+      }, {
+        name: 'GMT-7',
+        id: 'America/Denver'
+      }, {
+        name: 'GMT-8',
+        id: 'America/Los_Angeles'
+      }, {
+        name: 'GMT-9',
+        id: 'America/Anchorage'
+      }, {
+        name: 'GMT+1',
+        id: 'Europe/Madrid'
+      }, {
+        name: 'GMT+2',
+        id: 'Europe/Bucharest'
+      }, {
+        name: 'GMT+3',
+        id: 'Europe/Moscow'
+      }, {
+        name: 'GMT+4',
+        id: 'Asia/Dubai'
+      }, {
+        name: 'GMT+5',
+        id: 'Asia/Tashkent'
+      }, {
+        name: 'GMT+6',
+        id: 'America/Anchorage'
+      }, {
+        name: 'GMT+7',
+        id: 'Asia/Jakarta'
+      }, {
+        name: 'GMT+8',
+        id: 'Asia/Singapore'
+      }, {
+        name: 'GMT+9',
+        id: 'Asia/Tokyo'
+      }, {
+        name: 'GMT+10',
+        id: 'Australia/Sydney'
+      }, {
+        name: 'GMT+11',
+        id: 'Pacific/Norfolk'
+      }, {
+        name: 'GMT+12',
+        id: 'Pacific/Fiji'
+      }]
+    };
+  },
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['basic_header', 'basic_header_multipart'])), {}, {
+    timezones: function timezones() {
+      if (this.timezones_list.length == 0) {
+        return this.default_gmt;
+      }
+
+      return this.timezones_list;
+    }
+  }),
+  methods: {
+    get_profile_pic: function get_profile_pic(e) {
+      console.log(e);
+      this.profile_pic = e.target.files[0];
+    },
+    searchTimezones: function searchTimezones() {
+      var _this = this;
+
+      if (this.timezone_input.length > 0) {
+        var input = {
+          search: this.timezone_input.toUpperCase()
+        };
+        fetch('/search-timezones', {
+          method: 'POST',
+          headers: this.basic_header,
+          body: JSON.stringify(input)
+        }).then(function (res) {
+          return res.text();
+        }).then(function (data) {
+          return _this.timezones_list = JSON.parse(data);
+        });
+      }
+    },
+    fetch_timezones_list: function fetch_timezones_list() {
+      var _this2 = this;
+
+      console.log('xxx');
+      var timezones_data = null;
+      var x = fetch("https://dev.virtualearth.net/REST/v1/TimeZone/List/?timezonestandard=IANA&key=AmdZGBzRdAtTx2w_t1j0Vsc4M5Apj5P83OKc-17qDE2ytTEoqLLgJS0_jPL-UrLw").then(function (res) {
+        return res.text();
+      }).then(function (data) {
+        timezones_data = JSON.parse(data);
+      }).then(function () {
+        var timezones = timezones_data.resourceSets[0].resources;
+        var arr = [];
+        timezones.forEach(function (timezone) {
+          var name = timezone.timeZone.genericName;
+          var iana_time_zone_id = timezone.timeZone.ianaTimeZoneId;
+          var utc_offset = timezone.timeZone.utcOffset;
+          var abbreviation = null;
+
+          if (timezone.timeZone.hasOwnProperty('abbreviation')) {
+            abbreviation = timezone.timeZone.abbreviation;
+          }
+
+          arr.push({
+            name: name,
+            abbreviation: abbreviation,
+            iana_time_zone_id: iana_time_zone_id,
+            utc_offset: utc_offset
+          });
+        });
+
+        var upload_timezone = function upload_timezone(timezone) {
+          fetch('/upload-timezones', {
+            method: 'POST',
+            headers: _this2.basic_header,
+            body: JSON.stringify(timezone)
+          }).then(function (res) {
+            return res.status;
+          });
+        };
+
+        arr.forEach(function (timezone) {
+          return upload_timezone(timezone);
+        });
+      });
+    },
+    updateProfile: function updateProfile() {
+      var _this3 = this;
+
+      var payload = new FormData();
+      payload.append('timezone', this.timezone.id);
+      payload.append('timezone_abbr', this.timezone.name);
+      payload.append('name', this.user);
+      payload.append('start_hour', this.start_time);
+      payload.append('end_hour', this.end_time);
+
+      if (this.profile_pic != null) {
+        payload.append('avatar', this.profile_pic);
+      }
+
+      fetch('/update-user', {
+        method: 'POST',
+        headers: this.basic_header_multipart,
+        body: payload
+      }).then(function (res) {
+        return res.text();
+      }).then(function (res) {
+        if (res.status == 201) {
+          _this3.$store.commit('closeModal', 'edit-info');
+        }
+      });
     }
   }
 });
@@ -40428,6 +40713,11 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "popup-fields-container" }, [
           _c("span", { staticClass: "profile-pic-btn" }, [
+            _c("input", {
+              attrs: { type: "file", name: "profile-pic" },
+              on: { change: _vm.get_profile_pic }
+            }),
+            _vm._v(" "),
             _c("img", {
               staticClass: "profile-pic-thumbnail",
               attrs: { src: "https://via.placeholder.com/70", alt: "" }
@@ -40452,7 +40742,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("span", { staticClass: "input-timezone-text" }, [
-                  _vm._v("AST +1")
+                  _vm._v(_vm._s(_vm.timezone.name))
                 ]),
                 _vm._v(" "),
                 _c("button", {
@@ -40470,36 +40760,54 @@ var render = function() {
               },
               [
                 _c("span", { staticClass: "timezone-input-search" }, [
-                  _c("input", { attrs: { type: "text", value: "GMT+1" } })
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.timezone_input,
+                        expression: "timezone_input"
+                      }
+                    ],
+                    attrs: { type: "text", placeholder: "GMT+1" },
+                    domProps: { value: _vm.timezone_input },
+                    on: {
+                      keyup: _vm.searchTimezones,
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.timezone_input = $event.target.value
+                      }
+                    }
+                  })
                 ]),
                 _vm._v(" "),
-                _c(
-                  "span",
-                  {
-                    staticClass: "timezone-item",
-                    on: { click: _vm.selectTimezones }
-                  },
-                  [_vm._v("GMT + 1")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "span",
-                  {
-                    staticClass: "timezone-item",
-                    on: { click: _vm.selectTimezones }
-                  },
-                  [_vm._v("GMT + 2")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "span",
-                  {
-                    staticClass: "timezone-item",
-                    on: { click: _vm.selectTimezones }
-                  },
-                  [_vm._v("GMT + 3")]
-                )
-              ]
+                _vm._l(_vm.timezones, function(item) {
+                  return [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "timezone-item",
+                        attrs: { "data-timezone-id": item.id },
+                        on: {
+                          click: function($event) {
+                            return _vm.selectTimezones(item.name)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(item.name) +
+                            "\n                        "
+                        )
+                      ]
+                    )
+                  ]
+                })
+              ],
+              2
             )
           ]),
           _vm._v(" "),
@@ -40511,23 +40819,47 @@ var render = function() {
                 _vm._v("Avalability")
               ]),
               _vm._v(" "),
-              _c("time-picker"),
+              _c(
+                "time-picker",
+                {
+                  on: {
+                    "time-pick": function($event) {
+                      _vm.start_time = $event
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(_vm.start_time))]
+              ),
               _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
-              _c("time-picker")
+              _c(
+                "time-picker",
+                {
+                  on: {
+                    "time-pick": function($event) {
+                      _vm.end_time = $event
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(_vm.end_time))]
+              )
             ],
             1
           )
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "w-100 " }, [
-          _c(
-            "button",
-            { staticClass: "btn btn-primary next material-icons mx-auto" },
-            [_vm._v("\n                trending_flat \n            ")]
-          )
-        ])
+        _c(
+          "div",
+          { staticClass: "w-100 " },
+          [
+            _c("continue-btn", {
+              attrs: { alignment: "center" },
+              on: { click: _vm.updateProfile }
+            })
+          ],
+          1
+        )
       ]
     ],
     2
@@ -41707,19 +42039,28 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "control-bar" },
-    [
-      _c("user-item", {
-        staticClass: "active",
-        attrs: { "view-mode": "card", "logged-user": true, name: _vm.user.name }
-      }),
-      _vm._v(" "),
-      _vm._m(0)
-    ],
-    1
-  )
+  return _vm.user != null
+    ? _c(
+        "div",
+        { staticClass: "control-bar" },
+        [
+          _c("user-item", {
+            staticClass: "active",
+            attrs: {
+              "view-mode": "card",
+              "logged-user": true,
+              name: _vm.user.name,
+              avatar: _vm.user.avatar,
+              start_hour: _vm.user.start_hour,
+              end_hour: _vm.user.end_hour
+            }
+          }),
+          _vm._v(" "),
+          _vm._m(0)
+        ],
+        1
+      )
+    : _vm._e()
 }
 var staticRenderFns = [
   function() {
@@ -41797,7 +42138,15 @@ var render = function() {
             )
           ]
         : [
-            _vm._m(0),
+            _c("figure", { staticClass: "user-item-pic" }, [
+              _c("span", { staticClass: "user-img" }, [
+                _vm.avatar != null || _vm.avatar == ""
+                  ? _c("img", { attrs: { src: _vm.avatar } })
+                  : _c("span", [_vm._v("CH")])
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "user-status-dot" })
+            ]),
             _vm._v(" "),
             _vm.viewMode == "card"
               ? _c("span", { staticClass: "user-item-info" }, [
@@ -41814,7 +42163,12 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("span", { staticClass: "user-item-available-time" }, [
-                    _vm._v("Av: 4 AM - 5 PM")
+                    _vm._v(
+                      "Av: " +
+                        _vm._s(_vm.start_hour) +
+                        " - " +
+                        _vm._s(_vm.end_hour)
+                    )
                   ])
                 ])
               : _vm._e(),
@@ -41827,7 +42181,12 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("span", { staticClass: "user-item-available-time" }, [
-                      _vm._v("Av: 4 AM - 5 PM")
+                      _vm._v(
+                        "Av: " +
+                          _vm._s(_vm.start_hour) +
+                          " - " +
+                          _vm._s(_vm.end_hour)
+                      )
                     ])
                   ]),
                   _vm._v(" "),
@@ -41857,25 +42216,7 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("figure", { staticClass: "user-item-pic" }, [
-      _c("span", { staticClass: "user-img" }, [
-        _c("img", {
-          attrs: {
-            src: "https://via.placeholder.com/32",
-            alt: "User X profile pic"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "user-status-dot" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -42625,7 +42966,8 @@ var render = function() {
     _c(
       "span",
       { staticClass: "time-picker-text", on: { click: _vm.openTimePicker } },
-      [_vm._v("\n        12:00\n    ")]
+      [_vm._t("default")],
+      2
     ),
     _vm._v(" "),
     _c(
@@ -42636,29 +42978,430 @@ var render = function() {
         on: { click: _vm.selectTimePicker }
       },
       [
-        _c("span", [_vm._v("8:00")]),
+        _c("span", { attrs: { "data-time": "0:00" } }, [_vm._v("0:00")]),
         _vm._v(" "),
-        _c("span", [_vm._v("8:00")]),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "0:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("0:30")]
+        ),
         _vm._v(" "),
-        _c("span", [_vm._v("8:00")]),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "1:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("1:00")]
+        ),
         _vm._v(" "),
-        _c("span", [_vm._v("8:00")]),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "1:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("1:30")]
+        ),
         _vm._v(" "),
-        _c("span", [_vm._v("8:00")]),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "2:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("2:00")]
+        ),
         _vm._v(" "),
-        _c("span", [_vm._v("8:00")]),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "2:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("2:30")]
+        ),
         _vm._v(" "),
-        _c("span", [_vm._v("8:00")]),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "3:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("3:00")]
+        ),
         _vm._v(" "),
-        _c("span", [_vm._v("8:00")]),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "3:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("3:30")]
+        ),
         _vm._v(" "),
-        _c("span", [_vm._v("8:00")]),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "4:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("4:00")]
+        ),
         _vm._v(" "),
-        _c("span", [_vm._v("8:00")]),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "4:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("4:30")]
+        ),
         _vm._v(" "),
-        _c("span", [_vm._v("8:00")]),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "5:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("5:00")]
+        ),
         _vm._v(" "),
-        _c("span", [_vm._v("8:00")])
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "5:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("5:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "6:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("6:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "6:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("6:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "7:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("7:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "7:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("7:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "8:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("8:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "8:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("8:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "9:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("9:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "9:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("9:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "10:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("10:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "10:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("10:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "11:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("11:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "11:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("11:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "12:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("12:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "12:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("12:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "13:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("13:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "13:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("13:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "14:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("14:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "14:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("14:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "15:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("15:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "15:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("15:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "16:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("16:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "16:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("16:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "17:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("17:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "17:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("17:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "18:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("18:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "18:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("18:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "19:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("19:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "19:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("19:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "20:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("20:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "20:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("20:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "21:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("21:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "21:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("21:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "22:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("22:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "22:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("22:30")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "23:00" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("23:00")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            attrs: { "data-time": "23:30" },
+            on: { click: _vm.selectTimePicker }
+          },
+          [_vm._v("23:30")]
+        )
       ]
     )
   ])
@@ -59149,7 +59892,7 @@ var app = new Vue({
     DeleteProjectModal: _components_modals_delete_project_vue__WEBPACK_IMPORTED_MODULE_16__["default"],
     NewTeamModal: _components_modals_new_team_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['modal_visible', 'modal', 'sidebar_visible'])),
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['modal_visible', 'modal', 'sidebar_visible'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['header'])),
   mounted: function mounted() {
     var _this = this;
 
@@ -59159,6 +59902,16 @@ var app = new Vue({
     });
     var csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     this.$store.commit('setCsrf', csrf);
+    fetch('/user-information', {
+      method: 'GET',
+      headers: this.header
+    }).then(function (res) {
+      return res.text();
+    }).then(function (data) {
+      var user = JSON.parse(data);
+
+      _this.$store.commit('setUserInformation', user);
+    });
   },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['toggleSidebar', 'setDeviceWidth'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getUserTeams']))
 });
@@ -61211,6 +61964,56 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/mixins/utils.vue":
+/*!***************************************!*\
+  !*** ./resources/js/mixins/utils.vue ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.vue?vue&type=script&lang=js& */ "./resources/js/mixins/utils.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  _utils_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/mixins/utils.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/mixins/utils.vue?vue&type=script&lang=js&":
+/*!****************************************************************!*\
+  !*** ./resources/js/mixins/utils.vue?vue&type=script&lang=js& ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_utils_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./utils.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/mixins/utils.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_utils_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/mixins/validators.vue":
 /*!********************************************!*\
   !*** ./resources/js/mixins/validators.vue ***!
@@ -61310,6 +62113,7 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
+    user: null,
     screen_sizes: {
       xs: 576,
       sm: 720,
@@ -61341,15 +62145,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       name: 'Orca',
       id: '2'
     }],
-    user: {
-      name: 'Christopher Santanass',
-      timezone: 'GMT-4',
-      available_hours: {
-        start: '8:30',
-        end: '17:00'
-      },
-      email: 'christopher.alesan@gmail.com'
-    },
     team_members: [{
       name: 'Christopher Santana',
       timezone: 'GMT-4',
@@ -61382,9 +62177,22 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': state.csrf
       };
+    },
+    basic_header_form: function basic_header_form(state) {
+      return {
+        'X-CSRF-TOKEN': state.csrf
+      };
+    },
+    header: function header(state) {
+      return {
+        'X-CSRF-TOKEN': state.csrf
+      };
     }
   },
   mutations: {
+    setUserInformation: function setUserInformation(state, payload) {
+      state.user = payload;
+    },
     setCsrf: function setCsrf(state, payload) {
       state.csrf = payload;
     },
