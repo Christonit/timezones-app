@@ -5,7 +5,7 @@
                 <img src="../../../img/add-icon.svg" class="more-options-icon" alt="More options delete icon">
                 Add teammate
             </router-link>
-            <span class="more-options-item" v-if="editBtn" @click="openModal('edit-info')"><img src="../../../img/edit-icon.svg" class="more-options-icon" alt="More options delete icon"> Edit info </span>
+            <span class="more-options-item" v-if="editBtn" @click="openModal({name:'edit-info',userToEdit})"><img src="../../../img/edit-icon.svg" class="more-options-icon" alt="More options delete icon"> Edit info </span>
             <span class="more-options-item" v-if="editName" @click="openModal('change-name')"><img src="../../../img/edit-icon.svg" class="more-options-icon" alt="More options delete icon"> Edit name </span>
             <span class="more-options-item delete" v-if="deleteMemberBtn" @click="openModal('delete-group')"><img src="../../../img/delete-icon-white.svg" class="more-options-icon" alt="More options delete icon"> Delete teammate</span>
             <span class="more-options-item delete" v-if="deleteProjectBtn" @click="openModal('delete-group')"><img src="../../../img/delete-icon-white.svg" class="more-options-icon" alt="More options delete icon"> Delete project</span>
@@ -40,6 +40,12 @@ export default {
         editBtn:{
             type:Boolean,
             default:false
+        },
+        userToEdit:{
+            type:Object,
+            default:()=>{
+                return {};
+            }
         }
     
     },

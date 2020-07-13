@@ -1,12 +1,16 @@
 <template>
     <div class="control-bar" v-if="user != null">
-        <user-item view-mode='card'  class="active" 
+
+        <user-item view-mode='card'  class="active"
+        :user="user" 
         :logged-user='true'
         :name='user.name'
         :avatar="user.avatar"
         :start_hour="user.start_hour"
-        :end_hour="user.end_hour">
+        :end_hour="user.end_hour"
+        :timezone="user.timezone">
         </user-item>
+
         <div id="user-type-filters">
             <button class="btn btn-link btn-filter active">
                 All
@@ -28,21 +32,27 @@
 <script>
 import UserItem from './user-item.vue';
 import {mapState} from 'vuex';
+import moment from 'moment-timezone';
+
 export default {
     data(){
         return {
-            avatar: null
+            avatar: null,
         }
     },
     computed:{
         ...mapState(['user']),
-        
     },
     components:{
         UserItem
     },
+    created() {
+    },
     mounted(){
-        this.avatar = window.location.host;
+
+    },
+    methods:{
+        
     }
 }
 </script>

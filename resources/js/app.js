@@ -39,6 +39,7 @@ import TeamCreatedModal from './components/modals/team-created.vue'
 import AddTeammateModal from './components/modals/add-teammate.vue'
 import DeleteProjectModal from './components/modals/delete-project.vue';
 import {mapState,mapActions, mapMutations} from 'vuex';
+import moment from 'moment';
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -49,6 +50,7 @@ const app = new Vue({
     el: '#app',
     store,
     router,
+    moment,
     created(){
         this.getUserTeams();
     },

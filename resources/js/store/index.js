@@ -53,7 +53,8 @@ export default new Vuex.Store({
                 start:'9:00',
                 end:'16:30'},
             projects:['Parametrics']}
-        ]
+        ],
+        info_edits:null
 
     },
     getters:{
@@ -132,7 +133,9 @@ export default new Vuex.Store({
             if(payload == 'change-name'){
                 return state.modal.change_name = true;
             }
-            if(payload == 'edit-info'){
+            if(typeof(payload) == "object" & payload.name == 'edit-info'){
+                console.log(payload.userToEdit)
+                state.info_edits = payload.userToEdit;
                 return state.modal.edit_my_profile = true;
             }
             state.modal_visible = true;
@@ -153,10 +156,11 @@ export default new Vuex.Store({
                return state.modal.delete_group = false;
             }
             if(payload == 'change-name'){
-               return state.modal.change_name = false;
+                return state.modal.change_name = false;
             }
             if(payload == 'edit-info'){
-               return state.modal.edit_my_profile = false;
+                state.info_edits = null;
+                return state.modal.edit_my_profile = false;
             }
             state.modal_visible = false;
 

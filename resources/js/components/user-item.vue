@@ -25,8 +25,8 @@
             </figure>
             <span v-if="viewMode == 'card'" class="user-item-info">
                 <b class="user-item-name">{{username}}</b>
-                <h4 class="user-item-current-hour">05:06 PM</h4>
-                <span class="user-item-current-day">Wed 5th</span>
+                <time-watch :timezone="timezone"></time-watch>
+                <current-day :timezone="timezone"></current-day>
                 <span class="user-item-available-time">Av: {{start_hour}} - {{end_hour}}</span>
             </span>
             <template v-if="viewMode == 'timeline'">
@@ -37,13 +37,13 @@
 
                 </span>
 
-                <h4 class="user-item-current-hour">05:06 PM</h4>
-                <span class="user-item-current-day">Wed 5th</span>
+                <time-watch :timezone="timezone"></time-watch>
+                <current-day :timezone="timezone"></current-day>
 
             </template>
 
-            <more-option-btn mode="dark" :edit-btn='true' :delete-btn='false' v-if="loggedUser"></more-option-btn>
-            <more-option-btn :edit-btn='true' v-if="loggedUser == false" :delete-member-btn="true"></more-option-btn>  
+            <more-option-btn mode="dark" :edit-btn='true' :delete-btn='false' v-if="loggedUser" :user-to-edit="user"></more-option-btn>
+            <more-option-btn :edit-btn='true' v-if="loggedUser == false" :delete-member-btn="true" :user-to-edit="user"></more-option-btn>  
                     </template>
           
     </div>
@@ -51,6 +51,8 @@
 
 <script>
 import MoreOptionBtn from "./utils/more-option-btn.vue";
+import TimeWatch from "./utils/time-watch.vue";
+import CurrentDay from "./utils/current-day.vue";
 import { mapState } from 'vuex';
 
 export default {
@@ -62,9 +64,17 @@ export default {
     mounted(){
     },
     components:{
-        MoreOptionBtn
+        MoreOptionBtn,
+        TimeWatch,
+        CurrentDay
     },
     props:{
+        user:{
+            type:Object,
+            default:()=>{
+                return {};
+            }
+        },
         timezone:{
             type:String,
             default:null

@@ -37,7 +37,7 @@ export default {
         }
     },
     computed:{
-            ...mapGetters(['basic_header','basic_header_multipart']),
+            ...mapGetters(['basic_header','header']),
             timezones(){
 
                 if(this.timezones_list.length == 0){
@@ -49,7 +49,6 @@ export default {
     },
     methods:{
         get_profile_pic(e){
-            console.log(e)
             this.profile_pic = e.target.files[0];
         },
         searchTimezones(){
@@ -64,7 +63,6 @@ export default {
             }
         },
         fetch_timezones_list(){
-            console.log('xxx')
             let timezones_data = null;
             let x = fetch(`https://dev.virtualearth.net/REST/v1/TimeZone/List/?timezonestandard=IANA&key=AmdZGBzRdAtTx2w_t1j0Vsc4M5Apj5P83OKc-17qDE2ytTEoqLLgJS0_jPL-UrLw`).then(res => res.text() ).then( data =>{
                 timezones_data = JSON.parse(data) 
@@ -96,9 +94,7 @@ export default {
             }
 
             arr.forEach(timezone => upload_timezone(timezone) )
-            });
-
-            
+            });     
         },
 
         updateProfile(){
@@ -117,7 +113,7 @@ export default {
 
             fetch('/update-user',{
                 method: 'POST',
-                headers:this.basic_header_multipart,
+                headers:this.header,
                 body:payload
             }).then( res => res.text())
             .then(res => {

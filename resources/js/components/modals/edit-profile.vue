@@ -8,11 +8,17 @@
             <div class="popup-fields-container">
                 <span class="profile-pic-btn">
                     <input type="file" name="profile-pic" @change="get_profile_pic"/>
-                    <img src="https://via.placeholder.com/70" alt="" class="profile-pic-thumbnail">
+                    
+                    <img :src="info_edits.avatar" 
+                        :alt='"Avatar for" + info_edits.name' 
+                        class="profile-pic-thumbnail"/>
+
                 </span>
                 <div class="input-field ">
                     <label class="input-label" >Name</label>
-                    <input type="text" value="Christopher Santana">
+                    <input type="text" value="" 
+                        :placeholder="info_edits.name">
+
                 </div>
                 <div class="input-timezone">
                     <div class="input-field " @click="openPicker">
@@ -61,6 +67,8 @@ import ModalTemplate from './template.vue';
 import TimePicker from '../utils/time-picker-comp.vue'
 import utils from '../../mixins/utils.vue';
 import ContinueBtn from '../utils/buttons/continue-btn';
+import { mapState } from 'vuex';
+
 export default {
     name: 'edit-profile-modal',
     components:{
@@ -69,6 +77,9 @@ export default {
         ContinueBtn
     },
     mixins:[utils],
+    computed:{
+        ...mapState(['info_edits'])
+    },
     methods:{
         updateTimePick(e){
             console.log(e)
