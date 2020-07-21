@@ -9,7 +9,9 @@ require('./bootstrap');
 window.Vue = require('vue');
 import Vuex, { mapGetters } from 'vuex';
 import VueRouter from 'vue-router';
+import VueRandomColor from 'vue-randomcolor';
 
+Vue.use(VueRandomColor)
 Vue.use(Vuex);
 Vue.use(VueRouter)
 /**
@@ -52,7 +54,13 @@ const app = new Vue({
     router,
     moment,
     created(){
-        this.getUserTeams();
+        this.getUserTeams().then(data =>{
+            if(data.length > 0){
+                let name = data[0].name;
+                let id = data[0].id;
+                this.$store.commit("setActiveTeam",{ name, id })
+            }
+        });
     },
     components:{
         Sidebar,
@@ -91,6 +99,7 @@ const app = new Vue({
             
             let user = JSON.parse(data)
             this.$store.commit('setUserInformation',user);
+            this.getTeamMembers();
 
         })
 
@@ -98,7 +107,7 @@ const app = new Vue({
     },
     methods:{
         ...mapMutations(['toggleSidebar','setDeviceWidth']),
-        ...mapActions(['getUserTeams'])
+        ...mapActions(['getUserTeams','getTeamMembers'])
     }
 
     

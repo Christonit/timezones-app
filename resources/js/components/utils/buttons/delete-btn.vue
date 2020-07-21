@@ -1,5 +1,5 @@
 <template>
-    <button class="btn-del" :class="el_alignment" @click="click">
+    <button class="btn-del" :class="el_alignment" @click="emitClick">
     </button>
 </template>
 
@@ -9,13 +9,8 @@ export default {
         alignment:{
             type: [Boolean,String],
             default: false
-        },
-        click:{
-            type:Function,
-            default: () =>{
-                return false
-            }
         }
+        
     },
     computed:{
         el_alignment(){
@@ -30,6 +25,11 @@ export default {
                 return 'ml-auto';
             };
 
+        }
+    },
+    methods:{
+        emitClick(){
+            this.$emit("click")
         }
     }
 }

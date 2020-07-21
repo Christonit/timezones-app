@@ -17,7 +17,7 @@
             </div>
 
             <div class="w-100 ">
-                <continue-btn alignment='center' :click="createTeam"></continue-btn>
+                <continue-btn alignment='center' @click="createTeam"></continue-btn>
             </div>
         </template>
         
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import {mapMutations, mapState} from 'vuex';
+import {mapMutations, mapState, mapGetters, mapActions} from 'vuex';
 
 import ModalTemplate from './template.vue';
 import ContinueBtn from '../utils/buttons/continue-btn'
@@ -42,10 +42,13 @@ export default {
         }
     },
     computed:{
-        ...mapState(['teams'])
+        ...mapState(['teams']),
+        ...mapGetters(['basic_header'])
     },
     methods:{
-        ...mapMutations(['addTeam']),
+        ...mapMutations(['addTeam','setActiveTeam']),
+        ...mapActions(['getLatestTeam']),
+
         changeName(){
             if(this.name == "Team Name"){
                this.name = ''
@@ -64,11 +67,25 @@ export default {
        createTeam(){
 
            if(this.name.length > 4 && this.name != 'Team Name'){
-               let new_team = {
-                   name: this.name,
-                   id: (this.teams.length + 1)
-               }
-               this.addTeam(new_team);
+            //    let new_team = {
+            //        name: this.name,
+            //        id: (this.teams.length + 1)
+            //    }
+            //    this.addTeam(new_team);
+
+               fetch('/create-team',{
+               method:'POST',
+               headers: this.basic_header,
+               body: JSON.stringify({name: this.name})
+               }).then(res =>{ 
+                   if(res.status == 200){
+                       this.getLatestTeam().then( team => {
+                           console.log(team)
+                           this.setActiveTeam(team);
+                       });
+                       this.$store.commit('closeModal', 'new-team');
+                   }
+                });
            }
        } 
     }

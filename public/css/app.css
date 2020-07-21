@@ -11072,6 +11072,19 @@ a.text-dark:focus {
   height: 100%;
 }
 
+.user-img span {
+  display: block;
+  align-items: center;
+  line-height: 2.85;
+  text-align: center;
+  height: 100%;
+  color: #fff;
+  text-transform: uppercase;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+}
+
 .user-status-dot {
   content: " ";
   display: block;
@@ -11225,6 +11238,7 @@ a.text-dark:focus {
 .hours-items-grid {
   width: calc(100% - 454px);
   position: relative;
+  min-height: 82.5vh;
 }
 
 .hour-timeline-item {
@@ -11528,6 +11542,7 @@ a.text-dark:focus {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
+  z-index: 1;
   margin: 32px 0;
 }
 
@@ -11540,6 +11555,15 @@ a.text-dark:focus {
   width: 100%;
   line-height: 1;
   margin-bottom: 4px;
+}
+
+.input-label-placeholder {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #05060d;
+  opacity: 0.5;
+  margin-bottom: 0;
 }
 
 input {
@@ -11673,6 +11697,11 @@ input.input-field::placeholder {
   margin-left: 0;
 }
 
+.input-field-group .input-timezone {
+  margin-bottom: 0;
+  height: 67px;
+}
+
 .add-clients-form {
   max-width: 582px;
 }
@@ -11699,6 +11728,8 @@ input.input-field::placeholder {
 .input-timezone .input-field {
   padding: 15px 36px;
   margin-bottom: 0;
+  align-items: center;
+  height: 100%;
 }
 
 .timezone-picker-container {

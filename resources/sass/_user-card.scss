@@ -91,6 +91,17 @@
     img{
         height: 100%;
     }
+
+    span{
+        display: block;
+        align-items: center;
+        line-height: 2.85;
+        text-align: center;
+        height: 100%;
+        color: #fff;
+        text-transform: uppercase;
+        @include text-14-bold;
+    }
 }
 
 .user-status-dot{
@@ -226,6 +237,7 @@
 .hours-items-grid{
     width: calc(100% - 454px);
     position: relative;
+    min-height: 82.5vh;
 }
 
 .hour-timeline-item{

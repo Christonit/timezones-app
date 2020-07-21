@@ -1,16 +1,12 @@
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
  
 export default {
     data(){
         return {
             timezone_input:'',
-            user: "Christopher Santana",
             timezone:{id:"America/Detroit",name:"EST - Eastern Standard Time"},
-            start_time:null,
-            end_time:null,
             timezones_list:[],
-            profile_pic:null,
             default_gmt : [
                 {name:'GMT', id: 'America/Danmarkshavn'},
                 {name:'GMT-2', id: 'America/South_Georgia'},
@@ -38,6 +34,7 @@ export default {
     },
     computed:{
             ...mapGetters(['basic_header','header']),
+            ...mapState(['info_edits']),
             timezones(){
 
                 if(this.timezones_list.length == 0){
@@ -101,11 +98,12 @@ export default {
             
             let payload = new FormData();
 
-            payload.append('timezone',this.timezone.id)
-            payload.append('timezone_abbr', this.timezone.name)
-            payload.append('name', this.user)
-            payload.append('start_hour',this.start_time)
-            payload.append('end_hour',this.end_time)
+            payload.append('timezone',this.timezone.id);
+            payload.append('timezone_abbr', this.timezone.name);
+            payload.append('name', this.user_name);
+            payload.append('start_hour',this.start_time);
+            payload.append('end_hour',this.end_time);
+            this.info_edits.hasOwnProperty('team') ? payload.append('teammate',this.info_edits.id) : '';
             
             if(this.profile_pic != null){
                 payload.append('avatar',this.profile_pic);

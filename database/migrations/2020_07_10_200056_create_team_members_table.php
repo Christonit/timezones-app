@@ -22,9 +22,11 @@ class CreateTeamMembersTable extends Migration
             $table->string('name');
             $table->string('email');
 
-            $table->string('timezone')->nullable();
+            $table->string('timezone');
+            $table->string('timezone_abbr');
             $table->string('start_hour')->nullable();
             $table->string('end_hour')->nullable();
+            $table->text('avatar')->nullable();
 
             $table->boolean('is_activated')->default(false);
             $table->boolean('invited')->default(false);

@@ -8,7 +8,7 @@
             <div class="popup-fields-container">
                 <span class="profile-pic-btn">
                     <input type="file" name="profile-pic" @change="get_profile_pic"/>
-                    
+
                     <img :src="info_edits.avatar" 
                         :alt='"Avatar for" + info_edits.name' 
                         class="profile-pic-thumbnail"/>
@@ -17,7 +17,7 @@
                 <div class="input-field ">
                     <label class="input-label" >Name</label>
                     <input type="text" value="" 
-                        :placeholder="info_edits.name">
+                        :placeholder="info_edits.name" v-model="user_name">
 
                 </div>
                 <div class="input-timezone">
@@ -75,6 +75,23 @@ export default {
         ModalTemplate,
         TimePicker,
         ContinueBtn
+    },
+    data(){
+        return {
+            user_name: null,
+            start_time:null,
+            end_time:null,
+            profile_pic:null,
+
+        }
+    },
+    mounted(){
+        
+        this.start_time = this.info_edits.start_hour;
+        this.end_time = this.info_edits.end_hour;
+        this.timezone.id = this.info_edits.timezone;
+        this.timezone.name = this.info_edits.timezone_abbr;
+
     },
     mixins:[utils],
     computed:{

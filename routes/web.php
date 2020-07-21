@@ -48,7 +48,14 @@ Route::middleware('auth')->group( function (){
 
     Route::get('/user-information', 'HomeController@getUser');
 
+    Route::post('/create-team', 'TeamsController@create');
+    Route::get('/list-teams', 'TeamsController@list');
+    Route::get('/list-latest-created-team', 'TeamsController@latestCreated');
+    Route::get('/list-team-members/{team}', 'TeamsController@getTeamMembers');
+    Route::post('/add-team-members','TeamsController@addMembers');
+
 });
+
 
 Route::post('/upload-timezones','TimezonesController@upload');
 Route::post('/search-timezones','TimezonesController@search_timezone');

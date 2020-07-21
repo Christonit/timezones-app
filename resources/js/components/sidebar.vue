@@ -6,20 +6,28 @@
 
         <div class="teams-contain">
             <div class="dropdown team-dropdown">
-                <button class="btn btn-secondary dropdown-toggle team-dropdown-btn" role="button" id="teams-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                <button 
+                class="btn btn-secondary dropdown-toggle team-dropdown-btn" role="button" 
+                id="teams-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                v-if="team_project.id != null">
                     {{team_project.name}}
+                </button>
+
+                <button class="dropdown-item" @click="openModal('new-team')" v-else> 
+                    <i class="square-add-icon material-icons ">
+                        add
+                    </i>        
+                    New Team
                 </button>
 
                 <div class="dropdown-menu" aria-labelledby="teams-list">
 
-                    <template v-for="(team,key) in teams">
-
-                        <button class="dropdown-item" 
-                            ref="selectTeam"
-                            @click="selectTeam(team.name, team.id)">
-                                {{team.name}}
+                    <template v-if="teams.length > 0" 
+                        v-for="(team,key) in teams">
+                        <button class="dropdown-item" ref="selectTeam" @click="selectTeam(team.name, team.id)">
+                            {{team.name}}
                         </button>
-
                     </template>
 
                     <button class="dropdown-item" @click="openModal('new-team')"> 
@@ -32,7 +40,7 @@
                 
             </div>
 
-            <router-link :to="`/team/${team_project.name.split(' ').join('-').toLowerCase()}`" tag='button' class="btn btn-link btn-add-teammte ">
+            <router-link v-if="team_project.id != null" :to="`/team/${team_project.name.split(' ').join('-').toLowerCase()}`" tag='button' class="btn btn-link btn-add-teammte ">
                 <button class="btn-add-fill material-icons mr-3">
                     add
                 </button>
@@ -45,7 +53,7 @@
         All team members
     </button>
 
-    <div class="project-list">
+    <div class="project-list" v-if="team_project.id != null">
         <div class="d-flex pl-3 my-3 align-items-center">
             <b class="sidebar-label">
                 Proyects
@@ -57,7 +65,7 @@
              
         </div>
 
-        <ul class="item-lists">
+        <ul class="item-lists" v-if="projects.length > 0">
             <li class="item">
                 Parametrics Cabinet
                 <more-option-btn mode="dark" :edit-name="true" :delete-project-btn="true" :add-btn="true"></more-option-btn>
@@ -80,21 +88,23 @@ import MoreOptionBtn from "./utils/more-option-btn.vue";
 
 export default {
     mounted() {
-        console.log('Component mounted.')
     },
     computed:{
-        ...mapState(['teams','team_project','sidebar_visible']),
+        ...mapState(['teams','team_project','sidebar_visible','projects']),
         mobile_sidebar_visible(){
             return this.sidebar_visible == true ? 'active' : '';
         }
     },
     methods:{
         ...mapMutations(['openModal','setActiveTeam']),
-        selectTeam(name,key){
+        ...mapActions(['getTeamMembers']),
+
+        selectTeam(name,id){
 
             document.querySelector('.team-dropdown .dropdown-item').classList.remove('active');
             event.target.classList.add('active')
-            this.setActiveTeam({name,key});
+            this.setActiveTeam({name,id});
+            this.getTeamMembers();
 
         }
     },

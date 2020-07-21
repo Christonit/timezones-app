@@ -35,7 +35,7 @@ export default {
             // this.currentTime = moment().tz('America/New_York').format('HH mm');
 
             //12 hours interval
-            this.currentTime = moment().tz(timezone).format('LT');
+            this.currentTime = moment.tz(timezone).format('LT');
         }
     }
 

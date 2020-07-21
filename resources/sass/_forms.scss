@@ -102,6 +102,7 @@
     align-items: center;
     position: sticky;
     top: 0;
+    z-index: 1;
     margin: 32px 0;
 }
 
@@ -112,6 +113,13 @@
     width: 100%;
     line-height: 1;
     margin-bottom: 4px;
+}
+.input-label-placeholder{
+    @include text-14-bold;
+    color: $black;
+    opacity: 0.5;
+    margin-bottom: 0;
+    
 }
 
 input{
@@ -205,6 +213,11 @@ input.input-field{
     }
 }
 
+.input-field-group .input-timezone{
+    margin-bottom: 0;
+    height: 67px;
+}
+
 .add-clients-form{
     max-width: 582px;
 }
@@ -227,6 +240,8 @@ input.input-field{
     .input-field{
         padding: 15px 36px;
         margin-bottom: 0;
+        align-items: center;
+        height: 100%;
     }
 }
 

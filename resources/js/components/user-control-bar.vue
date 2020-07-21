@@ -3,12 +3,7 @@
 
         <user-item view-mode='card'  class="active"
         :user="user" 
-        :logged-user='true'
-        :name='user.name'
-        :avatar="user.avatar"
-        :start_hour="user.start_hour"
-        :end_hour="user.end_hour"
-        :timezone="user.timezone">
+        :logged-user="true">
         </user-item>
 
         <div id="user-type-filters">

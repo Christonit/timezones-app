@@ -31,8 +31,8 @@ export default new Vuex.Store({
         },
         teams:[],
         projects:[
-            {name:'Parametrics',id:'1'},
-            {name:'Orca',id:'2'}
+            // {name:'Parametrics',id:'1'},
+            // {name:'Orca',id:'2'}
         ],
         team_members:[
             {name:'Christopher Santana',
@@ -54,6 +54,7 @@ export default new Vuex.Store({
                 end:'16:30'},
             projects:['Parametrics']}
         ],
+        new_team_members:[],
         info_edits:null
 
     },
@@ -78,6 +79,9 @@ export default new Vuex.Store({
     mutations:{
         setUserInformation(state,payload){
             state.user = payload;
+        },
+        setTeamMembers(state,payload){
+            state.team_members = payload;
         },
         setCsrf(state,payload){
             state.csrf = payload;
@@ -112,16 +116,13 @@ export default new Vuex.Store({
         openModal(state,payload){
 
             if(window.innerWidth <= state.screen_sizes.lg){
-
                 state.sidebar_visible = false
-
             }
             
             if(payload == 'new_team_name'){
                 return state.modal.new_team = true;
             }
             if(payload == 'new-team'){
-                console.log('hola')
                 return state.modal.new_team = true;
             }
             if(payload == 'user_created_successfully'){
@@ -134,7 +135,6 @@ export default new Vuex.Store({
                 return state.modal.change_name = true;
             }
             if(typeof(payload) == "object" & payload.name == 'edit-info'){
-                console.log(payload.userToEdit)
                 state.info_edits = payload.userToEdit;
                 return state.modal.edit_my_profile = true;
             }
@@ -169,6 +169,21 @@ export default new Vuex.Store({
         addTeam(state,payload){
             state.teams.push(payload)
         },
+        addNewTeamMember(state, payload){
+            state.new_team_members.unshift(payload);
+        },
+        deleteNewTeamMember(state, payload){
+            state.new_team_members.splice(payload,1);
+        },
+        modifyNewTeamMemberName(state, {key,name}){
+            state.new_team_members[key].name = name;
+        },
+        modifyNewTeamMemberEmail(state, {key,email}){
+            state.new_team_members[key].email = email;
+        },
+        modifyNewTeamMemberTimezone(state, {index,timezone}){
+            state.new_team_members[index].timezone = timezone;
+        },
         setActiveTeam(state,{name,id}){
             state.team_project.name = name;
             state.team_project.id = id;
@@ -179,18 +194,32 @@ export default new Vuex.Store({
     actions:{
         getUserTeams({state,commit},event){
 
-            let dummy_team = {name:'Scopics Software', id:1}
+            return fetch('/list-teams').then( res => {
+                if(res.status == 200){
+                    return res.text();
+                }
+            }).then( data => {
+                let teams = JSON.parse(data);
+                teams.forEach( team => commit('addTeam',team))
+                
+                return teams;
+            })
+        },
+        getLatestTeam({state,commit}){
+            return fetch('/list-latest-created-team').then(res=> res.text()).then(data => {
+                let info = JSON.parse(data)
+                commit('addTeam',info);
 
-            commit('addTeam',dummy_team)
-
-            //Set dummy frist active project;
-
-            if(state.team_project.name == null){
-    
-                commit('setActiveTeam', dummy_team);
-
-            }
-
+                return info;
+            })
+        },
+        getTeamMembers({state,commit}){
+            return fetch(`/list-team-members/${state.team_project.id}`)
+                    .then(res => res.text())
+                    .then(data => {
+                        commit('setTeamMembers',JSON.parse(data))
+                    })
         }
+
     }
 })

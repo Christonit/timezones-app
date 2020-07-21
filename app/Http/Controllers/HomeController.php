@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use App\User;
+use App\TeamMembers;
 
 class HomeController extends Controller
 {
@@ -39,10 +40,17 @@ class HomeController extends Controller
     }
 
     public function updateUser(Request $request){
-        $user_id = Auth::id();    
-        // return $request->file('avatar');
+        
+        if($request->has("teammate") ){
 
-        $user = User::find($user_id);
+            $user = TeamMembers::find($request->teammate);
+
+        }else{
+            $user_id = Auth::id();    
+            $user = User::find($user_id);
+        }
+
+
         if($request->has('name') && $request->name != Auth::user()->name){
             $user->name = $request->input('name');
         }
