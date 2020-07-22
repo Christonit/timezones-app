@@ -54,7 +54,7 @@
                 
             </div>
             <div class="w-100 ">
-                <continue-btn @click="updateProfile" alignment="center" ></continue-btn>
+                <continue-btn @click="updateThisMember" alignment="center" ></continue-btn>
             </div>
         </template>
         
@@ -67,7 +67,7 @@ import ModalTemplate from './template.vue';
 import TimePicker from '../utils/time-picker-comp.vue'
 import utils from '../../mixins/utils.vue';
 import ContinueBtn from '../utils/buttons/continue-btn';
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
     name: 'edit-profile-modal',
@@ -98,6 +98,7 @@ export default {
         ...mapState(['info_edits'])
     },
     methods:{
+        ...mapMutations(['setSpecificTeamMember','closeModal']),
         updateTimePick(e){
             console.log(e)
         },
@@ -126,6 +127,22 @@ export default {
                 el.classList.remove('active')
             }
             
+        },
+        updateThisMember(){
+           this.updateProfile().then(status => {
+               if( status == 1){
+                    this.getMemberInfo(this.info_edits.id).then( (data)=>{
+                        
+                        this.setSpecificTeamMember({
+                            index : this.info_edits.key,
+                            team_member : data
+                        })
+
+                    })
+                    .then(() => this.closeModal('edit-info') );
+               }
+
+           }) 
         }
     }
 }

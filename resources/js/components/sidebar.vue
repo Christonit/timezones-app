@@ -100,8 +100,12 @@ export default {
         ...mapActions(['getTeamMembers']),
 
         selectTeam(name,id){
+            console.log(event);
 
-            document.querySelector('.team-dropdown .dropdown-item').classList.remove('active');
+            if(document.querySelector('.team-dropdown .dropdown-item.active')){
+                document.querySelector('.team-dropdown .dropdown-item.active').classList.remove('active');
+            }
+            
             event.target.classList.add('active')
             this.setActiveTeam({name,id});
             this.getTeamMembers();

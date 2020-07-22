@@ -34,31 +34,15 @@ export default new Vuex.Store({
             // {name:'Parametrics',id:'1'},
             // {name:'Orca',id:'2'}
         ],
-        team_members:[
-            {name:'Christopher Santana',
-            timezone:'GMT-4',
-            available_hours:{
-                start:'8:30',
-                end:'17:00'},
-            projects:['Parametrics', 'Orca']},
-            {name:'Alejandro Carmona',
-            timezone:'GMT-0',
-            available_hours:{
-                start:'9:00',
-                end:'16:30'},
-            projects:['Orca']},
-            {name:'Francis Pujols',
-            timezone:'GMT-2',
-            available_hours:{
-                start:'9:00',
-                end:'16:30'},
-            projects:['Parametrics']}
-        ],
+        team_members:[],
         new_team_members:[],
         info_edits:null
 
     },
     getters:{
+        team_members(state){
+            return state.team_members;
+        },
         basic_header(state){
             return {
                 'Content-Type':'application/json',
@@ -82,6 +66,10 @@ export default new Vuex.Store({
         },
         setTeamMembers(state,payload){
             state.team_members = payload;
+        },
+        setSpecificTeamMember(state,{index,team_member}){
+           
+            state.team_members.splice(index,1,team_member);
         },
         setCsrf(state,payload){
             state.csrf = payload;
@@ -174,6 +162,9 @@ export default new Vuex.Store({
         },
         deleteNewTeamMember(state, payload){
             state.new_team_members.splice(payload,1);
+        },
+        emptyNewTeamMember(state){
+            state.new_team_members = [];
         },
         modifyNewTeamMemberName(state, {key,name}){
             state.new_team_members[key].name = name;

@@ -35,12 +35,13 @@ export default {
         ...mapState(['new_team_members'])
     },
     methods:{
-        ...mapMutations(['closeModal']),
+        ...mapMutations(['closeModal','emptyNewTeamMember']),
         ...mapActions(['getTeamMembers']),
         closeThis(){
             this.closeModal('user_created_successfully');
             this.getTeamMembers();
             this.$router.push('/');
+            this.emptyNewTeamMember();
             
         }
         

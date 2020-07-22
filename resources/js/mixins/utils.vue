@@ -109,16 +109,27 @@ export default {
                 payload.append('avatar',this.profile_pic);
             }
 
-            fetch('/update-user',{
+            return fetch('/update-user',{
                 method: 'POST',
                 headers:this.header,
                 body:payload
-            }).then( res => res.text())
-            .then(res => {
-                if(res.status == 201){
-                    this.$store.commit('closeModal', 'edit-info');
-                    
+            }).then( res =>{
+                if(res.status == 200){
+                   return res.text()
+                }else{
+                    return "error-updating";
                 }
+            })
+    
+        },
+        getMemberInfo(teammate_id, is_user = false){
+            return fetch(`/get-teammate?id=${teammate_id}&user=${is_user}`).then(res => {
+                if(res.status == 200 ){
+                    return res.text();
+                }
+            })
+            .then(data => {
+                return JSON.parse(data);
             })
         }
     }

@@ -20,7 +20,7 @@ class CreateTeamMembersTable extends Migration
             $table->foreign('team')->references('id')->on('teams');
 
             $table->string('name');
-            $table->string('email');
+            $table->string('email')->nullable();
 
             $table->string('timezone');
             $table->string('timezone_abbr');

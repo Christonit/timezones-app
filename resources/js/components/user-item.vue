@@ -42,8 +42,8 @@
 
             </template>
 
-            <more-option-btn mode="dark" :edit-btn='true' :delete-btn='false' v-if="loggedUser" :user-to-edit="user"></more-option-btn>
-            <more-option-btn :edit-btn='true' v-if="loggedUser == false" :delete-member-btn="true" :user-to-edit="user"></more-option-btn>  
+            <more-option-btn mode="dark" :edit-btn='true' :delete-btn='false' v-if="loggedUser" :user-to-edit="userToEdit"></more-option-btn>
+            <more-option-btn :edit-btn='true' v-if="loggedUser == false" :delete-member-btn="true" :user-to-edit="userToEdit"></more-option-btn>  
         </template>     
     </div>
 </template>
@@ -70,6 +70,9 @@ export default {
         CurrentDay
     },
     props:{
+        index:{
+            type: [Number, String]
+        },
         user:{
             type:Object,
             default:()=>{
@@ -102,25 +105,30 @@ export default {
 
             return this.user.name
         },
+        userToEdit(){
+            let user = this.user;
+            user.key = this.index;
+            return user;
+        },
         initialLetters(){
             let name = this.user.name.split(" ");
 
-            if(name.length > 1){
-                return name.slice(0,2);
-            }else{
-                let abbr = [];
-                
-                name.forEach( letter => {
-
-                    let el = letter.slice(0,1);
-                   
-
-                    abbr.push(el);
-                })
-
-                return abbr.join();
-
+            if(name.length < 2){
+                return this.user.name.slice(0,2);
             }
+
+            let abbr = [];
+            
+            name.forEach( letter => {
+
+                let el = letter.slice(0,1);
+                
+                abbr.push(el);
+            })
+
+            return abbr.join('');
+
+            
         },
         isMarkedForDeletion(){
            return this.marked_for_deletion == true & this.userId == 2 ? 'marked-for-deletion' : '';

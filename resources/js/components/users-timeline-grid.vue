@@ -5,7 +5,7 @@
                 <user-item view-mode='timeline' class="" :user="user">
                 </user-item>
             </div>
-            <user-item v-for="(member,key) in team_members" :user="member" :key='key' view-mode='timeline'></user-item>
+            <user-item v-for="(member,key) in team_members" :user="member" :key='key' :index="key" view-mode='timeline'></user-item>
         </div>
 
         <div class="hours-items-grid">
@@ -121,7 +121,7 @@
 <script>
 
 import UserItem from './user-item.vue';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
     data(){
@@ -133,7 +133,9 @@ export default {
         UserItem
     },
     computed:{
-        ...mapState(['user','team_members'])
+        ...mapState(['user']),
+        ...mapGetters(['team_members'])
+
     }
 }
 </script>

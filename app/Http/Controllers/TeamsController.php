@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 use App\Teams;
 use App\TeamMembers;
 
@@ -61,7 +62,24 @@ class TeamsController extends Controller
         return TeamMembers::where('team',$team)->get();
     }
 
+    public function getTeammate(Request $request){
 
-    
+
+
+        if($request->has('id')){
+            // return TeamMembers::findOrFail(22);
+            if($request->has('user') && $request->user === true ){
+                return User::findOrFail($request->id);
+            }
+            return TeamMembers::findOrFail($request->id);
+
+        }else{
+
+            return response('bad-parameters')->setStatusCode(400);
+
+        }
+
+    }
+   
     
 }

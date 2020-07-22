@@ -50,6 +50,10 @@ Route::middleware('auth')->group( function (){
 
     Route::post('/create-team', 'TeamsController@create');
     Route::get('/list-teams', 'TeamsController@list');
+
+    //Uses ID query parameter, ex: /get-teammate?id=10
+    Route::get('/get-teammate','TeamsController@getTeammate');
+    
     Route::get('/list-latest-created-team', 'TeamsController@latestCreated');
     Route::get('/list-team-members/{team}', 'TeamsController@getTeamMembers');
     Route::post('/add-team-members','TeamsController@addMembers');

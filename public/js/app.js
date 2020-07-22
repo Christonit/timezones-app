@@ -2602,7 +2602,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mixins: [_mixins_utils_vue__WEBPACK_IMPORTED_MODULE_2__["default"]],
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapState"])(['info_edits'])),
-  methods: {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapMutations"])(['setSpecificTeamMember', 'closeModal'])), {}, {
     updateTimePick: function updateTimePick(e) {
       console.log(e);
     },
@@ -2628,8 +2628,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.$refs.btnArrow.classList.remove('active');
         el.classList.remove('active');
       }
+    },
+    updateThisMember: function updateThisMember() {
+      var _this = this;
+
+      this.updateProfile().then(function (status) {
+        if (status == 1) {
+          _this.getMemberInfo(_this.info_edits.id).then(function (data) {
+            _this.setSpecificTeamMember({
+              index: _this.info_edits.key,
+              team_member: data
+            });
+          }).then(function () {
+            return _this.closeModal('edit-info');
+          });
+        }
+      });
     }
-  }
+  })
 });
 
 /***/ }),
@@ -3245,11 +3261,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapState"])(['new_team_members'])),
-  methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapMutations"])(['closeModal'])), Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapActions"])(['getTeamMembers'])), {}, {
+  methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapMutations"])(['closeModal', 'emptyNewTeamMember'])), Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapActions"])(['getTeamMembers'])), {}, {
     closeThis: function closeThis() {
       this.closeModal('user_created_successfully');
       this.getTeamMembers();
       this.$router.push('/');
+      this.emptyNewTeamMember();
     }
   })
 });
@@ -3367,7 +3384,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }),
   methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal', 'setActiveTeam'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getTeamMembers'])), {}, {
     selectTeam: function selectTeam(name, id) {
-      document.querySelector('.team-dropdown .dropdown-item').classList.remove('active');
+      console.log(event);
+
+      if (document.querySelector('.team-dropdown .dropdown-item.active')) {
+        document.querySelector('.team-dropdown .dropdown-item.active').classList.remove('active');
+      }
+
       event.target.classList.add('active');
       this.setActiveTeam({
         name: name,
@@ -3734,6 +3756,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     CurrentDay: _utils_current_day_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: {
+    index: {
+      type: [Number, String]
+    },
     user: {
       type: Object,
       "default": function _default() {
@@ -3766,19 +3791,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return this.user.name;
     },
+    userToEdit: function userToEdit() {
+      var user = this.user;
+      user.key = this.index;
+      return user;
+    },
     initialLetters: function initialLetters() {
       var name = this.user.name.split(" ");
 
-      if (name.length > 1) {
-        return name.slice(0, 2);
-      } else {
-        var abbr = [];
-        name.forEach(function (letter) {
-          var el = letter.slice(0, 1);
-          abbr.push(el);
-        });
-        return abbr.join();
+      if (name.length < 2) {
+        return this.user.name.slice(0, 2);
       }
+
+      var abbr = [];
+      name.forEach(function (letter) {
+        var el = letter.slice(0, 1);
+        abbr.push(el);
+      });
+      return abbr.join('');
     },
     isMarkedForDeletion: function isMarkedForDeletion() {
       return this.marked_for_deletion == true & this.userId == 2 ? 'marked-for-deletion' : '';
@@ -3833,7 +3863,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     UserItem: _user_item_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['team_members']))
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['team_members'])), {}, {
+    users: function users() {
+      return this.team_members;
+    }
+  })
 });
 
 /***/ }),
@@ -3986,7 +4020,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     UserItem: _user_item_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['user', 'team_members']))
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['user'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['team_members']))
 });
 
 /***/ }),
@@ -4785,8 +4819,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     updateProfile: function updateProfile() {
-      var _this3 = this;
-
       var payload = new FormData();
       payload.append('timezone', this.timezone.id);
       payload.append('timezone_abbr', this.timezone.name);
@@ -4799,16 +4831,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         payload.append('avatar', this.profile_pic);
       }
 
-      fetch('/update-user', {
+      return fetch('/update-user', {
         method: 'POST',
         headers: this.header,
         body: payload
       }).then(function (res) {
-        return res.text();
-      }).then(function (res) {
-        if (res.status == 201) {
-          _this3.$store.commit('closeModal', 'edit-info');
+        if (res.status == 200) {
+          return res.text();
+        } else {
+          return "error-updating";
         }
+      });
+    },
+    getMemberInfo: function getMemberInfo(teammate_id) {
+      var is_user = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      return fetch("/get-teammate?id=".concat(teammate_id, "&user=").concat(is_user)).then(function (res) {
+        if (res.status == 200) {
+          return res.text();
+        }
+      }).then(function (data) {
+        return JSON.parse(data);
       });
     }
   }
@@ -63755,7 +63797,7 @@ var render = function() {
           [
             _c("continue-btn", {
               attrs: { alignment: "center" },
-              on: { click: _vm.updateProfile }
+              on: { click: _vm.updateThisMember }
             })
           ],
           1
@@ -65146,7 +65188,7 @@ var render = function() {
                     mode: "dark",
                     "edit-btn": true,
                     "delete-btn": false,
-                    "user-to-edit": _vm.user
+                    "user-to-edit": _vm.userToEdit
                   }
                 })
               : _vm._e(),
@@ -65156,7 +65198,7 @@ var render = function() {
                   attrs: {
                     "edit-btn": true,
                     "delete-member-btn": true,
-                    "user-to-edit": _vm.user
+                    "user-to-edit": _vm.userToEdit
                   }
                 })
               : _vm._e()
@@ -65191,10 +65233,10 @@ var render = function() {
     ? _c(
         "div",
         { staticClass: "card-grid" },
-        _vm._l(_vm.team_members, function(team_member, key) {
+        _vm._l(_vm.users, function(team_member, key) {
           return _c("user-item", {
             key: key,
-            attrs: { "view-mode": "card", "user-id": key, user: team_member }
+            attrs: { "view-mode": "card", index: key, user: team_member }
           })
         }),
         1
@@ -65242,7 +65284,7 @@ var render = function() {
         _vm._l(_vm.team_members, function(member, key) {
           return _c("user-item", {
             key: key,
-            attrs: { user: member, "view-mode": "timeline" }
+            attrs: { user: member, index: key, "view-mode": "timeline" }
           })
         })
       ],
@@ -85581,35 +85623,14 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     projects: [// {name:'Parametrics',id:'1'},
       // {name:'Orca',id:'2'}
     ],
-    team_members: [{
-      name: 'Christopher Santana',
-      timezone: 'GMT-4',
-      available_hours: {
-        start: '8:30',
-        end: '17:00'
-      },
-      projects: ['Parametrics', 'Orca']
-    }, {
-      name: 'Alejandro Carmona',
-      timezone: 'GMT-0',
-      available_hours: {
-        start: '9:00',
-        end: '16:30'
-      },
-      projects: ['Orca']
-    }, {
-      name: 'Francis Pujols',
-      timezone: 'GMT-2',
-      available_hours: {
-        start: '9:00',
-        end: '16:30'
-      },
-      projects: ['Parametrics']
-    }],
+    team_members: [],
     new_team_members: [],
     info_edits: null
   },
   getters: {
+    team_members: function team_members(state) {
+      return state.team_members;
+    },
     basic_header: function basic_header(state) {
       return {
         'Content-Type': 'application/json',
@@ -85633,6 +85654,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     setTeamMembers: function setTeamMembers(state, payload) {
       state.team_members = payload;
+    },
+    setSpecificTeamMember: function setSpecificTeamMember(state, _ref) {
+      var index = _ref.index,
+          team_member = _ref.team_member;
+      state.team_members.splice(index, 1, team_member);
     },
     setCsrf: function setCsrf(state, payload) {
       state.csrf = payload;
@@ -85730,32 +85756,35 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     deleteNewTeamMember: function deleteNewTeamMember(state, payload) {
       state.new_team_members.splice(payload, 1);
     },
-    modifyNewTeamMemberName: function modifyNewTeamMemberName(state, _ref) {
-      var key = _ref.key,
-          name = _ref.name;
+    emptyNewTeamMember: function emptyNewTeamMember(state) {
+      state.new_team_members = [];
+    },
+    modifyNewTeamMemberName: function modifyNewTeamMemberName(state, _ref2) {
+      var key = _ref2.key,
+          name = _ref2.name;
       state.new_team_members[key].name = name;
     },
-    modifyNewTeamMemberEmail: function modifyNewTeamMemberEmail(state, _ref2) {
-      var key = _ref2.key,
-          email = _ref2.email;
+    modifyNewTeamMemberEmail: function modifyNewTeamMemberEmail(state, _ref3) {
+      var key = _ref3.key,
+          email = _ref3.email;
       state.new_team_members[key].email = email;
     },
-    modifyNewTeamMemberTimezone: function modifyNewTeamMemberTimezone(state, _ref3) {
-      var index = _ref3.index,
-          timezone = _ref3.timezone;
+    modifyNewTeamMemberTimezone: function modifyNewTeamMemberTimezone(state, _ref4) {
+      var index = _ref4.index,
+          timezone = _ref4.timezone;
       state.new_team_members[index].timezone = timezone;
     },
-    setActiveTeam: function setActiveTeam(state, _ref4) {
-      var name = _ref4.name,
-          id = _ref4.id;
+    setActiveTeam: function setActiveTeam(state, _ref5) {
+      var name = _ref5.name,
+          id = _ref5.id;
       state.team_project.name = name;
       state.team_project.id = id;
     }
   },
   actions: {
-    getUserTeams: function getUserTeams(_ref5, event) {
-      var state = _ref5.state,
-          commit = _ref5.commit;
+    getUserTeams: function getUserTeams(_ref6, event) {
+      var state = _ref6.state,
+          commit = _ref6.commit;
       return fetch('/list-teams').then(function (res) {
         if (res.status == 200) {
           return res.text();
@@ -85768,9 +85797,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
         return teams;
       });
     },
-    getLatestTeam: function getLatestTeam(_ref6) {
-      var state = _ref6.state,
-          commit = _ref6.commit;
+    getLatestTeam: function getLatestTeam(_ref7) {
+      var state = _ref7.state,
+          commit = _ref7.commit;
       return fetch('/list-latest-created-team').then(function (res) {
         return res.text();
       }).then(function (data) {
@@ -85779,9 +85808,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
         return info;
       });
     },
-    getTeamMembers: function getTeamMembers(_ref7) {
-      var state = _ref7.state,
-          commit = _ref7.commit;
+    getTeamMembers: function getTeamMembers(_ref8) {
+      var state = _ref8.state,
+          commit = _ref8.commit;
       return fetch("/list-team-members/".concat(state.team_project.id)).then(function (res) {
         return res.text();
       }).then(function (data) {
