@@ -80,6 +80,7 @@
         opacity: 0.9;
     }
 }
+
 .input-field{
     background: white;
     padding: 12px 36px;
@@ -91,6 +92,10 @@
         max-width: 264px;
         width: auto;
     }
+}
+
+.input-field.invalid{
+    border: 1px solid $inactive;
 }
 
 .add-user-input-grid{
@@ -413,4 +418,21 @@ input.input-field{
         @include text-16-bold;
         text-transform:uppercase;
     }
+}
+
+.exp-field{
+    overflow: inherit;
+    padding: 0;
+
+    label{
+        position: absolute;
+        display: inline-block;
+        margin: 0 32px;
+        width: auto;
+        top: 12px;
+    }
+}
+
+.input{
+    padding: 32px 32px 16px;
 }

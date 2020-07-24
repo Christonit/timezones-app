@@ -166,11 +166,11 @@ export default new Vuex.Store({
         emptyNewTeamMember(state){
             state.new_team_members = [];
         },
-        modifyNewTeamMemberName(state, {key,name}){
-            state.new_team_members[key].name = name;
+        modifyNewTeamMemberName(state, {index,name}){
+            state.new_team_members[index].name = name;
         },
-        modifyNewTeamMemberEmail(state, {key,email}){
-            state.new_team_members[key].email = email;
+        modifyNewTeamMemberEmail(state, {index,email}){
+            state.new_team_members[index].email = email;
         },
         modifyNewTeamMemberTimezone(state, {index,timezone}){
             state.new_team_members[index].timezone = timezone;

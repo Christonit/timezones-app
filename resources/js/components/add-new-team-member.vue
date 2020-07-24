@@ -14,8 +14,15 @@
         <div class="row justify-content-center">
             <div class="col-12 col-lg-8 ">
                 <div class="add-user-input-grid-header input-field-group">
-                    <input class="input-field" type="text" placeholder="Full Name"v-model="member.name">
-                    <input class="input-field" type="text" placeholder="Email Address"v-model="member.email">
+
+                    <input class="input-field" 
+                    :class="member_validation.name == false ? 'invalid':''" 
+                    type="text" placeholder="Full Name" v-model="member.name">
+
+                    <input class="input-field" 
+                    :class="member_validation.email == false ? 'invalid':''" 
+                    type="text" placeholder="Email Address" v-model="member.email">
+
                     <input-timezone @timezone-select="getTimezone" :timezone_name="member.tz.name"></input-timezone>
                     <button class="btn btn-add " @click="addNew"> 
                         <span class="material-icons">
@@ -45,6 +52,7 @@ import DeleteBtn from "./utils/buttons/delete-btn.vue";
 import ContinueBtn from "./utils/buttons/continue-btn.vue";
 import InputTimezone from "./utils/input-timezone.vue";
 import NewTeamMemberRow from "./add-new-team-member/new-team-member-row.vue";
+import validations from "../mixins/validators.vue";
 
 export default {
     data(){
@@ -56,9 +64,14 @@ export default {
                     id: null,
                     name: null
                 }
+            },
+            member_validation:{
+                name: null,
+                email:null
             }
         }
     },
+    mixins:[validations],
     computed:{
         ...mapState(['team_project','new_team_members']),
         ...mapGetters(['basic_header'])
@@ -80,27 +93,38 @@ export default {
         'modifyNewTeamMemberEmail',
         'modifyNewTeamMemberTimezone']),
         addNew(){
+            
             const timezone = this.member.tz
             const name = this.member.name
             const email = this.member.email
 
-            let obj = {
+            let email_validation = this.validateEmail(this.member.email);
+            let name_validation = this.validateName(this.member.name);
+            console.log({name_validation,email_validation})
+            name_validation ? this.member_validation.name = true : this.member_validation.name = false;
+            email_validation ? this.member_validation.email = true : this.member_validation.email = false;
+            if(name_validation == true & email_validation == true){
+                let obj = {
                 name,
                 email,
                 timezone
-            }
-
-            const member = {
-                name:null,
-                email:null,
-                tz:{
-                    id: null,
-                    name: null
                 }
-            }
 
-            this.addNewTeamMember(obj)
-            this.member = member;
+                const member = {
+                    name:null,
+                    email:null,
+                    tz:{
+                        id: null,
+                        name: null
+                    }
+                }
+
+                this.member_validation.name  = null;
+                this.member_validation.email = null;
+
+                this.addNewTeamMember(obj)
+                return this.member = member;
+            }
 
         },
         clearFields(){

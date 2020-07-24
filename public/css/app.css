@@ -11535,6 +11535,10 @@ a.text-dark:focus {
   width: auto;
 }
 
+.input-field.invalid {
+  border: 1px solid #b04a33;
+}
+
 .add-user-input-grid-header {
   justify-content: space-between;
   display: flex;
@@ -11936,6 +11940,23 @@ input.input-field::placeholder {
   font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
+}
+
+.exp-field {
+  overflow: inherit;
+  padding: 0;
+}
+
+.exp-field label {
+  position: absolute;
+  display: inline-block;
+  margin: 0 32px;
+  width: auto;
+  top: 12px;
+}
+
+.input {
+  padding: 32px 32px 16px;
 }
 
 .modal-btn-close {

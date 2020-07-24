@@ -1916,6 +1916,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_buttons_continue_btn_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/buttons/continue-btn.vue */ "./resources/js/components/utils/buttons/continue-btn.vue");
 /* harmony import */ var _utils_input_timezone_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/input-timezone.vue */ "./resources/js/components/utils/input-timezone.vue");
 /* harmony import */ var _add_new_team_member_new_team_member_row_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./add-new-team-member/new-team-member-row.vue */ "./resources/js/components/add-new-team-member/new-team-member-row.vue");
+/* harmony import */ var _mixins_validators_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../mixins/validators.vue */ "./resources/js/mixins/validators.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -1959,6 +1960,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -1977,9 +1986,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           id: null,
           name: null
         }
+      },
+      member_validation: {
+        name: null,
+        email: null
       }
     };
   },
+  mixins: [_mixins_validators_vue__WEBPACK_IMPORTED_MODULE_8__["default"]],
   computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['team_project', 'new_team_members'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['basic_header'])),
   components: {
     TopBar: _top_bar_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -1995,21 +2009,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var timezone = this.member.tz;
       var name = this.member.name;
       var email = this.member.email;
-      var obj = {
-        name: name,
-        email: email,
-        timezone: timezone
-      };
-      var member = {
-        name: null,
-        email: null,
-        tz: {
-          id: null,
-          name: null
-        }
-      };
-      this.addNewTeamMember(obj);
-      this.member = member;
+      var email_validation = this.validateEmail(this.member.email);
+      var name_validation = this.validateName(this.member.name);
+      console.log({
+        name_validation: name_validation,
+        email_validation: email_validation
+      });
+      name_validation ? this.member_validation.name = true : this.member_validation.name = false;
+      email_validation ? this.member_validation.email = true : this.member_validation.email = false;
+
+      if (name_validation == true & email_validation == true) {
+        var obj = {
+          name: name,
+          email: email,
+          timezone: timezone
+        };
+        var member = {
+          name: null,
+          email: null,
+          tz: {
+            id: null,
+            name: null
+          }
+        };
+        this.member_validation.name = null;
+        this.member_validation.email = null;
+        this.addNewTeamMember(obj);
+        return this.member = member;
+      }
     },
     clearFields: function clearFields() {
       this.member.name = null;
@@ -2062,7 +2089,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_input_timezone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/input-timezone */ "./resources/js/components/utils/input-timezone.vue");
 /* harmony import */ var _utils_buttons_delete_btn__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/buttons/delete-btn */ "./resources/js/components/utils/buttons/delete-btn.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _mixins_validators_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/validators.vue */ "./resources/js/mixins/validators.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2089,13 +2117,57 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['index', 'member'],
+  data: function data() {
+    return {
+      name: null,
+      email: null,
+      timezone: null,
+      validation: {
+        name: true,
+        email: true
+      }
+    };
+  },
+  mounted: function mounted() {
+    this.name = this.member.name;
+    this.email = this.member.email;
+  },
+  mixins: [_mixins_validators_vue__WEBPACK_IMPORTED_MODULE_2__["default"]],
   components: {
     InputTimezone: _utils_input_timezone__WEBPACK_IMPORTED_MODULE_0__["default"],
     DeleteBtn: _utils_buttons_delete_btn__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapMutations"])(['modifyNewTeamMemberTimezone', 'deleteNewTeamMember']))
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapMutations"])(['modifyNewTeamMemberTimezone', 'modifyNewTeamMemberName', 'modifyNewTeamMemberEmail', 'deleteNewTeamMember'])), {}, {
+    modifyName: function modifyName() {
+      var validation = this.validateName(this.name);
+
+      if (validation) {
+        this.modifyNewTeamMemberName({
+          index: this.index,
+          name: this.name
+        });
+        this.validation.name = true;
+      } else {
+        this.validation.name = false;
+      }
+    },
+    modifyEmail: function modifyEmail() {
+      var validation = this.validateEmail(this.email);
+
+      if (validation) {
+        this.modifyNewTeamMemberEmail({
+          index: this.index,
+          email: this.email
+        });
+        this.validation.email = true;
+      } else {
+        this.validation.email = false;
+      }
+    }
+  })
 });
 
 /***/ }),
@@ -4870,8 +4942,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     validateEmail: function validateEmail(elementValue) {
+      var el = elementValue == null ? '' : elementValue;
       var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-      return emailPattern.test(elementValue);
+      return emailPattern.test(el);
+    },
+    validateName: function validateName(name) {
+      var el = name == null ? '' : name;
+      return el.length > 3 ? true : false;
     }
   }
 });
@@ -62917,6 +62994,7 @@ var render = function() {
                 }
               ],
               staticClass: "input-field",
+              class: _vm.member_validation.name == false ? "invalid" : "",
               attrs: { type: "text", placeholder: "Full Name" },
               domProps: { value: _vm.member.name },
               on: {
@@ -62939,6 +63017,7 @@ var render = function() {
                 }
               ],
               staticClass: "input-field",
+              class: _vm.member_validation.email == false ? "invalid" : "",
               attrs: { type: "text", placeholder: "Email Address" },
               domProps: { value: _vm.member.email },
               on: {
@@ -63015,16 +63094,34 @@ var render = function() {
     "div",
     { staticClass: "input-field-group  my-3" },
     [
-      _c("div", { staticClass: "input-field" }, [
+      _c("div", { staticClass: "input-field exp-field" }, [
         _c(
           "label",
-          { staticClass: "input-label  black", attrs: { for: "name" } },
+          { staticClass: "input-label black", attrs: { for: "name" } },
           [_vm._v("Full name")]
         ),
         _vm._v(" "),
         _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.name,
+              expression: "name"
+            }
+          ],
+          staticClass: "input",
           attrs: { type: "text" },
-          domProps: { value: _vm.member.name }
+          domProps: { value: _vm.name },
+          on: {
+            keyup: _vm.modifyName,
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.name = $event.target.value
+            }
+          }
         })
       ]),
       _vm._v(" "),
@@ -63036,8 +63133,25 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.email,
+              expression: "email"
+            }
+          ],
           attrs: { type: "text" },
-          domProps: { value: _vm.member.email }
+          domProps: { value: _vm.email },
+          on: {
+            keyup: _vm.modifyEmail,
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.email = $event.target.value
+            }
+          }
         })
       ]),
       _vm._v(" "),
@@ -85760,14 +85874,14 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       state.new_team_members = [];
     },
     modifyNewTeamMemberName: function modifyNewTeamMemberName(state, _ref2) {
-      var key = _ref2.key,
+      var index = _ref2.index,
           name = _ref2.name;
-      state.new_team_members[key].name = name;
+      state.new_team_members[index].name = name;
     },
     modifyNewTeamMemberEmail: function modifyNewTeamMemberEmail(state, _ref3) {
-      var key = _ref3.key,
+      var index = _ref3.index,
           email = _ref3.email;
-      state.new_team_members[key].email = email;
+      state.new_team_members[index].email = email;
     },
     modifyNewTeamMemberTimezone: function modifyNewTeamMemberTimezone(state, _ref4) {
       var index = _ref4.index,
