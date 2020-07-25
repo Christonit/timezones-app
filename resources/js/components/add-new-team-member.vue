@@ -12,19 +12,19 @@
         </header>
         
         <div class="row justify-content-center">
-            <div class="col-12 col-lg-8 ">
+            <div class="add-new-member-container">
                 <div class="add-user-input-grid-header input-field-group">
 
-                    <input class="input-field" 
-                    :class="member_validation.name == false ? 'invalid':''" 
-                    type="text" placeholder="Full Name" v-model="member.name">
+                    <input-field name="Full name" 
+                    :class="member_validation.name == false ? 'invalid':''"
+                    :input-value="member.name" @input="member.name = $event"></input-field>
+                    
+                    <input-field name="Email"
+                    :class="member_validation.email == false ? 'invalid':''"
+                    :input-value="member.email" @input="member.email = $event"></input-field>
 
-                    <input class="input-field" 
-                    :class="member_validation.email == false ? 'invalid':''" 
-                    type="text" placeholder="Email Address" v-model="member.email">
-
-                    <input-timezone @timezone-select="getTimezone" :timezone_name="member.tz.name"></input-timezone>
-                    <button class="btn btn-add " @click="addNew"> 
+                    <input-timezone @timezone-select="getTimezone" :timezone_name="member.timezone.name"></input-timezone>
+                    <button class="btn btn-add large" @click="addNew"> 
                         <span class="material-icons">
                             add
                         </span>
@@ -51,6 +51,7 @@ import UsersCardGrid from './users-card-grid.vue';
 import DeleteBtn from "./utils/buttons/delete-btn.vue";
 import ContinueBtn from "./utils/buttons/continue-btn.vue";
 import InputTimezone from "./utils/input-timezone.vue";
+import InputField from "./utils/forms/input-field";
 import NewTeamMemberRow from "./add-new-team-member/new-team-member-row.vue";
 import validations from "../mixins/validators.vue";
 
@@ -60,7 +61,7 @@ export default {
             member:{
                 name:null,
                 email:null,
-                tz:{
+                timezone:{
                     id: null,
                     name: null
                 }
@@ -83,6 +84,7 @@ export default {
         DeleteBtn,
         ContinueBtn,
         InputTimezone,
+        InputField,
         NewTeamMemberRow
     },
     methods:{
@@ -93,16 +95,16 @@ export default {
         'modifyNewTeamMemberEmail',
         'modifyNewTeamMemberTimezone']),
         addNew(){
-            
-            const timezone = this.member.tz
+
+            const timezone = this.member.timezone
             const name = this.member.name
             const email = this.member.email
 
             let email_validation = this.validateEmail(this.member.email);
             let name_validation = this.validateName(this.member.name);
-            console.log({name_validation,email_validation})
             name_validation ? this.member_validation.name = true : this.member_validation.name = false;
             email_validation ? this.member_validation.email = true : this.member_validation.email = false;
+            
             if(name_validation == true & email_validation == true){
                 let obj = {
                 name,
@@ -111,9 +113,9 @@ export default {
                 }
 
                 const member = {
-                    name:null,
-                    email:null,
-                    tz:{
+                    name:'',
+                    email:'',
+                    timezone:{
                         id: null,
                         name: null
                     }
@@ -123,6 +125,16 @@ export default {
                 this.member_validation.email = null;
 
                 this.addNewTeamMember(obj)
+
+                let int = setInterval( ()=>{
+                    
+                    document.querySelector('.add-user-input-grid-header .input[data-name="Full name"]').value = ""
+                    document.querySelector('.add-user-input-grid-header .input[data-name="Email"]').value = ""
+                    clearInterval(int);
+                    
+                },1);
+
+
                 return this.member = member;
             }
 
@@ -140,7 +152,7 @@ export default {
         },
         getTimezone(timezone){
                
-            this.member.tz = timezone;
+            this.member.timezone = timezone;
 
         },
         saveNewMembers(){

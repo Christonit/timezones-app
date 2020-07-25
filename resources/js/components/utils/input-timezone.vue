@@ -2,7 +2,7 @@
     <div class="input-timezone">
         <div class="input-field " @click="openPicker">
             
-            <label class="input-label-placeholder" 
+            <label class="input-label placeholder" 
             v-if="timezone_name == null">Timezone</label>
 
             <template v-else>

@@ -102,6 +102,7 @@
     background-color: transparent;
     &:hover{
         background-image: url('../img/delete-icon-hover.svg');
+        background-color: $btn-bg;
     }
     &:active{
         background-image: url('../img/delete-icon-active.svg');
@@ -203,11 +204,11 @@
 .btn-secondary-link{
     color: $secondary-highlight;
     &:hover{
-        background-color: #e7efef;
+        background-color: $btn-bg;
         color: #FF0909;
     }
     &:focus{
-        background-color: #e7efef;
+        background-color: $btn-bg;
     }
     &:active{
         background-color: #d8e3e3;
@@ -217,11 +218,20 @@
 
 .btn-add{
     width: 112px;
-    height: 100%;
     font-size: 24px;
     color: $gray-dark;
     min-width: 112px;
     max-width: 112px;
+
+    &:focus{
+        box-shadow: unset;
+        background-color: $btn-bg;
+    }
+
+    &:hover{
+        background-color: $btn-bg;
+    }
+
 }
 
 
@@ -381,4 +391,9 @@
     border:1px solid #0e963f;
     color: #0e963f;
     margin-right: 8px;
+}
+
+
+.large{
+    height: 66px;
 }

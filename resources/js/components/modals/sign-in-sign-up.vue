@@ -8,10 +8,7 @@
             <h2 class="title">Sign in or Signup</h2>
 
             <div class="popup-fields-container">
-                <div class="input-field slim">
-                    <label class="input-label" for="email">Email</label>
-                    <input type="text" placeholder="pujolsfrancis@gmail.com" v-model='email'>
-                </div>
+                <input-field key="email" class="slim" name="Email" :input-value="email" @input="email = $event"></input-field>
             </div>
             <div class="w-100" v-if="error == 'bad email'">
                 <p>Please, insert a valid email</p>
@@ -27,14 +24,14 @@
             <h2 class="title">New user</h2>
 
             <div class="popup-fields-container">
-                <div class="input-field slim">
-                    <label class="input-label" for="name">Name</label>
-                    <input type="text" value="" v-model="name">
-                </div>
+                <input-field key="name" 
+                class="slim" name="Name" :input-value="name" 
+                @input="name = $event" ></input-field>
+            
             </div>
             <div class="footnote-buttons">
-                <cancel-btn btn-type='back' text="Previews"></cancel-btn>
-                <continue-btn alignment="center" @click="checkName"></continue-btn>
+                <cancel-btn btn-type='back' text="Previews" @click="previewsStep('email')"></cancel-btn>
+                <continue-btn alignment="center" @click="checkName" ></continue-btn>
             </div>
 
         </template>
@@ -45,10 +42,8 @@
             <h2 class="title" v-else>Sign in or Signup</h2>
 
             <div class="popup-fields-container">
-                <div class="input-field slim">
-                    <label class="input-label" for="password">Password</label>
-                    <input type="password" value="xxxxxx" v-model="password">
-                </div>
+
+                <input-field key="password" class="slim" type="password" name="Password" :input-value="password" @input="password = $event"></input-field>
 
                 <a :href="'/password/reset'" v-if="!(user_type == 'new user')">Forgot password?</a>
             </div>
@@ -78,10 +73,9 @@
             <h2 class="title">New user</h2>
 
             <div class="popup-fields-container">
-                <div class="input-field slim">
-                    <label class="input-label" for="confirm password">Confirm password</label>
-                    <input type="password" value="xxxxxx" v-model="password_confirm">
-                </div>
+
+                <input-field key="password_confirm"class="slim" type="password" name="Confirm password" :input-value="password_confirm" @input="password_confirm = $event"></input-field>
+
             </div>
 
             <div class="w-100" v-if="error == 'password dont match'">
@@ -104,6 +98,7 @@
 import ModalTemplate from './template.vue';
 import ContinueBtn from './../utils/buttons/continue-btn';
 import CancelBtn from './../utils/buttons/cancel-btn';
+import InputField from '../utils/forms/input-field';
 import { mapState, mapGetters } from 'vuex';
 import validators from '../../mixins/validators';
 
@@ -112,8 +107,8 @@ export default {
     data(){
         return {
             step: 'email',
-            email:'',
-            name:'',
+            email:null,
+            name:null,
             password:'',
             password_confirm:'',
             error:null,
@@ -131,6 +126,7 @@ export default {
     components:{
         ModalTemplate,
         ContinueBtn,
+        InputField,
         CancelBtn
     },
     methods:{
@@ -150,7 +146,6 @@ export default {
                     }
                 }).then( data => {
                     this.user_type = data;
-
                     if(data == 'new user'){
                         this.step = 'new user'
                     }else{
@@ -180,7 +175,7 @@ export default {
 
         },
         checkName(){
-            if(this.name.length > 5){
+            if(this.name.length > 4){
                 this.step = 'type password'
             }else{
                 return this.error = 'invalid name';

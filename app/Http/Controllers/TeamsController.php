@@ -59,19 +59,32 @@ class TeamsController extends Controller
     }
 
     public function getTeamMembers($team){
-        return TeamMembers::where('team',$team)->get();
+        
+        $team_members = TeamMembers::where('team',$team)->get();
+        foreach($team_members as $member){
+
+            $member['avatar'] = ($member['avatar'] == null) ? null : asset('/storage/'.$member->avatar);
+
+        }
+
+        return $team_members;
+
     }
 
     public function getTeammate(Request $request){
 
-
-
         if($request->has('id')){
-            // return TeamMembers::findOrFail(22);
+
             if($request->has('user') && $request->user === true ){
-                return User::findOrFail($request->id);
+                $user =  User::findOrFail($request->id);
+                $user['avatar'] = asset('/storage/'.$user->avatar);
+
+                return $user;
             }
-            return TeamMembers::findOrFail($request->id);
+            $teammate = TeamMembers::findOrFail($request->id);
+            $teammate['avatar'] = asset('/storage/'.$teammate->avatar);
+
+            return $teammate;
 
         }else{
 

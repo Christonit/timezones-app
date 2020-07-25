@@ -10,47 +10,22 @@
                     <input type="file" name="profile-pic" @change="get_profile_pic"/>
 
                     <img :src="info_edits.avatar" 
-                        :alt='"Avatar for" + info_edits.name' 
-                        class="profile-pic-thumbnail"/>
-
+                    :alt='"Avatar for" + info_edits.name' 
+                    class="profile-pic-thumbnail"/>
                 </span>
-                <div class="input-field ">
-                    <label class="input-label" >Name</label>
-                    <input type="text" value="" 
-                        :placeholder="info_edits.name" v-model="user_name">
 
-                </div>
-                <div class="input-timezone">
-                    <div class="input-field " @click="openPicker">
-                        <label class="input-label" >Timezone</label>
-                        <span class="input-timezone-text">{{timezone.name}}</span>
-                        <button class="btn-timezone-arrow" ref='btnArrow'></button>
-                    </div>
-                    <div class="timezone-picker-container" ref='timezonePicker'>
-                        <span class="timezone-input-search">
-                            <input type="text"  placeholder='GMT+1' v-model="timezone_input" 
-                                @keyup="searchTimezones">
-                        </span>
+                <input-field name="Name" 
+                :input-value="user_name" @input="user_name = $event"></input-field>
 
-                        <template v-for="item in timezones">
-                            <span class="timezone-item" 
-                            :data-timezone-id="item.id"
-                            @click="selectTimezones(item.name)">
-                                {{item.name}}
-                            </span>
-                        </template>
-                    </div>
-                    
-                </div>
+                <input-timezone :timezone_name="timezone.name"
+                @timezone-select="selectTimezones($event)"></input-timezone>
 
                 <div class="time-picker-container">
-                        <label class="inline-input-label">Avalability</label>
-                        <time-picker @time-pick="start_time = $event">{{start_time}}</time-picker>
-                            <hr/>
-                        <time-picker@time-pick="end_time = $event">{{end_time}}</time-picker>
-
+                    <label class="inline-input-label">Avalability</label>
+                    <time-picker @time-pick="start_time = $event">{{start_time}}</time-picker>
+                        <hr/>
+                    <time-picker@time-pick="end_time = $event">{{end_time}}</time-picker>
                 </div>
-                
                 
             </div>
             <div class="w-100 ">
@@ -64,7 +39,9 @@
 
 <script>
 import ModalTemplate from './template.vue';
-import TimePicker from '../utils/time-picker-comp.vue'
+import TimePicker from '../utils/time-picker-comp.vue';
+import InputTimezone from '../utils/input-timezone.vue';
+import InputField from '../utils/forms/input-field.vue';
 import utils from '../../mixins/utils.vue';
 import ContinueBtn from '../utils/buttons/continue-btn';
 import { mapState, mapMutations } from 'vuex';
@@ -74,7 +51,9 @@ export default {
     components:{
         ModalTemplate,
         TimePicker,
-        ContinueBtn
+        ContinueBtn,
+        InputTimezone,
+        InputField
     },
     data(){
         return {
@@ -92,55 +71,46 @@ export default {
         this.timezone.id = this.info_edits.timezone;
         this.timezone.name = this.info_edits.timezone_abbr;
 
+        this.user_name = this.info_edits.name;
+
     },
     mixins:[utils],
     computed:{
         ...mapState(['info_edits'])
     },
     methods:{
-        ...mapMutations(['setSpecificTeamMember','closeModal']),
+        ...mapMutations(['setSpecificTeamMember','setUserInformation','closeModal']),
         updateTimePick(e){
             console.log(e)
         },
-        openPicker(e){
-            let el =  this.$refs.timezonePicker;
+        selectTimezones(timezone){
 
-            if(el.classList.contains('active')){
-                this.$refs.btnArrow.classList.remove('active');
-               return el.classList.remove('active')
-            }
+           this.timezone.id = timezone.id;
+           this.timezone.name = timezone.name;
 
-            this.$refs.btnArrow.classList.add('active');
-            el.classList.add('active')
-            e.stopPropagation();
-        },
-        selectTimezones(name){
-           let el =  this.$refs.timezonePicker;
-
-           let id = event.target.getAttribute('data-timezone-id');
-
-           this.timezone.id = id;
-           this.timezone.name = name;
-
-           if(el.classList.contains('active')){
-                this.$refs.btnArrow.classList.remove('active');
-                el.classList.remove('active')
-            }
-            
         },
         updateThisMember(){
-           this.updateProfile().then(status => {
-               if( status == 1){
+           this.updateProfile().then(res => {
+                let data = JSON.parse(res) 
+
+                if( data.hasOwnProperty('team') ){
                     this.getMemberInfo(this.info_edits.id).then( (data)=>{
                         
                         this.setSpecificTeamMember({
                             index : this.info_edits.key,
                             team_member : data
                         })
-
                     })
                     .then(() => this.closeModal('edit-info') );
-               }
+
+                }else{
+
+                   this.getMemberInfo(this.info_edits.id, true).then( (data)=>{
+                        this.setUserInformation(data)
+                    })
+                    .then(() => this.closeModal('edit-info') );
+
+                }
 
            }) 
         }
