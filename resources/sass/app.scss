@@ -287,6 +287,10 @@ body{
     margin-bottom: 2px;
 }
 
+.add-new-member-container{
+    width: 100%;
+    max-width: 862px;
+}
 .new-members-grid{
     display: grid;
     grid-template-columns: repeat(3, minmax(220px,276px));

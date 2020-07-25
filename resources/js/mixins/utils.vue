@@ -9,7 +9,7 @@ export default {
             timezones_list:[],
             default_gmt : [
                 {name:'GMT', id: 'America/Danmarkshavn'},
-                {name:'GMT-2', id: 'America/South_Georgia'},
+                {name:'GMT-2', id: 'Atlantic/South_Georgia'},
                 {name:'GMT-3', id: 'America/Montevideo'},
                 {name:'GMT-4', id: 'America/New_York'},
                 {name:'GMT-5', id: 'America/Panama'},
@@ -123,6 +123,19 @@ export default {
     
         },
         getMemberInfo(teammate_id, is_user = false){
+
+            if(is_user){
+                return fetch('/user-information').then(res => {
+                    if(res.status == 200 ){
+                        return res.text();
+                    }
+                })
+                .then(data => {
+                    return JSON.parse(data);
+                })
+
+            }
+
             return fetch(`/get-teammate?id=${teammate_id}&user=${is_user}`).then(res => {
                 if(res.status == 200 ){
                     return res.text();

@@ -83,11 +83,11 @@
 
 .input-field{
     background: white;
-    padding: 12px 36px;
     display: flex;
     flex-wrap: wrap;
     position: relative;
-
+    overflow: initial;
+    width: 100%;
     &.slim{
         max-width: 264px;
         width: auto;
@@ -114,10 +114,26 @@
 .input-label{
     display: block;
     color: $black80;
-    @include text-12-semibold;
-    width: 100%;
+    @include font-ubuntu;
+    font-weight: bold;
+    font-size: 12px;
     line-height: 1;
-    margin-bottom: 4px;
+    position: absolute;
+    margin-left: 32px;
+    width: auto;
+    top: 16px;
+    margin-bottom: 0;
+    transition: all 200ms;
+    z-index: 1;
+
+    &.placeholder{
+        @include font-ubuntu;
+        font-size: 14px;
+        color: $black;
+        opacity: 0.5;
+        pointer-events: none;
+        top: 26px;
+    }
 }
 .input-label-placeholder{
     @include text-14-bold;
@@ -136,6 +152,10 @@ input{
     &::placeholder{
         color: $black;
         opacity: 0.5;
+    }
+
+    &:focus{
+        outline: unset;
     }
 
 }
@@ -211,7 +231,6 @@ input.input-field{
 }
 .input-field-group .input-field{ 
     margin: 0 2px;
-    overflow: hidden;
     width:100%;
     &:first-child{
         margin-left: 0;
@@ -219,7 +238,7 @@ input.input-field{
 }
 
 .input-field-group .input-timezone{
-    margin-bottom: 0;
+    margin: 0 2px;
     height: 67px;
 }
 
@@ -230,9 +249,12 @@ input.input-field{
     max-width: 200px;
 }
 
+.input-timezone .input-label{
+    margin-left: 0;
+}
 .input-timezone-text{
     @include text-14-bold;
-    padding: 3px 0;
+    padding: 4px 0;
     line-height: 1;
     width: 100%;
 
@@ -242,11 +264,13 @@ input.input-field{
     position: relative;
     width: 100%;
     margin-bottom: 16px;
+    height: 67px;
     .input-field{
-        padding: 15px 36px;
+        padding: 15px 32px;
         margin-bottom: 0;
-        align-items: center;
+        align-items: end;
         height: 100%;
+        margin: 0;
     }
 }
 
@@ -317,7 +341,7 @@ input.input-field{
 .time-picker-container{
     display: flex;
     align-items: center;
-    padding: 20px 24px 20px 35px;
+    padding: 20px 24px 20px 32px;
     background-color: white;
     hr{
       margin-top: 0;
@@ -427,9 +451,18 @@ input.input-field{
     label{
         position: absolute;
         display: inline-block;
-        margin: 0 32px;
+        margin-left: 32px;
         width: auto;
-        top: 12px;
+        top: 16px;
+        margin-bottom: unset;
+        transition: all 200ms;
+        &.placeholder{
+            @include text-14-bold;
+            color: $black;
+            opacity: 0.5;
+            pointer-events: none;
+            top: 26px;
+        }
     }
 }
 

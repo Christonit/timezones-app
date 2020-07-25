@@ -11524,10 +11524,11 @@ a.text-dark:focus {
 
 .input-field {
   background: white;
-  padding: 12px 36px;
   display: flex;
   flex-wrap: wrap;
   position: relative;
+  overflow: initial;
+  width: 100%;
 }
 
 .input-field.slim {
@@ -11553,12 +11554,26 @@ a.text-dark:focus {
 .input-label {
   display: block;
   color: rgba(5, 6, 13, 0.77);
-  font-family: "Open Sans", sans-serif;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: bold;
   font-size: 12px;
-  font-weight: 600;
-  width: 100%;
   line-height: 1;
-  margin-bottom: 4px;
+  position: absolute;
+  margin-left: 32px;
+  width: auto;
+  top: 16px;
+  margin-bottom: 0;
+  transition: all 200ms;
+  z-index: 1;
+}
+
+.input-label.placeholder {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 14px;
+  color: #05060d;
+  opacity: 0.5;
+  pointer-events: none;
+  top: 26px;
 }
 
 .input-label-placeholder {
@@ -11597,6 +11612,10 @@ input::-ms-input-placeholder {
 input::placeholder {
   color: #05060d;
   opacity: 0.5;
+}
+
+input:focus {
+  outline: unset;
 }
 
 input.input-field {
@@ -11693,7 +11712,6 @@ input.input-field::placeholder {
 
 .input-field-group .input-field {
   margin: 0 2px;
-  overflow: hidden;
   width: 100%;
 }
 
@@ -11702,7 +11720,7 @@ input.input-field::placeholder {
 }
 
 .input-field-group .input-timezone {
-  margin-bottom: 0;
+  margin: 0 2px;
   height: 67px;
 }
 
@@ -11714,11 +11732,15 @@ input.input-field::placeholder {
   max-width: 200px;
 }
 
+.input-timezone .input-label {
+  margin-left: 0;
+}
+
 .input-timezone-text {
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
   font-weight: bold;
-  padding: 3px 0;
+  padding: 4px 0;
   line-height: 1;
   width: 100%;
 }
@@ -11727,13 +11749,15 @@ input.input-field::placeholder {
   position: relative;
   width: 100%;
   margin-bottom: 16px;
+  height: 67px;
 }
 
 .input-timezone .input-field {
-  padding: 15px 36px;
+  padding: 15px 32px;
   margin-bottom: 0;
-  align-items: center;
+  align-items: end;
   height: 100%;
+  margin: 0;
 }
 
 .timezone-picker-container {
@@ -11806,7 +11830,7 @@ input.input-field::placeholder {
 .time-picker-container {
   display: flex;
   align-items: center;
-  padding: 20px 24px 20px 35px;
+  padding: 20px 24px 20px 32px;
   background-color: white;
 }
 
@@ -11950,9 +11974,21 @@ input.input-field::placeholder {
 .exp-field label {
   position: absolute;
   display: inline-block;
-  margin: 0 32px;
+  margin-left: 32px;
   width: auto;
-  top: 12px;
+  top: 16px;
+  margin-bottom: unset;
+  transition: all 200ms;
+}
+
+.exp-field label.placeholder {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #05060d;
+  opacity: 0.5;
+  pointer-events: none;
+  top: 26px;
 }
 
 .input {
@@ -12157,6 +12193,7 @@ input.input-field::placeholder {
 
 .btn-del:hover {
   background-image: url(/images/delete-icon-hover.svg?515a53ea24dcb675966b65fa09b91c3e);
+  background-color: #e7efef;
 }
 
 .btn-del:active {
@@ -12276,11 +12313,19 @@ input.input-field::placeholder {
 
 .btn-add {
   width: 112px;
-  height: 100%;
   font-size: 24px;
   color: #636363;
   min-width: 112px;
   max-width: 112px;
+}
+
+.btn-add:focus {
+  box-shadow: unset;
+  background-color: #e7efef;
+}
+
+.btn-add:hover {
+  background-color: #e7efef;
 }
 
 .btn-add-fill {
@@ -12445,6 +12490,10 @@ input.input-field::placeholder {
   border: 1px solid #0e963f;
   color: #0e963f;
   margin-right: 8px;
+}
+
+.large {
+  height: 66px;
 }
 
 .more-option-btn {
@@ -12847,6 +12896,11 @@ body {
   padding: 12px 20px 12px 32px;
   background-color: #ffffff;
   margin-bottom: 2px;
+}
+
+.add-new-member-container {
+  width: 100%;
+  max-width: 862px;
 }
 
 .new-members-grid {

@@ -1,14 +1,14 @@
 <template>
     <div class="input-field-group  my-3">
-        <div class="input-field exp-field">
-            <label class="input-label black" for="name">Full name</label>
-            <input class="input" type="text" @keyup="modifyName" v-model="name">
-        </div>
-        <div class="input-field">
-            <label class="input-label  black" for="email">Email Address</label>
-            <input type="text" @keyup="modifyEmail" v-model="email">
-        </div>
-
+        <input-field name="Full name" 
+        :input-value="name" @keyup="modifyName" @input="name = $event"></input-field>
+        <!-- <div class="input-field">
+            <label class="input-label" :class="(name == null || name == '') ? 'placeholder': '' " for="name">Full name</label>
+            <input class="input" type="text" @focusin="removePlaceholder" @keyup="modifyName" v-model="name">
+        </div> -->
+        <input-field name="Email" 
+        :input-value="email" @keyup="modifyEmail" @input="email = $event"></input-field>
+        
         <input-timezone @timezone-select="modifyNewTeamMemberTimezone({index,timezone:$event})" :timezone_name="member.timezone.name"></input-timezone>
 
         <delete-btn class="large" @click="deleteNewTeamMember(index)"></delete-btn>
@@ -17,6 +17,7 @@
 
 <script>
 import InputTimezone from "../utils/input-timezone";
+import InputField from "../utils/forms/input-field";
 import DeleteBtn from "../utils/buttons/delete-btn";
 import validations from "../../mixins/validators.vue";
 import { mapMutations } from 'vuex';
@@ -41,7 +42,8 @@ export default {
     mixins:[validations],
     components:{
         InputTimezone,
-        DeleteBtn
+        DeleteBtn,
+        InputField
     },
     methods:{
         ...mapMutations([
@@ -49,6 +51,9 @@ export default {
             'modifyNewTeamMemberName',
             'modifyNewTeamMemberEmail',
             'deleteNewTeamMember']),
+        updateName(name){
+            name
+        },
         modifyName(){
             
             let validation = this.validateName(this.name);
@@ -72,6 +77,12 @@ export default {
                 this.validation.email = false;
             }
 
+        },
+        removePlaceholder(e){
+            let placeholder = e.target.previousElementSibling;
+            if(placeholder.classList.contains('placeholder')){
+                placeholder.classList.remove('placeholder')
+            }
         }
         
     }
