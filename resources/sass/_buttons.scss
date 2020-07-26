@@ -386,6 +386,21 @@
     }
 }
 
+
+.team-dropdown .dropdown-item .more-option-btn{
+    position: absolute;
+    margin-right: auto;
+    right: 8px;
+    opacity: 0;
+    pointer-events: none;
+}
+.team-dropdown .dropdown-item:hover .more-option-btn{
+
+    opacity: 1;
+    pointer-events: initial;
+}
+
+
 .square-add-icon{
     font-size: 16px;
     border:1px solid #0e963f;

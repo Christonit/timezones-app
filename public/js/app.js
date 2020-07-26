@@ -2472,6 +2472,15 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _template_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./template.vue */ "./resources/js/components/modals/template.vue");
+/* harmony import */ var _utils_forms_input_field_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/forms/input-field.vue */ "./resources/js/components/utils/forms/input-field.vue");
+/* harmony import */ var _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/buttons/continue-btn */ "./resources/js/components/utils/buttons/continue-btn.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2501,33 +2510,72 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'change-group-name-modal',
   components: {
-    ModalTemplate: _template_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    ModalTemplate: _template_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    InputField: _utils_forms_input_field_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ContinueBtn: _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
-      name: 'Team Name'
+      name: ''
     };
   },
-  methods: {
-    changeName: function changeName() {
-      if (this.name == "Team Name") {
-        this.name = '';
+  mounted: function mounted() {
+    this.name = this.info_edits.name;
+  },
+  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapState"])(['team_project', 'info_edits'])), Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])(['basic_header'])), {}, {
+    is_disabled: function is_disabled() {
+      if (this.name != this.info_edits.name & this.name.length > 3) {
+        return false;
       }
 
-      if (this.$refs.title.classList.contains('placeholder')) {
-        this.$refs.title.classList.remove('placeholder');
-      }
-    },
-    changeWidth: function changeWidth() {
-      var text_width = this.$refs.title.getBoundingClientRect().width;
-      this.$refs.input.style.width = "".concat(text_width, "px");
-      console.log(text_width);
+      return true;
     }
-  }
+  }),
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapMutations"])(['setActiveTeam', 'editTeam', 'closeModal'])), {}, {
+    changeName: function changeName() {
+      var _this = this;
+
+      if (this.name != this.info_edits.name & this.name.length > 3) {
+        fetch('/edit-team-name', {
+          method: 'POST',
+          headers: this.basic_header,
+          body: JSON.stringify({
+            id: this.info_edits.id,
+            name: this.name
+          })
+        }).then(function (res) {
+          if (res.status == 200) {
+            if (_this.team_project.name == _this.info_edits.name) {
+              _this.setActiveTeam({
+                name: _this.name,
+                id: _this.info_edits.name
+              });
+            }
+
+            _this.editTeam({
+              index: _this.info_edits.index,
+              name: _this.name
+            });
+          }
+        }).then(function () {
+          _this.closeModal('change-name');
+        });
+      }
+    }
+  })
 });
 
 /***/ }),
@@ -3466,6 +3514,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3477,8 +3528,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }),
   methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal', 'setActiveTeam'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getTeamMembers'])), {}, {
     selectTeam: function selectTeam(name, id) {
-      console.log(event);
-
       if (document.querySelector('.team-dropdown .dropdown-item.active')) {
         document.querySelector('.team-dropdown .dropdown-item.active').classList.remove('active');
       }
@@ -4577,7 +4626,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
+  props: _defineProperty({
     mode: {
       type: String,
       "default": ''
@@ -4606,7 +4655,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       type: Object,
       "default": function _default() {
         return {};
-      }
+      },
+      required: false
     },
     resource: {
       type: Object,
@@ -4615,7 +4665,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       },
       required: false
     }
-  },
+  }, "resource", {
+    type: Object,
+    "default": function _default() {
+      return {};
+    },
+    required: false
+  }),
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['team_project'])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal']))
 });
@@ -63687,47 +63743,41 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "modal-template",
-    { attrs: { modal_name: "change-name" } },
+    { attrs: { modal_name: "change-name", "width-type": "slim" } },
     [
       [
-        _c("div", { staticClass: "type-text-field mb-5" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.name,
-                expression: "name"
-              }
-            ],
-            ref: "input",
-            staticClass: "type-text-input",
-            attrs: { type: "text", value: "Team Name" },
-            domProps: { value: _vm.name },
-            on: {
-              focus: _vm.changeName,
-              keyup: _vm.changeWidth,
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.name = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("h2", { ref: "title", staticClass: "title placeholder" }, [
-            _vm._v(_vm._s(_vm.name))
-          ])
+        _c("h2", { staticClass: "title text-center mb-0" }, [
+          _vm._v("Edit team name")
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "w-100 " }, [
-          _c(
-            "button",
-            { staticClass: "btn btn-primary next material-icons mx-auto" },
-            [_vm._v("\n                trending_flat \n            ")]
-          )
-        ])
+        _c(
+          "div",
+          { staticClass: "type-text-field my-5" },
+          [
+            _c("input-field", {
+              attrs: { name: "Edit name", "input-value": _vm.name },
+              on: {
+                focus: _vm.changeName,
+                input: function($event) {
+                  _vm.name = $event
+                }
+              }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "w-100 " },
+          [
+            _c("continue-btn", {
+              attrs: { alignment: "center", disabled: _vm.is_disabled },
+              on: { click: _vm.changeName }
+            })
+          ],
+          1
+        )
       ]
     ],
     2
@@ -64659,9 +64709,23 @@ var render = function() {
                             _vm._v(
                               "\n                        " +
                                 _vm._s(team.name) +
-                                "\n                    "
-                            )
-                          ]
+                                "\n\n                        "
+                            ),
+                            _c("more-option-btn", {
+                              attrs: {
+                                mode: "dark",
+                                "edit-name": true,
+                                "delete-project-btn": true,
+                                resource: {
+                                  id: team.id,
+                                  name: team.name,
+                                  resource_type: "team",
+                                  index: key
+                                }
+                              }
+                            })
+                          ],
+                          1
                         )
                       ]
                     : _vm._e()
@@ -66057,7 +66121,10 @@ var render = function() {
                 staticClass: "more-options-item",
                 on: {
                   click: function($event) {
-                    return _vm.openModal("change-name")
+                    return _vm.openModal({
+                      name: "change-name",
+                      resource: _vm.resource
+                    })
                   }
                 }
               },
@@ -85985,7 +86052,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
         return state.modal.delete_group = true;
       }
 
-      if (payload == 'change-name') {
+      if (payload.name == 'change-name') {
+        state.info_edits = payload.resource;
         return state.modal.change_name = true;
       }
 
@@ -85995,6 +86063,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       }
 
       state.modal_visible = true;
+      event.stopPropagation();
     },
     closeModal: function closeModal(state, payload) {
       if (payload == 'new_team_name') {
@@ -86015,6 +86084,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       }
 
       if (payload == 'change-name') {
+        state.info_edits = null;
         return state.modal.change_name = false;
       }
 
@@ -86028,6 +86098,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     addTeam: function addTeam(state, payload) {
       state.teams.push(payload);
     },
+    editTeam: function editTeam(state, _ref2) {
+      var index = _ref2.index,
+          name = _ref2.name;
+      state.teams[index].name = name;
+    },
     addNewTeamMember: function addNewTeamMember(state, payload) {
       state.new_team_members.unshift(payload);
     },
@@ -86037,36 +86112,35 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     emptyNewTeamMember: function emptyNewTeamMember(state) {
       state.new_team_members = [];
     },
-    modifyNewTeamMemberName: function modifyNewTeamMemberName(state, _ref2) {
-      var index = _ref2.index,
-          name = _ref2.name;
+    modifyNewTeamMemberName: function modifyNewTeamMemberName(state, _ref3) {
+      var index = _ref3.index,
+          name = _ref3.name;
       state.new_team_members[index].name = name;
     },
-    modifyNewTeamMemberEmail: function modifyNewTeamMemberEmail(state, _ref3) {
-      var index = _ref3.index,
-          email = _ref3.email;
+    modifyNewTeamMemberEmail: function modifyNewTeamMemberEmail(state, _ref4) {
+      var index = _ref4.index,
+          email = _ref4.email;
       state.new_team_members[index].email = email;
     },
-    modifyNewTeamMemberTimezone: function modifyNewTeamMemberTimezone(state, _ref4) {
-      var index = _ref4.index,
-          timezone = _ref4.timezone;
+    modifyNewTeamMemberTimezone: function modifyNewTeamMemberTimezone(state, _ref5) {
+      var index = _ref5.index,
+          timezone = _ref5.timezone;
       state.new_team_members[index].timezone = timezone;
     },
-    setActiveTeam: function setActiveTeam(state, _ref5) {
-      var name = _ref5.name,
-          id = _ref5.id;
+    setActiveTeam: function setActiveTeam(state, _ref6) {
+      var name = _ref6.name,
+          id = _ref6.id;
       state.team_project.name = name;
       state.team_project.id = id;
     },
     removeTeamMember: function removeTeamMember(state, payload) {
-      console.log("State: " + payload);
       state.team_members.splice(payload, 1);
     }
   },
   actions: {
-    getUserTeams: function getUserTeams(_ref6, event) {
-      var state = _ref6.state,
-          commit = _ref6.commit;
+    getUserTeams: function getUserTeams(_ref7, event) {
+      var state = _ref7.state,
+          commit = _ref7.commit;
       return fetch('/list-teams').then(function (res) {
         if (res.status == 200) {
           return res.text();
@@ -86079,9 +86153,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
         return teams;
       });
     },
-    getLatestTeam: function getLatestTeam(_ref7) {
-      var state = _ref7.state,
-          commit = _ref7.commit;
+    getLatestTeam: function getLatestTeam(_ref8) {
+      var state = _ref8.state,
+          commit = _ref8.commit;
       return fetch('/list-latest-created-team').then(function (res) {
         return res.text();
       }).then(function (data) {
@@ -86090,9 +86164,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
         return info;
       });
     },
-    getTeamMembers: function getTeamMembers(_ref8) {
-      var state = _ref8.state,
-          commit = _ref8.commit;
+    getTeamMembers: function getTeamMembers(_ref9) {
+      var state = _ref9.state,
+          commit = _ref9.commit;
       return fetch("/list-team-members/".concat(state.team_project.id)).then(function (res) {
         return res.text();
       }).then(function (data) {

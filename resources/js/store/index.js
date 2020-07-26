@@ -127,7 +127,8 @@ export default new Vuex.Store({
                 state.resource_to_delete = payload.resource;
                 return state.modal.delete_group = true;
             }
-            if(payload == 'change-name'){
+            if(payload.name == 'change-name' ){
+                state.info_edits = payload.resource;
                 return state.modal.change_name = true;
             }
             if(typeof(payload) == "object" & payload.name == 'edit-info'){
@@ -135,8 +136,8 @@ export default new Vuex.Store({
                 return state.modal.edit_my_profile = true;
             }
             state.modal_visible = true;
-
-
+    
+            event.stopPropagation();
         },
         closeModal(state,payload){
             if(payload == 'new_team_name'){
@@ -153,6 +154,7 @@ export default new Vuex.Store({
                return state.modal.delete_group = false;
             }
             if(payload == 'change-name'){
+                state.info_edits = null;
                 return state.modal.change_name = false;
             }
             if(payload == 'edit-info'){
@@ -165,6 +167,9 @@ export default new Vuex.Store({
         },
         addTeam(state,payload){
             state.teams.push(payload)
+        },
+        editTeam(state,{index,name}){
+            state.teams[index].name = name;
         },
         addNewTeamMember(state, payload){
             state.new_team_members.unshift(payload);
@@ -189,7 +194,6 @@ export default new Vuex.Store({
             state.team_project.id = id;
         },
         removeTeamMember(state, payload){
-            console.log("State: "+payload)
             state.team_members.splice(payload,1);
         }
 

@@ -27,6 +27,9 @@
                         v-for="(team,key) in teams">
                         <button class="dropdown-item" ref="selectTeam" @click="selectTeam(team.name, team.id)">
                             {{team.name}}
+
+                            <more-option-btn mode="dark" :edit-name="true" :delete-project-btn="true" 
+                            :resource="{id:team.id, name:team.name, resource_type:'team', index:key}"></more-option-btn>
                         </button>
                     </template>
 
@@ -100,12 +103,9 @@ export default {
         ...mapActions(['getTeamMembers']),
 
         selectTeam(name,id){
-            console.log(event);
-
             if(document.querySelector('.team-dropdown .dropdown-item.active')){
                 document.querySelector('.team-dropdown .dropdown-item.active').classList.remove('active');
-            }
-            
+            }            
             event.target.classList.add('active')
             this.setActiveTeam({name,id});
             this.getTeamMembers();

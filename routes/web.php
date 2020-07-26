@@ -48,6 +48,8 @@ Route::middleware('auth')->group( function (){
     Route::get('/user-information', 'HomeController@getUser');
 
     Route::post('/create-team', 'TeamsController@create');
+    Route::post('/edit-team-name', 'TeamsController@edit');
+    
     Route::get('/list-teams', 'TeamsController@list');
 
     //Uses ID query parameter, ex: /get-teammate?id=10

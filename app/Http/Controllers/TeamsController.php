@@ -26,6 +26,15 @@ class TeamsController extends Controller
         return Teams::listTeams();
     }
 
+    public function edit(Request $request){
+
+        $team = Teams::find($request->id);
+        $team->name = $request->name;
+
+        return $team->save();
+    }
+
+
     public function latestCreated(){
         return Teams::getTeams()->latest()->first(['id','name']);
     }
