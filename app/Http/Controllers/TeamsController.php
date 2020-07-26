@@ -93,6 +93,12 @@ class TeamsController extends Controller
         }
 
     }
+
+    protected function destroyTeamMember($id){
+        
+        return TeamMembers::destroy($id);
+        
+    }
    
     
 }

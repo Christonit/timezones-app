@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\TeamMembers;
 
@@ -69,6 +70,7 @@ class HomeController extends Controller
         }
 
         if( $request->hasFile('avatar') && $request->file('avatar')->isValid() ){
+            Storage::delete($user->avatar);
             $user->avatar = $request->file('avatar')->store("avatars");
         }
 

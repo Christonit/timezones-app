@@ -17,9 +17,11 @@
 
         <template v-else>
             <figure class="user-item-pic">
-                <span class="user-img">
-                    <img v-if='user.avatar != null || user.avatar == ""' :src="user.avatar" >
-                    <span v-else :style="`background-color:${$randomColor({luminosity:'dark'})}`">{{initialLetters}}</span>
+                <span class="user-img" v-if='user.avatar != null || user.avatar == ""'>
+                    <img :src="user.avatar" >
+                </span>
+                <span class="user-img" v-else>
+                    <span :style="`background-color:${$randomColor({luminosity:'dark'})}`">{{initialLetters}}</span>
                 </span>
                 <span class="user-status-dot"></span>
             </figure>
@@ -43,7 +45,7 @@
             </template>
 
             <more-option-btn mode="dark" :edit-btn='true' :delete-btn='false' v-if="loggedUser" :user-to-edit="userToEdit"></more-option-btn>
-            <more-option-btn :edit-btn='true' v-if="loggedUser == false" :delete-member-btn="true" :user-to-edit="userToEdit"></more-option-btn>  
+            <more-option-btn :edit-btn='true' v-if="loggedUser == false" :delete-member-btn="true" :user-to-edit="userToEdit" :resource="resource"></more-option-btn>  
         </template>     
     </div>
 </template>
@@ -129,6 +131,13 @@ export default {
             return abbr.join('');
 
             
+        },
+        resource(){
+            return {
+                index: this.user.key,
+                name: this.user.name,
+                id: this.user.id,
+                teammate: true}
         },
         isMarkedForDeletion(){
            return this.marked_for_deletion == true & this.userId == 2 ? 'marked-for-deletion' : '';

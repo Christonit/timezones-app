@@ -19,19 +19,22 @@ export default {
             required:false
         }
     },
-    // props:['inputValue','name','type'],
     data(){
         return {
             input_val: ''
         }
     },
     mounted(){
+        this.input_val = '';
         let int = setInterval( ()=>{
             if(this.inputValue != null || this.inputValue != undefined){
                 this.input_val = this.inputValue;
                 clearInterval(int);
             }
-        },1);
+        },100);
+    },
+    updated(){
+        this.input_val = this.inputValue;
     },
     methods:{
         removePlaceholder(e){

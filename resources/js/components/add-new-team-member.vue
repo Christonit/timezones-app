@@ -34,7 +34,7 @@
                     <template 
                         v-if="new_team_members.length > 0" 
                         v-for="(new_member,key) in new_team_members">
-                        <new-team-member-row :member="new_member" :index="key">
+                        <new-team-member-row :member="new_member" :key="key" :index="key">
                         </new-team-member-row>
                     </template>
                 </div>
@@ -75,7 +75,8 @@ export default {
     mixins:[validations],
     computed:{
         ...mapState(['team_project','new_team_members']),
-        ...mapGetters(['basic_header'])
+        ...mapGetters(['basic_header']),
+        
     },
     components:{
         TopBar,

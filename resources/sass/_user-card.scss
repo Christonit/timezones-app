@@ -84,12 +84,16 @@
     border-radius: 32px;
     overflow: hidden;
     display: block;
+    background-color: rgba($color: $gray, $alpha: 0.25);
     @include breakpoint(md){
         height: 42px;
         width: 42px;    
     }
     img{
         height: 100%;
+        margin: auto;
+        position: relative;
+        display: block;
     }
 
     span{

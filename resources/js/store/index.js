@@ -36,7 +36,8 @@ export default new Vuex.Store({
         ],
         team_members:[],
         new_team_members:[],
-        info_edits:null
+        info_edits:null,
+        resource_to_delete:null
 
     },
     getters:{
@@ -58,7 +59,13 @@ export default new Vuex.Store({
             return {
                 'X-CSRF-TOKEN':state.csrf
             }
+        },
+        ajax_delete(state){
+            return {
+                _method: "DELETE"
+            }
         }
+
     },
     mutations:{
         setUserInformation(state,payload){
@@ -116,7 +123,8 @@ export default new Vuex.Store({
             if(payload == 'user_created_successfully'){
                 return state.modal.user_created_successfully = true;
             }
-            if(payload == 'delete-group'){
+            if(payload.name == 'delete-group'){
+                state.resource_to_delete = payload.resource;
                 return state.modal.delete_group = true;
             }
             if(payload == 'change-name'){
@@ -141,6 +149,7 @@ export default new Vuex.Store({
                return state.modal.user_created_successfully = false;
             }
             if(payload == 'delete-group'){
+               state.resource_to_delete = null;
                return state.modal.delete_group = false;
             }
             if(payload == 'change-name'){
@@ -178,6 +187,10 @@ export default new Vuex.Store({
         setActiveTeam(state,{name,id}){
             state.team_project.name = name;
             state.team_project.id = id;
+        },
+        removeTeamMember(state, payload){
+            console.log("State: "+payload)
+            state.team_members.splice(payload,1);
         }
 
 

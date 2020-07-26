@@ -11059,6 +11059,7 @@ a.text-dark:focus {
   border-radius: 32px;
   overflow: hidden;
   display: block;
+  background-color: rgba(150, 163, 163, 0.25);
 }
 
 @media (min-width: 992px) {
@@ -11070,6 +11071,9 @@ a.text-dark:focus {
 
 .user-img img {
   height: 100%;
+  margin: auto;
+  position: relative;
+  display: block;
 }
 
 .user-img span {
@@ -11529,6 +11533,7 @@ a.text-dark:focus {
   position: relative;
   overflow: initial;
   width: 100%;
+  z-index: 0;
 }
 
 .input-field.slim {

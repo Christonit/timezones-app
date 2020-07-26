@@ -2118,9 +2118,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
 
 
 
@@ -2130,8 +2127,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   props: ['index', 'member'],
   data: function data() {
     return {
-      name: null,
-      email: null,
+      name: this.member.name,
+      email: this.member.email,
       timezone: null,
       validation: {
         name: true,
@@ -2139,10 +2136,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     };
   },
+  created: function created() {
+    this.name = null;
+    this.email = null;
+  },
   mounted: function mounted() {
     this.name = this.member.name;
     this.email = this.member.email;
   },
+  beforeUpdate: function beforeUpdate() {
+    var _this = this;
+
+    setTimeout(function () {
+      _this.name = _this.member.name;
+      _this.email = _this.member.email;
+    }, 100);
+  },
+  updated: function updated() {},
   mixins: [_mixins_validators_vue__WEBPACK_IMPORTED_MODULE_3__["default"]],
   components: {
     InputTimezone: _utils_input_timezone__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -2150,9 +2160,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     InputField: _utils_forms_input_field__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapMutations"])(['modifyNewTeamMemberTimezone', 'modifyNewTeamMemberName', 'modifyNewTeamMemberEmail', 'deleteNewTeamMember'])), {}, {
-    updateName: function updateName(name) {
-      name;
-    },
     modifyName: function modifyName() {
       var validation = this.validateName(this.name);
 
@@ -2535,14 +2542,16 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _template_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./template.vue */ "./resources/js/components/modals/template.vue");
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _mixins_utils_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/utils.vue */ "./resources/js/mixins/utils.vue");
+/* harmony import */ var _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/buttons/continue-btn */ "./resources/js/components/utils/buttons/continue-btn.vue");
+/* harmony import */ var _utils_buttons_cancel_btn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/buttons/cancel-btn */ "./resources/js/components/utils/buttons/cancel-btn.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2566,17 +2575,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'delete-project-modal',
   components: {
-    ModalTemplate: _template_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    ModalTemplate: _template_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    ContinueBtn: _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_2__["default"],
+    CancelBtn: _utils_buttons_cancel_btn__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
+  mixins: [_mixins_utils_vue__WEBPACK_IMPORTED_MODULE_1__["default"]],
   data: function data() {
     return {
       title: 'Parametrics Cabinet'
     };
   },
-  methods: {}
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapState"])(['resource_to_delete'])),
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapMutations"])(['removeTeamMember', 'closeModal'])), {}, {
+    deleteThis: function deleteThis() {
+      var _this = this;
+
+      this.deleteTeamMember(this.resource_to_delete.id).then(function (res) {
+        if (res.status == 200) {
+          console.log("Func: " + _this.resource_to_delete.index);
+          return _this.removeTeamMember(_this.resource_to_delete.index);
+        } else {
+          throw new Error('Something went wrong');
+        }
+      }).then(function () {
+        _this.closeModal('delete-group');
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
+  })
 });
 
 /***/ }),
@@ -3798,6 +3832,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -3868,6 +3904,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         abbr.push(el);
       });
       return abbr.join('');
+    },
+    resource: function resource() {
+      return {
+        index: this.user.key,
+        name: this.user.name,
+        id: this.user.id,
+        teammate: true
+      };
     },
     isMarkedForDeletion: function isMarkedForDeletion() {
       return this.marked_for_deletion == true & this.userId == 2 ? 'marked-for-deletion' : '';
@@ -4366,7 +4410,6 @@ __webpack_require__.r(__webpack_exports__);
       required: false
     }
   },
-  // props:['inputValue','name','type'],
   data: function data() {
     return {
       input_val: ''
@@ -4375,12 +4418,17 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
+    this.input_val = '';
+
     var _int = setInterval(function () {
       if (_this.inputValue != null || _this.inputValue != undefined) {
         _this.input_val = _this.inputValue;
         clearInterval(_int);
       }
-    }, 1);
+    }, 100);
+  },
+  updated: function updated() {
+    this.input_val = this.inputValue;
   },
   methods: {
     removePlaceholder: function removePlaceholder(e) {
@@ -4559,6 +4607,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       "default": function _default() {
         return {};
       }
+    },
+    resource: {
+      type: Object,
+      "default": function _default() {
+        return {};
+      },
+      required: false
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['team_project'])),
@@ -4872,7 +4927,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }]
     };
   },
-  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['basic_header', 'header'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['info_edits'])), {}, {
+  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['basic_header', 'header', 'ajax_delete'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['info_edits'])), {}, {
     timezones: function timezones() {
       if (this.timezones_list.length == 0) {
         return this.default_gmt;
@@ -4992,6 +5047,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (data) {
         return JSON.parse(data);
       });
+    },
+    deleteTeamMember: function deleteTeamMember(id) {
+      var teammate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+      if (teammate) {
+        return fetch("/team-members/".concat(id, "/delete"), {
+          headers: this.header,
+          method: 'DELETE',
+          body: JSON.stringify(this.ajax_delete)
+        });
+      }
     }
   }
 });
@@ -63098,6 +63164,7 @@ var render = function() {
               return _vm.new_team_members.length > 0
                 ? [
                     _c("new-team-member-row", {
+                      key: key,
                       attrs: { member: new_member, index: key }
                     })
                   ]
@@ -63137,6 +63204,7 @@ var render = function() {
     { staticClass: "input-field-group  my-3" },
     [
       _c("input-field", {
+        key: _vm.index + "A",
         attrs: { name: "Full name", "input-value": _vm.name },
         on: {
           keyup: _vm.modifyName,
@@ -63147,6 +63215,7 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("input-field", {
+        key: _vm.index + "B",
         attrs: { name: "Email", "input-value": _vm.email },
         on: {
           keyup: _vm.modifyEmail,
@@ -63692,22 +63761,34 @@ var render = function() {
     [
       [
         _c("h2", { ref: "title", staticClass: "title text-center mb-5" }, [
-          _vm._v("\n                You are about to delete\n                "),
+          _vm._v("\n            You are about to delete\n            "),
           _c("br"),
-          _vm._v('\n                "' + _vm._s(_vm.title) + '"\n            ')
+          _vm._v(
+            '\n            "' +
+              _vm._s(_vm.resource_to_delete.name) +
+              '"\n        '
+          )
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "w-100 d-flex justify-content-center" }, [
-          _c("button", { staticClass: "btn btn-cancel" }, [
-            _vm._v("\n                Cancel \n            ")
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "btn btn-secondary next material-icons" },
-            [_vm._v("\n                trending_flat \n            ")]
-          )
-        ])
+        _c(
+          "div",
+          { staticClass: "w-100 d-flex justify-content-center" },
+          [
+            _c("cancel-btn", {
+              on: {
+                click: function($event) {
+                  return _vm.closeModal("delete-group")
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("continue-btn", {
+              staticClass: "btn-secondary next",
+              on: { click: _vm.deleteThis }
+            })
+          ],
+          1
+        )
       ]
     ],
     2
@@ -65097,10 +65178,12 @@ var render = function() {
           ]
         : [
             _c("figure", { staticClass: "user-item-pic" }, [
-              _c("span", { staticClass: "user-img" }, [
-                _vm.user.avatar != null || _vm.user.avatar == ""
-                  ? _c("img", { attrs: { src: _vm.user.avatar } })
-                  : _c(
+              _vm.user.avatar != null || _vm.user.avatar == ""
+                ? _c("span", { staticClass: "user-img" }, [
+                    _c("img", { attrs: { src: _vm.user.avatar } })
+                  ])
+                : _c("span", { staticClass: "user-img" }, [
+                    _c(
                       "span",
                       {
                         style:
@@ -65109,7 +65192,7 @@ var render = function() {
                       },
                       [_vm._v(_vm._s(_vm.initialLetters))]
                     )
-              ]),
+                  ]),
               _vm._v(" "),
               _c("span", { staticClass: "user-status-dot" })
             ]),
@@ -65183,7 +65266,8 @@ var render = function() {
                   attrs: {
                     "edit-btn": true,
                     "delete-member-btn": true,
-                    "user-to-edit": _vm.userToEdit
+                    "user-to-edit": _vm.userToEdit,
+                    resource: _vm.resource
                   }
                 })
               : _vm._e()
@@ -65997,7 +66081,10 @@ var render = function() {
                 staticClass: "more-options-item delete",
                 on: {
                   click: function($event) {
-                    return _vm.openModal("delete-group")
+                    return _vm.openModal({
+                      name: "delete-group",
+                      resource: _vm.resource
+                    })
                   }
                 }
               },
@@ -66021,7 +66108,10 @@ var render = function() {
                 staticClass: "more-options-item delete",
                 on: {
                   click: function($event) {
-                    return _vm.openModal("delete-group")
+                    return _vm.openModal({
+                      name: "delete-group",
+                      resource: _vm.resource
+                    })
                   }
                 }
               },
@@ -85805,7 +85895,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     ],
     team_members: [],
     new_team_members: [],
-    info_edits: null
+    info_edits: null,
+    resource_to_delete: null
   },
   getters: {
     team_members: function team_members(state) {
@@ -85825,6 +85916,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     header: function header(state) {
       return {
         'X-CSRF-TOKEN': state.csrf
+      };
+    },
+    ajax_delete: function ajax_delete(state) {
+      return {
+        _method: "DELETE"
       };
     }
   },
@@ -85884,7 +85980,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
         return state.modal.user_created_successfully = true;
       }
 
-      if (payload == 'delete-group') {
+      if (payload.name == 'delete-group') {
+        state.resource_to_delete = payload.resource;
         return state.modal.delete_group = true;
       }
 
@@ -85913,6 +86010,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       }
 
       if (payload == 'delete-group') {
+        state.resource_to_delete = null;
         return state.modal.delete_group = false;
       }
 
@@ -85959,6 +86057,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
           id = _ref5.id;
       state.team_project.name = name;
       state.team_project.id = id;
+    },
+    removeTeamMember: function removeTeamMember(state, payload) {
+      console.log("State: " + payload);
+      state.team_members.splice(payload, 1);
     }
   },
   actions: {

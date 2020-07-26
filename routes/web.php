@@ -45,7 +45,6 @@ Route::get('/logout', function (){
 
 
 Route::middleware('auth')->group( function (){
-
     Route::get('/user-information', 'HomeController@getUser');
 
     Route::post('/create-team', 'TeamsController@create');
@@ -57,6 +56,7 @@ Route::middleware('auth')->group( function (){
     Route::get('/list-latest-created-team', 'TeamsController@latestCreated');
     Route::get('/list-team-members/{team}', 'TeamsController@getTeamMembers');
     Route::post('/add-team-members','TeamsController@addMembers');
+    Route::delete('/team-members/{id}/delete','TeamsController@destroyTeamMember');
 
 });
 

@@ -33,7 +33,7 @@ export default {
         }
     },
     computed:{
-            ...mapGetters(['basic_header','header']),
+            ...mapGetters(['basic_header','header','ajax_delete']),
             ...mapState(['info_edits']),
             timezones(){
 
@@ -144,6 +144,18 @@ export default {
             .then(data => {
                 return JSON.parse(data);
             })
+        },
+        deleteTeamMember(id,teammate = true){
+
+            if(teammate){
+                return fetch(`/team-members/${id}/delete`,{
+                    headers:this.header,
+                    method:'DELETE',
+                    body: JSON.stringify(this.ajax_delete)
+                })
+            }
+            
+
         }
     }
 }
