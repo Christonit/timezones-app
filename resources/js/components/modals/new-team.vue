@@ -1,11 +1,16 @@
 <template>
 
-    <modal-template  modal_name="new-team">
+    <modal-template  modal_name="new-team" width-type="slim">
 
         <template>
-
-                
-            <div class="type-text-field mb-5">
+            <h2 class="title text-center mb-0">Create a new team</h2>
+            <div class="type-text-field my-5">
+                <input-field name="New team name" 
+                :input-value="name" 
+                @focus='changeName'
+                @input="name = $event"></input-field>
+            </div>                
+            <!-- <div class="type-text-field mb-5">
                 <input class="type-text-input" type="text" value="Team Name" 
                     v-model="name" 
                     ref='input'
@@ -14,7 +19,7 @@
                 <h2 class="title placeholder" ref='title'>{{name}}</h2>
                
 
-            </div>
+            </div> -->
 
             <div class="w-100 ">
                 <continue-btn alignment='center' @click="createTeam"></continue-btn>
@@ -29,16 +34,18 @@
 import {mapMutations, mapState, mapGetters, mapActions} from 'vuex';
 
 import ModalTemplate from './template.vue';
+import InputField from '../utils/forms/input-field';
 import ContinueBtn from '../utils/buttons/continue-btn'
 export default {
     name: 'new-team-modal',
     components:{
         ModalTemplate,
-        ContinueBtn
+        ContinueBtn,
+        InputField
     },
     data(){
         return {
-            name:'Team Name'
+            name:''
         }
     },
     computed:{
@@ -67,11 +74,6 @@ export default {
        createTeam(){
 
            if(this.name.length > 4 && this.name != 'Team Name'){
-            //    let new_team = {
-            //        name: this.name,
-            //        id: (this.teams.length + 1)
-            //    }
-            //    this.addTeam(new_team);
 
                fetch('/create-team',{
                method:'POST',
@@ -86,6 +88,7 @@ export default {
                        this.$store.commit('closeModal', 'new-team');
                    }
                 });
+
            }
        } 
     }

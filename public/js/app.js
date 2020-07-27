@@ -2546,34 +2546,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }),
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapMutations"])(['setActiveTeam', 'editTeam', 'closeModal'])), {}, {
     changeName: function changeName() {
+      if (this.name != this.info_edits.name & this.name.length > 3) {
+        this.info_edits.resource_type == "team" ? this.changeTeamName() : '';
+      }
+    },
+    changeTeamName: function changeTeamName() {
       var _this = this;
 
-      if (this.name != this.info_edits.name & this.name.length > 3) {
-        fetch('/edit-team-name', {
-          method: 'POST',
-          headers: this.basic_header,
-          body: JSON.stringify({
-            id: this.info_edits.id,
-            name: this.name
-          })
-        }).then(function (res) {
-          if (res.status == 200) {
-            if (_this.team_project.name == _this.info_edits.name) {
-              _this.setActiveTeam({
-                name: _this.name,
-                id: _this.info_edits.name
-              });
-            }
-
-            _this.editTeam({
-              index: _this.info_edits.index,
-              name: _this.name
+      fetch('/edit-team-name', {
+        method: 'POST',
+        headers: this.basic_header,
+        body: JSON.stringify({
+          id: this.info_edits.id,
+          name: this.name
+        })
+      }).then(function (res) {
+        if (res.status == 200) {
+          if (_this.team_project.name == _this.info_edits.name) {
+            _this.setActiveTeam({
+              name: _this.name,
+              id: _this.info_edits.id
             });
           }
-        }).then(function () {
-          _this.closeModal('change-name');
-        });
-      }
+
+          _this.editTeam({
+            index: _this.info_edits.index,
+            name: _this.name
+          });
+        }
+      }).then(function () {
+        _this.closeModal('change-name');
+      });
     }
   })
 });
@@ -2640,23 +2643,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       title: 'Parametrics Cabinet'
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapState"])(['resource_to_delete'])),
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapState"])(['resource_to_delete', 'team_project'])), Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapGetters"])(['basic_header', 'ajax_delete'])),
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapMutations"])(['removeTeamMember', 'closeModal'])), {}, {
     deleteThis: function deleteThis() {
       var _this = this;
 
-      this.deleteTeamMember(this.resource_to_delete.id).then(function (res) {
-        if (res.status == 200) {
-          console.log("Func: " + _this.resource_to_delete.index);
-          return _this.removeTeamMember(_this.resource_to_delete.index);
-        } else {
-          throw new Error('Something went wrong');
-        }
-      }).then(function () {
-        _this.closeModal('delete-group');
-      })["catch"](function (error) {
-        return console.log(error);
-      });
+      if (this.resource_to_delete.teammate) {
+        this.deleteTeamMember(this.resource_to_delete.id).then(function (res) {
+          if (res.status == 200) {
+            return _this.removeTeamMember(_this.resource_to_delete.index);
+          } else {
+            throw new Error('Something went wrong');
+          }
+        }).then(function () {
+          _this.closeModal('delete-group');
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      }
+
+      if (this.resource_to_delete.resource_type == "team") {
+        fetch("delete-team/".concat(this.resource_to_delete.id), {
+          method: 'DELETE',
+          headers: this.basic_header,
+          body: JSON.stringify(this.ajax_delete)
+        }).then(function (res) {
+          if (res.status == 200) {
+            return _this.removeTeam(_this.resource_to_delete.index);
+          } else {
+            throw new Error('Something went wrong');
+          }
+        }).then(function () {
+          _this.closeModal('delete-group');
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      }
     }
   })
 });
@@ -2758,9 +2780,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mixins: [_mixins_utils_vue__WEBPACK_IMPORTED_MODULE_4__["default"]],
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapState"])(['info_edits'])),
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapMutations"])(['setSpecificTeamMember', 'setUserInformation', 'closeModal'])), {}, {
-    updateTimePick: function updateTimePick(e) {
-      console.log(e);
-    },
+    updateTimePick: function updateTimePick(e) {},
     selectTimezones: function selectTimezones(timezone) {
       this.timezone.id = timezone.id;
       this.timezone.name = timezone.name;
@@ -2770,8 +2790,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.updateProfile().then(function (res) {
         var data = JSON.parse(res);
+        console.log(data);
 
-        if (data.hasOwnProperty('team')) {
+        if (data.hasOwnProperty('teams_id')) {
           _this.getMemberInfo(_this.info_edits.id).then(function (data) {
             _this.setSpecificTeamMember({
               index: _this.info_edits.key,
@@ -2901,7 +2922,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _template_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./template.vue */ "./resources/js/components/modals/template.vue");
-/* harmony import */ var _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/buttons/continue-btn */ "./resources/js/components/utils/buttons/continue-btn.vue");
+/* harmony import */ var _utils_forms_input_field__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/forms/input-field */ "./resources/js/components/utils/forms/input-field.vue");
+/* harmony import */ var _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/buttons/continue-btn */ "./resources/js/components/utils/buttons/continue-btn.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2935,6 +2957,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 
 
@@ -2942,11 +2970,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   name: 'new-team-modal',
   components: {
     ModalTemplate: _template_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    ContinueBtn: _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_2__["default"]
+    ContinueBtn: _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_3__["default"],
+    InputField: _utils_forms_input_field__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
-      name: 'Team Name'
+      name: ''
     };
   },
   computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['teams'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['basic_header'])),
@@ -2968,11 +2997,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       if (this.name.length > 4 && this.name != 'Team Name') {
-        //    let new_team = {
-        //        name: this.name,
-        //        id: (this.teams.length + 1)
-        //    }
-        //    this.addTeam(new_team);
         fetch('/create-team', {
           method: 'POST',
           headers: this.basic_header,
@@ -5065,7 +5089,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       payload.append('name', this.user_name);
       payload.append('start_hour', this.start_time);
       payload.append('end_hour', this.end_time);
-      this.info_edits.hasOwnProperty('team') ? payload.append('teammate', this.info_edits.id) : '';
+      this.info_edits.hasOwnProperty('teams_id') ? payload.append('teammate', this.info_edits.id) : '';
 
       if (this.profile_pic != null) {
         payload.append('avatar', this.profile_pic);
@@ -5094,15 +5118,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }).then(function (data) {
           return JSON.parse(data);
         });
+      } else {
+        return fetch("/get-teammate?id=".concat(teammate_id, "&user=").concat(is_user)).then(function (res) {
+          if (res.status == 200) {
+            return res.text();
+          }
+        }).then(function (data) {
+          return JSON.parse(data);
+        });
       }
-
-      return fetch("/get-teammate?id=".concat(teammate_id, "&user=").concat(is_user)).then(function (res) {
-        if (res.status == 200) {
-          return res.text();
-        }
-      }).then(function (data) {
-        return JSON.parse(data);
-      });
     },
     deleteTeamMember: function deleteTeamMember(id) {
       var teammate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
@@ -64122,39 +64146,29 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "modal-template",
-    { attrs: { modal_name: "new-team" } },
+    { attrs: { modal_name: "new-team", "width-type": "slim" } },
     [
       [
-        _c("div", { staticClass: "type-text-field mb-5" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.name,
-                expression: "name"
-              }
-            ],
-            ref: "input",
-            staticClass: "type-text-input",
-            attrs: { type: "text", value: "Team Name" },
-            domProps: { value: _vm.name },
-            on: {
-              focus: _vm.changeName,
-              keyup: _vm.changeWidth,
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.name = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("h2", { ref: "title", staticClass: "title placeholder" }, [
-            _vm._v(_vm._s(_vm.name))
-          ])
+        _c("h2", { staticClass: "title text-center mb-0" }, [
+          _vm._v("Create a new team")
         ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "type-text-field my-5" },
+          [
+            _c("input-field", {
+              attrs: { name: "New team name", "input-value": _vm.name },
+              on: {
+                focus: _vm.changeName,
+                input: function($event) {
+                  _vm.name = $event
+                }
+              }
+            })
+          ],
+          1
+        ),
         _vm._v(" "),
         _c(
           "div",
@@ -86102,6 +86116,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       var index = _ref2.index,
           name = _ref2.name;
       state.teams[index].name = name;
+    },
+    removeTeam: function removeTeam(state, payload) {
+      state.teams.splice(payload, 1);
     },
     addNewTeamMember: function addNewTeamMember(state, payload) {
       state.new_team_members.unshift(payload);

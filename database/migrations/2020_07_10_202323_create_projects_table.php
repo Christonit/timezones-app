@@ -17,11 +17,11 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->string('name',100);
 
-            $table->unsignedBigInteger('team');
-            $table->foreign('team')->references('id')->on('teams');
+            $table->unsignedBigInteger('teams_id');
+            $table->foreign('teams_id')->references('id')->on('teams');
 
-            $table->unsignedBigInteger('created_by');
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->unsignedBigInteger('created_by_id');
+            $table->foreign('created_by_id')->references('id')->on('users');
             
             $table->timestamps();
         });

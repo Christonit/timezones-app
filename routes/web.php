@@ -49,8 +49,11 @@ Route::middleware('auth')->group( function (){
 
     Route::post('/create-team', 'TeamsController@create');
     Route::post('/edit-team-name', 'TeamsController@edit');
-    
+    Route::delete('/delete-team/{id}','TeamsController@destroy');
+
     Route::get('/list-teams', 'TeamsController@list');
+
+    Route::get('test', 'TeamsController@teams');
 
     //Uses ID query parameter, ex: /get-teammate?id=10
     Route::get('/get-teammate','TeamsController@getTeammate');

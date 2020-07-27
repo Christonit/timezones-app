@@ -81,7 +81,6 @@ export default {
     methods:{
         ...mapMutations(['setSpecificTeamMember','setUserInformation','closeModal']),
         updateTimePick(e){
-            console.log(e)
         },
         selectTimezones(timezone){
 
@@ -92,10 +91,12 @@ export default {
         updateThisMember(){
            this.updateProfile().then(res => {
                 let data = JSON.parse(res) 
+                    console.log(data)
 
-                if( data.hasOwnProperty('team') ){
+        
+
+                if( data.hasOwnProperty('teams_id') ){
                     this.getMemberInfo(this.info_edits.id).then( (data)=>{
-                        
                         this.setSpecificTeamMember({
                             index : this.info_edits.key,
                             team_member : data

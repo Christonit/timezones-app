@@ -17,8 +17,8 @@ class CreateClientsTable extends Migration
             $table->id();
             $table->string('name',100);
             $table->string('timezone',100);
-            $table->unsignedBigInteger('team');
-            $table->foreign('team')->references('id')->on('teams');
+            $table->unsignedBigInteger('teams_id');
+            $table->foreign('teams_id')->references('id')->on('teams');
             $table->timestamps();
         });
     }

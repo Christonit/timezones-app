@@ -12,11 +12,17 @@ use App\TeamMembers;
 class TeamsController extends Controller
 {
     //
+    public function teams(){
+
+        return Teams::find(1)->teamMembers;
+
+    }
+
     public function create(Request $request){
 
         $new_team = new Teams;
         $new_team->name = $request->name;
-        $new_team->owner = Auth::id();
+        $new_team->owner_id = Auth::id();
 
         return $new_team->save();
     }
@@ -32,6 +38,10 @@ class TeamsController extends Controller
         $team->name = $request->name;
 
         return $team->save();
+    }
+    public function destroy($id){
+
+        return Teams::destroy($id);
     }
 
 
@@ -51,7 +61,7 @@ class TeamsController extends Controller
             foreach($request->new_members as $new_member){
                 $counter++;
                 $team = new TeamMembers;
-                $team->team = $request->team['id'];
+                $team->teams_id = $request->team['id'];
                 $team->name = $new_member["name"];
                 $team->email = $new_member["email"];
                 $team->timezone = $new_member["timezone"]["id"];
@@ -69,7 +79,7 @@ class TeamsController extends Controller
 
     public function getTeamMembers($team){
         
-        $team_members = TeamMembers::where('team',$team)->get();
+        $team_members = TeamMembers::where('teams_id',$team)->get();
         foreach($team_members as $member){
 
             $member['avatar'] = ($member['avatar'] == null) ? null : asset('/storage/'.$member->avatar);
@@ -86,12 +96,12 @@ class TeamsController extends Controller
 
             if($request->has('user') && $request->user === true ){
                 $user =  User::findOrFail($request->id);
-                $user['avatar'] = asset('/storage/'.$user->avatar);
+                $user['avatar'] = $user['avatar'] == null ? null : asset('/storage/'.$user->avatar);
 
                 return $user;
             }
             $teammate = TeamMembers::findOrFail($request->id);
-            $teammate['avatar'] = asset('/storage/'.$teammate->avatar);
+            $teammate['avatar'] = $teammate['avatar'] == null ? null : asset('/storage/'.$teammate->avatar);
 
             return $teammate;
 

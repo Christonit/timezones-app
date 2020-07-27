@@ -71,7 +71,11 @@ export default {
         ...mapMutations(['setActiveTeam','editTeam','closeModal']),
         changeName(){
             if(this.name != this.info_edits.name & this.name.length > 3){
-                fetch('/edit-team-name',{
+                this.info_edits.resource_type == "team" ? this.changeTeamName() : ''
+            }
+        },
+        changeTeamName(){
+            fetch('/edit-team-name',{
                     method:'POST',
                     headers:this.basic_header,
                     body:JSON.stringify({
@@ -83,7 +87,7 @@ export default {
                     if(res.status == 200){
 
                         if(this.team_project.name == this.info_edits.name){
-                            this.setActiveTeam({name: this.name, id: this.info_edits.name})
+                            this.setActiveTeam({name: this.name, id: this.info_edits.id})
                         }
 
                         this.editTeam({index: this.info_edits.index,name:this.name})
@@ -93,7 +97,6 @@ export default {
                 .then( () => {
                     this.closeModal('change-name')
                 })
-            }
         }
     }
 }

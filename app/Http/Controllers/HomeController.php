@@ -41,7 +41,7 @@ class HomeController extends Controller
     }
 
     public function updateUser(Request $request){
-        
+
         if($request->has("teammate") ){
 
             $user = TeamMembers::find($request->teammate);
@@ -57,8 +57,11 @@ class HomeController extends Controller
         }
 
         if($request->has('start_hour') && $request->start_hour != Auth::user()->start_hour ){
+
             $user->start_hour = $request->input('start_hour');
+            
         }
+
 
         if($request->has('end_hour') && $request->end_hour != Auth::user()->end_hour ){
             $user->end_hour = $request->input('end_hour');
@@ -70,11 +73,14 @@ class HomeController extends Controller
         }
 
         if( $request->hasFile('avatar') && $request->file('avatar')->isValid() ){
-            Storage::delete($user->avatar);
+
+            $user->avatar != null ? Storage::delete($user->avatar) : '';
             $user->avatar = $request->file('avatar')->store("avatars");
         }
 
         $user->save();
+
+
 
         return $user;
 

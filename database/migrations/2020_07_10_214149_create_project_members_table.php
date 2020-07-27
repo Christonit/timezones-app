@@ -15,14 +15,14 @@ class CreateProjectMembersTable extends Migration
     {
         Schema::create('project_members', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('project')->nullable();
-            $table->foreign('project')->references('id')->on('projects');
+            $table->unsignedBigInteger('projects_id')->nullable();
+            $table->foreign('projects_id')->references('id')->on('projects');
             
-            $table->unsignedBigInteger('team_member')->nullable();
-            $table->foreign('team_member')->references('id')->on('team_members');
+            $table->unsignedBigInteger('team_members_id')->nullable();
+            $table->foreign('team_members_id')->references('id')->on('team_members');
 
-            $table->unsignedBigInteger('client')->nullable();
-            $table->foreign('client')->references('id')->on('clients');
+            $table->unsignedBigInteger('clients_id')->nullable();
+            $table->foreign('clients_id')->references('id')->on('clients');
 
             $table->timestamps();
         });

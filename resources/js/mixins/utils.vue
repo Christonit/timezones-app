@@ -103,7 +103,7 @@ export default {
             payload.append('name', this.user_name);
             payload.append('start_hour',this.start_time);
             payload.append('end_hour',this.end_time);
-            this.info_edits.hasOwnProperty('team') ? payload.append('teammate',this.info_edits.id) : '';
+            this.info_edits.hasOwnProperty('teams_id') ? payload.append('teammate',this.info_edits.id) : '';
             
             if(this.profile_pic != null){
                 payload.append('avatar',this.profile_pic);
@@ -134,16 +134,20 @@ export default {
                     return JSON.parse(data);
                 })
 
+            }else{
+
+                return fetch(`/get-teammate?id=${teammate_id}&user=${is_user}`).then(res => {
+                    if(res.status == 200 ){
+                        return res.text();
+                    }
+                })
+                .then(data => {
+                    return JSON.parse(data);
+                })
+
             }
 
-            return fetch(`/get-teammate?id=${teammate_id}&user=${is_user}`).then(res => {
-                if(res.status == 200 ){
-                    return res.text();
-                }
-            })
-            .then(data => {
-                return JSON.parse(data);
-            })
+            
         },
         deleteTeamMember(id,teammate = true){
 

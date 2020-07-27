@@ -17,8 +17,8 @@ class CreateTeamsTable extends Migration
             $table->id();
             $table->string('name',100);
 
-            $table->unsignedBigInteger('owner');
-            $table->foreign('owner')->references('id')->on('users');
+            $table->unsignedBigInteger('owner_id');
+            $table->foreign('owner_id')->references('id')->on('users');
 
             $table->timestamps();
         });
@@ -31,6 +31,8 @@ class CreateTeamsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('projects');
+        Schema::dropIfExists('team_members');
         Schema::dropIfExists('teams');
     }
 }

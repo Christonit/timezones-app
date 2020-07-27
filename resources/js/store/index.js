@@ -171,6 +171,9 @@ export default new Vuex.Store({
         editTeam(state,{index,name}){
             state.teams[index].name = name;
         },
+        removeTeam(state,payload){
+            state.teams.splice(payload,1);
+        },
         addNewTeamMember(state, payload){
             state.new_team_members.unshift(payload);
         },

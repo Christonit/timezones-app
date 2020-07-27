@@ -26,7 +26,7 @@ import utils from '../../mixins/utils.vue';
 import ContinueBtn from '../utils/buttons/continue-btn';
 import CancelBtn from '../utils/buttons/cancel-btn';
 
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 export default {
     name: 'delete-project-modal',
     components:{
@@ -41,25 +41,52 @@ export default {
         }
     },
     computed:{
-        ...mapState(['resource_to_delete'])
+        ...mapState(['resource_to_delete','team_project']),
+        ...mapGetters(['basic_header','ajax_delete'])
     },
     methods:{
         ...mapMutations(['removeTeamMember','closeModal']),
         deleteThis(){
-            this.deleteTeamMember(this.resource_to_delete.id).then( res => {
-                if(res.status == 200){
-                    console.log("Func: "+this.resource_to_delete.index)
-                    return  this.removeTeamMember(this.resource_to_delete.index)
-                }else{
-                    throw new Error('Something went wrong');
-                }
 
-            })
-            .then( ()=>{
-                this.closeModal('delete-group');
-            })
-            .catch(error => console.log(error) );
+            if(this.resource_to_delete.teammate){
+                this.deleteTeamMember(this.resource_to_delete.id).then( res => {
+                    if(res.status == 200){
+                        return  this.removeTeamMember(this.resource_to_delete.index)
+                    }else{
+                        throw new Error('Something went wrong');
+                    }
 
+                })
+                .then( ()=>{
+                    this.closeModal('delete-group');
+                })
+                .catch(error => console.log(error) );
+
+            }
+
+
+            if(this.resource_to_delete.resource_type =="team" ){
+
+                fetch(`delete-team/${this.resource_to_delete.id}`, {
+                    method:'DELETE',
+                    headers:this.basic_header,
+                    body:JSON.stringify(this.ajax_delete)
+                })
+                .then( res => {
+                    if(res.status == 200){
+                        return  this.removeTeam(this.resource_to_delete.index)
+                    }else{
+                        throw new Error('Something went wrong');
+                    }
+
+                })
+                .then( ()=>{
+                    this.closeModal('delete-group');
+                })
+                .catch(error => console.log(error) );
+
+            }
+            
         }
         
     }
