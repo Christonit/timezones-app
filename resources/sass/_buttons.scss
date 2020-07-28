@@ -9,6 +9,7 @@
     border: 0;
     justify-content: center;
     font-size: 14px;
+    align-items: center;
 
 
 }
@@ -133,6 +134,19 @@
 }
 .btn-primary{
     background-color: $success;
+    &:hover{
+        background-color: $success-hover;
+    }
+    &:active{
+        background-color: $success-active;
+    }
+    &:focus{
+        background-color: $success-active;
+    }
+
+    &[disabled="true"]{
+        background-color: $success-disabled;
+    }
 }
 .btn-secondary{
     background-color: $secondary-highlight;
@@ -260,6 +274,18 @@
         color: $white;        
     }
 }
+
+.btn-logout{
+    position: absolute;
+    bottom: 36px;
+    margin: auto;
+    left: 32px;
+}
+.btn-dashed-link{
+    color: $black50;
+    border-bottom: 3px dashed $black50;
+}
+
 .view-toggle-btn{
     height: 24px;
     width: 24px;

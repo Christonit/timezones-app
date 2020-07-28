@@ -80,7 +80,7 @@
         </ul>
         
     </div>
-        <a href="/logout">Logout user</a>
+        <a href="/logout" class="btn-logout">Logout user</a>
     </aside>
 </template>
 

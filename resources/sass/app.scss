@@ -8,247 +8,18 @@
 @import 'variables';
 @import 'mixins';
 @import 'breakpoints';
+@import 'typography';
+@import 'layout';
 @import 'sidebar';
+@import 'top-bar';
 @import 'user-card';
 @import 'searchbox';
 @import 'forms';
 @import 'modals';
 @import 'buttons';
 @import 'options-dropdown';
-body{
-    background-color: $body-bg;
-}
-
-#app{
-    overflow: hidden;
-    height: 100vh;
-    @include breakpoint(lg){
-        overflow: initial;
-        height: initial;
-    }
-}
-
-.app-brading{
-    display: inline-flex;
-    justify-content: center;
-    margin-bottom: 96px;
-    width: 100%;
-}
-
-.app-container{
-    width: 100%;
-    // padding-right: 15px;
-    // padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-    overflow-y: scroll;
-    @include breakpoint(lg){
-        overflow-y: initial;
-        width: calc(100% - 248px);
-
-    }
-}
-.container-fluid{
-    overflow: hidden;
-}
-
-.section-header{
-    justify-content: space-between;
-    padding: 16px 48px;
-    align-items: center;
-    background-color: $secondary-bg;
-    margin-bottom: 24px;
-}
 
 
-.btn{
-    display: flex;
-    align-items: center;
-}
-
-
-.content{
-    padding: 0 64px;
-    margin: 36px 0;
-}
-
-.footnote-buttons{
-    display: flex;
-    justify-content: center;
-    .btn{
-        margin: 0 8px;
-    }
-}
-
-.top-bar{
-    display: flex;
-    padding: 36px 48px;
-    background: white;
-    position: sticky;
-    top: 0;
-    z-index: 9;
-    width: 100%;
-    // margin-left: -15px;
-    // margin-right: -15px;
-    @include breakpoint(lg){
-        margin-bottom: 24px; 
-    }
-}
-
-.top-bar-mobile{
-    display: flex;
-    position: sticky;
-    top: 0;
-    z-index: 9;
-}
-
-.menu-btn{
-    padding: 24px;
-    width: 132px;
-    background-color: #ebedff;
-    border: none;
-}
-
-.clock-type-switch{
-    display:inline-flex;
-    align-items: center;
-    @include breakpoint(xl){
-        margin: 0 24px;
-    }
-    span{
-        @include text-14;
-        color:$black;
-        padding:4px 8px;
-        height: 24px;
-        line-height:1.1;
-        cursor:pointer;
-        &.active{
-            font-weight: bold;
-            border:1px dashed #dadada;
-            line-height:1;
-        }
-    }
-}
-#top-searchbar{
-    // margin-left: 80px;
-    justify-content: center;
-    flex-direction: column;
-}
-
-#user-type-filters{
-    margin-top: 24px;
-}
-.top-searchbar-content{
-    max-width: 392px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0;
-    margin:auto;
-    &:focus{
-        outline: none;
-        border: none;
-        box-shadow: none;
-    }
-}
-
-.selected-keywords{
-    display: inline-flex;
-    width: auto;
-    justify-content: center;
-    margin-bottom: -32px;
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    right: 0;
-    left: 0;
-    top: 32px;
-}
-
-.top-searchbar-input{
-    border: none;
-    padding: 12px 20px;
-    @include text-16-semibold;
-    color: $black80;
-}
-
-.view-toggle{
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    position: relative;
-}
-
-.search-icon{
-    width: 24px;
-    height: 24px;
-    content: ' ';
-    display: block;
-    background-image: url('../img/search-icon.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.title{
-    @include font-ubuntu;
-    font-size: 28px;
-    font-weight: bold;
-    color: $black;
-    line-height: 1.5;
-}
-
-.subtitle{
-    @include font-ubuntu;
-    font-size: 22px;
-    color: $black;
-    display: flex;
-    align-items: center;
-    margin-bottom: 32px;
-    font-weight: bold;
-    .clear-btn{
-       margin:  0 12px;
-    }
-}
-
-
-.team-title{
-    padding: 24px 48px;
-    @include breakpoint(xl){
-        padding: 24px 72px;
-    }
-    .title{
-        margin:0;
-    }
-}
-
-.title-caption{
-    @include text-14;
-    color: $black;
-    display: block;
-}
-
-
-.deletion-text{
-    @include text-14;
-    @include font-ubuntu;
-    color: $black;
-}
-
-
-.text-link{
-    // @include text-14;
-    color: $highlight;
-    text-decoration:underline;
-    font-weight:bold;
-    cursor: pointer;
-}
-
-
-
-.black{
-    color: $black;
-}
 
 .contact-list{
     width: auto;
@@ -294,9 +65,13 @@ body{
 }
 .new-members-grid{
     display: grid;
-    grid-template-columns: repeat(3, minmax(220px,276px));
     grid-column-gap: 20px;
     grid-row-gap: 20px;
+    grid-template-columns: repeat(2, minmax(200px,350px));
+
+    @include breakpoint(lg){
+        grid-template-columns: repeat(3, minmax(200px,276px));
+    }
     @include breakpoint(xl){
         grid-template-columns: repeat(4, minmax(220px,276px));
     }
@@ -325,12 +100,19 @@ body{
     img{
         height: 100%;
     }
+
+    span{
+        display: block;
+        align-items: center;
+        line-height: 2;
+        text-align: center;
+        height: 100%;
+        color: #fff;
+        text-transform: uppercase;
+        @include text-14-bold;
+    }
 }
 
-.btn-dashed-link{
-    color: $black50;
-    border-bottom: 3px dashed $black50;
-}
 
 .type-text-field{
     position: relative;
@@ -459,6 +241,3 @@ body{
 }
 
 
-.white{
-    color: white;
-}

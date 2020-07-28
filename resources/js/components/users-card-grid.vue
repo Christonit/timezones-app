@@ -1,6 +1,6 @@
 <template>
     <div class="card-grid" v-if="team_members.length > 0">
-        <user-item view-mode='card' v-for="(team_member,key) in users" :key='key' :index="key" :user="team_member"></user-item>
+        <user-item view-mode='card' v-for="(team_member,key) in team_members" :key='key' :index="key" :user="team_member"></user-item>
     </div>
 </template>
 <script>

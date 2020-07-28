@@ -2212,6 +2212,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _create_group_new_team_member_item_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./create-group/new-team-member-item.vue */ "./resources/js/components/create-group/new-team-member-item.vue");
 /* harmony import */ var _create_group_contact_item_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./create-group/contact-item.vue */ "./resources/js/components/create-group/contact-item.vue");
 /* harmony import */ var _create_group_new_client_item_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./create-group/new-client-item.vue */ "./resources/js/components/create-group/new-client-item.vue");
+/* harmony import */ var _utils_forms_input_field_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/forms/input-field.vue */ "./resources/js/components/utils/forms/input-field.vue");
+/* harmony import */ var _utils_input_timezone_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/input-timezone.vue */ "./resources/js/components/utils/input-timezone.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2289,18 +2291,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+
+
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      name: ''
+    };
+  },
   components: {
     NewTeamMember: _create_group_new_team_member_item_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     ContactItem: _create_group_contact_item_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     NewClientItem: _create_group_new_client_item_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-    ContinueBtn: _utils_buttons_continue_btn_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    ContinueBtn: _utils_buttons_continue_btn_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    InputField: _utils_forms_input_field_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
+    InputTimezone: _utils_input_timezone_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
   },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['team_members'])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal']))
 });
 
@@ -2328,10 +2343,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    avatar: {
+      type: String,
+      "default": null,
+      required: false
+    },
+    name: {
+      type: String,
+      "default": null,
+      required: false
+    },
+    id: {
+      type: Number,
+      "default": 0,
+      required: false
+    }
+  },
   components: {
     Checkbox: _utils_checkbox_input_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  computed: {
+    initialLetters: function initialLetters() {
+      var name = this.name.split(" ");
+
+      if (name.length < 2) {
+        return this.name.slice(0, 2);
+      }
+
+      var abbr = [];
+      name.forEach(function (letter) {
+        var el = letter.slice(0, 1);
+        abbr.push(el);
+      });
+      return abbr.join('');
+    }
   }
 });
 
@@ -2346,7 +2397,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils_buttons_delete_btn_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/buttons/delete-btn.vue */ "./resources/js/components/utils/buttons/delete-btn.vue");
+/* harmony import */ var _utils_forms_input_field_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/forms/input-field.vue */ "./resources/js/components/utils/forms/input-field.vue");
+/* harmony import */ var _utils_input_timezone_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/input-timezone.vue */ "./resources/js/components/utils/input-timezone.vue");
+/* harmony import */ var _utils_buttons_delete_btn_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/buttons/delete-btn.vue */ "./resources/js/components/utils/buttons/delete-btn.vue");
 //
 //
 //
@@ -2362,9 +2415,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      name: 'Francis Pujols'
+    };
+  },
   components: {
-    DeleteBtn: _utils_buttons_delete_btn_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    InputTimezone: _utils_input_timezone_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    InputField: _utils_forms_input_field_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    DeleteBtn: _utils_buttons_delete_btn_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 });
 
@@ -2395,11 +2457,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'new-team-member',
+  props: {
+    avatar: {
+      type: String,
+      "default": null,
+      required: false
+    },
+    name: {
+      type: String,
+      "default": null,
+      required: false
+    },
+    id: {
+      type: Number,
+      "default": 0,
+      required: false
+    }
+  },
   components: {
     DeleteBtn: _utils_buttons_delete_btn_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  computed: {
+    initialLetters: function initialLetters() {
+      var name = this.name.split(" ");
+
+      if (name.length < 2) {
+        return this.name.slice(0, 2);
+      }
+
+      var abbr = [];
+      name.forEach(function (letter) {
+        var el = letter.slice(0, 1);
+        abbr.push(el);
+      });
+      return abbr.join('');
+    }
   },
   methods: {
     deleteMember: function deleteMember() {
@@ -2930,16 +3026,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -63355,11 +63441,24 @@ var render = function() {
     _c(
       "aside",
       { staticClass: "contact-list" },
-      [_vm._m(0), _vm._v(" "), _c("contact-item")],
-      1
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._l(_vm.team_members, function(teammate, key) {
+          return _c("contact-item", {
+            key: key,
+            attrs: {
+              name: teammate.name,
+              avatar: teammate.avatar,
+              id: teammate.id
+            }
+          })
+        })
+      ],
+      2
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "new-group-container w-100" }, [
+    _c("div", { staticClass: "new-group-container" }, [
       _c(
         "header",
         { staticClass: "row section-header" },
@@ -63402,19 +63501,16 @@ var render = function() {
           _c(
             "div",
             { staticClass: "new-members-grid" },
-            [
-              _c("new-team-member"),
-              _vm._v(" "),
-              _c("new-team-member"),
-              _vm._v(" "),
-              _c("new-team-member"),
-              _vm._v(" "),
-              _c("new-team-member"),
-              _vm._v(" "),
-              _c("new-team-member"),
-              _vm._v(" "),
-              _c("new-team-member")
-            ],
+            _vm._l(_vm.team_members, function(teammate, key) {
+              return _c("new-team-member", {
+                key: key,
+                attrs: {
+                  name: teammate.name,
+                  avatar: teammate.avatar,
+                  id: teammate.id
+                }
+              })
+            }),
             1
           )
         ])
@@ -63431,7 +63527,26 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _vm._m(3),
+            _c(
+              "div",
+              { staticClass: "add-user-input-grid-header input-field-group" },
+              [
+                _c("input-field", {
+                  attrs: { name: "Full name", "input-value": _vm.name },
+                  on: {
+                    focus: _vm.changeName,
+                    input: function($event) {
+                      _vm.name = $event
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("input-timezone", { staticClass: "timezone-field" }),
+                _vm._v(" "),
+                _vm._m(3)
+              ],
+              1
+            ),
             _vm._v(" "),
             _c(
               "div",
@@ -63484,29 +63599,13 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "add-user-input-grid-header input-field-group" },
-      [
-        _c("input", {
-          staticClass: "input-field",
-          attrs: { type: "text", placeholder: "Full Name" }
-        }),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "input-field timezone-field",
-          attrs: { type: "text", placeholder: "Timezones" }
-        }),
-        _vm._v(" "),
-        _c("button", { staticClass: "btn btn-add " }, [
-          _c("span", { staticClass: "material-icons" }, [
-            _vm._v(
-              "\n                                add\n                            "
-            )
-          ])
-        ])
-      ]
-    )
+    return _c("button", { staticClass: "btn btn-add " }, [
+      _c("span", { staticClass: "material-icons" }, [
+        _vm._v(
+          "\n                                add\n                            "
+        )
+      ])
+    ])
   }
 ]
 render._withStripped = true
@@ -63534,30 +63633,29 @@ var render = function() {
     "div",
     { staticClass: "contact-item" },
     [
-      _vm._m(0),
+      _c("figure", { staticClass: "contact-img" }, [
+        _vm.avatar != null || _vm.avatar == ""
+          ? _c("img", {
+              attrs: { src: _vm.avatar, alt: _vm.name + "profile pic" }
+            })
+          : _c(
+              "span",
+              {
+                style:
+                  "background-color:" + _vm.$randomColor({ luminosity: "dark" })
+              },
+              [_vm._v(_vm._s(_vm.initialLetters))]
+            )
+      ]),
       _vm._v(" "),
-      _c("span", { staticClass: "contact-name" }, [_vm._v("Minnie Person")]),
+      _c("span", { staticClass: "contact-name" }, [_vm._v(_vm._s(_vm.name))]),
       _vm._v(" "),
       _c("checkbox")
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("figure", { staticClass: "contact-img" }, [
-      _c("img", {
-        attrs: {
-          src: "https://via.placeholder.com/32",
-          alt: "User X profile pic"
-        }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -63583,45 +63681,27 @@ var render = function() {
     "div",
     { staticClass: "input-field-group" },
     [
-      _vm._m(0),
+      _c("input-field", {
+        attrs: { name: "Full name", "input-value": _vm.name },
+        on: {
+          focus: _vm.changeName,
+          input: function($event) {
+            _vm.name = $event
+          }
+        }
+      }),
       _vm._v(" "),
-      _vm._m(1),
+      _c("input-timezone", {
+        staticClass: "timezone-field",
+        attrs: { timezone_name: "GTM+20" }
+      }),
       _vm._v(" "),
       _c("delete-btn", { staticClass: "large" })
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-field" }, [
-      _c(
-        "label",
-        { staticClass: "input-label  black", attrs: { for: "name" } },
-        [_vm._v("Full name")]
-      ),
-      _vm._v(" "),
-      _c("input", { attrs: { type: "text", value: "pujolsfrancis@gmail.com" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-field timezone-field" }, [
-      _c(
-        "label",
-        { staticClass: "input-label  black", attrs: { for: "email" } },
-        [_vm._v("Timezones")]
-      ),
-      _vm._v(" "),
-      _c("input", { attrs: { type: "text", value: "GTM + 1" } })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -63647,32 +63727,32 @@ var render = function() {
     "div",
     { staticClass: "new-member-item" },
     [
-      _vm._m(0),
+      _c("figure", { staticClass: "contact-img" }, [
+        _vm.avatar != null || _vm.avatar == ""
+          ? _c("img", {
+              attrs: { src: _vm.avatar, alt: _vm.name + "profile pic" }
+            })
+          : _c(
+              "span",
+              {
+                style:
+                  "background-color:" + _vm.$randomColor({ luminosity: "dark" })
+              },
+              [_vm._v(_vm._s(_vm.initialLetters))]
+            )
+      ]),
       _vm._v(" "),
-      _c("span", { staticClass: "contact-name" }, [_vm._v("Minnie Person")]),
+      _c("span", { staticClass: "contact-name" }, [_vm._v(_vm._s(_vm.name))]),
       _vm._v(" "),
       _c("delete-btn", {
-        attrs: { alignment: "right", click: _vm.deleteMember }
+        attrs: { alignment: "right" },
+        on: { click: _vm.deleteMember }
       })
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("figure", { staticClass: "contact-img" }, [
-      _c("img", {
-        attrs: {
-          src: "https://via.placeholder.com/32",
-          alt: "User X profile pic"
-        }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -64881,7 +64961,9 @@ var render = function() {
           ])
         : _vm._e(),
       _vm._v(" "),
-      _c("a", { attrs: { href: "/logout" } }, [_vm._v("Logout user")])
+      _c("a", { staticClass: "btn-logout", attrs: { href: "/logout" } }, [
+        _vm._v("Logout user")
+      ])
     ]
   )
 }
@@ -65380,7 +65462,7 @@ var render = function() {
     ? _c(
         "div",
         { staticClass: "card-grid" },
-        _vm._l(_vm.users, function(team_member, key) {
+        _vm._l(_vm.team_members, function(team_member, key) {
           return _c("user-item", {
             key: key,
             attrs: { "view-mode": "card", index: key, user: team_member }

@@ -16,8 +16,8 @@ class CreateTeamManagersTable extends Migration
         Schema::create('team_managers', function (Blueprint $table) {
             $table->id();
             
-            $table->unsignedBigInteger('team_id');
-            $table->foreign('team_id')->references('id')->on('teams');
+            $table->unsignedBigInteger('teams_id');
+            $table->foreign('teams_id')->references('id')->on('teams');
             
             $table->unsignedBigInteger('managers_id');
             $table->foreign('managers_id')->references('id')->on('users');

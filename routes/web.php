@@ -63,9 +63,11 @@ Route::middleware('auth')->group( function (){
     Route::post('/add-team-members','TeamsController@addMembers');
     Route::delete('/team-members/{id}/delete','TeamsController@destroyTeamMember');
 
+    Route::post('/upload-timezones','TimezonesController@upload');
+    Route::post('/search-timezones','TimezonesController@search_timezone');
+    Route::post('/update-user','HomeController@updateUser');
+
+
 });
 
 
-Route::post('/upload-timezones','TimezonesController@upload');
-Route::post('/search-timezones','TimezonesController@search_timezone');
-Route::post('/update-user','HomeController@updateUser');

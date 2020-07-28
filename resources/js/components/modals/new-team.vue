@@ -10,16 +10,6 @@
                 @focus='changeName'
                 @input="name = $event"></input-field>
             </div>                
-            <!-- <div class="type-text-field mb-5">
-                <input class="type-text-input" type="text" value="Team Name" 
-                    v-model="name" 
-                    ref='input'
-                    @focus='changeName'
-                    @keyup='changeWidth'>
-                <h2 class="title placeholder" ref='title'>{{name}}</h2>
-               
-
-            </div> -->
 
             <div class="w-100 ">
                 <continue-btn alignment='center' @click="createTeam"></continue-btn>

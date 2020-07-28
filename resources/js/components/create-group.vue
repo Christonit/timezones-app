@@ -8,11 +8,13 @@
                 <img src="../../img/search-icon.svg" alt="" class="contact-search-icon">
             </div>
 
-            <contact-item></contact-item>
+            <contact-item v-for="(teammate,key) in team_members" 
+            :key="key" :name="teammate.name" 
+            :avatar="teammate.avatar" :id="teammate.id"></contact-item>
             
         </aside>
 
-        <div class="new-group-container w-100">
+        <div class="new-group-container">
             <header class="row section-header">
                     <router-link to="/" tag="button" class="btn btn-secondary-link prev">
                         <span>
@@ -30,12 +32,9 @@
                     </h3>
 
                     <div class="new-members-grid">
-                        <new-team-member></new-team-member>
-                        <new-team-member></new-team-member>
-                        <new-team-member></new-team-member>
-                        <new-team-member></new-team-member>
-                        <new-team-member></new-team-member>
-                        <new-team-member></new-team-member>
+                        <new-team-member v-for="(teammate,key) in team_members" :key="key" 
+                        :name="teammate.name" :avatar="teammate.avatar" 
+                        :id="teammate.id"></new-team-member>
                     </div>
 
                 </div>
@@ -49,8 +48,12 @@
                            Add client 
                         </button>
                         <div class="add-user-input-grid-header input-field-group">
-                            <input class="input-field" type="text" placeholder="Full Name">
-                            <input class="input-field timezone-field" type="text" placeholder="Timezones">
+                            <input-field name="Full name" 
+                                :input-value="name" 
+                                @focus='changeName'
+                                @input="name = $event"></input-field>
+                            <input-timezone class="timezone-field"></input-timezone>
+                            <!-- <input class="input-field timezone-field" type="text" placeholder="Timezones"> -->
                             <button class="btn btn-add "> 
                                 <span class="material-icons">
                                     add
@@ -70,21 +73,34 @@
     </div>
 </template>
 <script>
-import {mapMutations} from 'vuex';
+import {mapGetters,mapMutations} from 'vuex';
 
 import ContinueBtn from './utils/buttons/continue-btn.vue';
 
 import NewTeamMember from './create-group/new-team-member-item.vue';
 import ContactItem from './create-group/contact-item.vue';
 import NewClientItem from './create-group/new-client-item.vue';
+import InputField from './utils/forms/input-field.vue';
+import InputTimezone from './utils/input-timezone.vue';
+
 
 export default {
-
+    data(){
+        return {
+            name:''
+        }
+    },
     components:{
         NewTeamMember,
         ContactItem,
         NewClientItem,
-        ContinueBtn
+        ContinueBtn,
+        InputField,
+        InputTimezone
+    },
+    computed:{
+        ...mapGetters(['team_members']),
+
     },
     methods:{
         ...mapMutations(['openModal']),

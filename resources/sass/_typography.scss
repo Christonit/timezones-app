@@ -1,0 +1,64 @@
+
+.title{
+    @include font-ubuntu;
+    font-size: 28px;
+    font-weight: bold;
+    color: $black;
+    line-height: 1.5;
+}
+
+.subtitle{
+    @include font-ubuntu;
+    font-size: 22px;
+    color: $black;
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+    font-weight: bold;
+    .clear-btn{
+       margin:  0 12px;
+    }
+}
+
+
+.team-title{
+    padding: 24px 48px;
+    @include breakpoint(xl){
+        padding: 24px 72px;
+    }
+    .title{
+        margin:0;
+    }
+}
+
+.title-caption{
+    @include text-14;
+    color: $black;
+    display: block;
+}
+
+
+.deletion-text{
+    @include text-14;
+    @include font-ubuntu;
+    color: $black;
+}
+
+
+.text-link{
+    // @include text-14;
+    color: $highlight;
+    text-decoration:underline;
+    font-weight:bold;
+    cursor: pointer;
+}
+
+
+
+.black{
+    color: $black;
+}
+
+.white{
+    color: white;
+}
