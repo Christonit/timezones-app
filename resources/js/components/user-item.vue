@@ -23,19 +23,19 @@
                 <span class="user-img" v-else>
                     <span :style="`background-color:${$randomColor({luminosity:'dark'})}`">{{initialLetters}}</span>
                 </span>
-                <span class="user-status-dot"></span>
+                <span class="user-status-dot" :class="isUserAvailable ? 'active':''"></span>
             </figure>
             <span v-if="viewMode == 'card'" class="user-item-info">
                 <b class="user-item-name">{{username}}</b>
                 <time-watch :timezone="user.timezone"></time-watch>
                 <current-day :timezone="user.timezone"></current-day>
-                <span class="user-item-available-time">Av: {{user.start_hour}} - {{user.end_hour}}</span>
+                <span class="user-item-available-time">Av: {{available_hours}}</span>
             </span>
             <template v-if="viewMode == 'timeline'">
                 <span class="user-item-info">
 
                     <b class="user-item-name">{{username}}</b>
-                    <span class="user-item-available-time">Av: {{user.start_hour}} - {{user.end_hour}}</span>
+                    <span class="user-item-available-time">Av: {{available_hours}}</span>
 
                 </span>
 
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import moment from 'moment-timezone';
 import MoreOptionBtn from "./utils/more-option-btn.vue";
 import TimeWatch from "./utils/time-watch.vue";
 import CurrentDay from "./utils/current-day.vue";
@@ -90,7 +91,7 @@ export default {
         }
     },
     computed:{
-        ...mapState(['screen_sizes','device_width']),
+        ...mapState(['screen_sizes','device_width','hour_clock']),
         username(){
             if( this.device_width < this.screen_sizes.md){
                 if(this.user.name.length >= 16){
@@ -104,8 +105,56 @@ export default {
                     return `${this.user.name.substring(0,14)}...`;
                 }
             }
-
             return this.user.name
+        },
+        available_hours(){
+
+            if(this.hour_clock == 12){
+
+                let start_hour = this.user.start_hour.split(':');
+                let end_hour = this.user.end_hour.split(':');
+                
+                if(start_hour[0] >= 12){
+
+                    start_hour = `${(start_hour[0] - 12)}:${(start_hour[1])} PM`;
+
+                }else{
+
+                    start_hour = `${(start_hour[0])}:${(start_hour[1])} AM`;
+
+                }
+
+                if(end_hour[0] >= 12){
+
+                    end_hour = `${(end_hour[0] - 12)}:${(end_hour[1])} PM`;
+
+                }else{
+                    end_hour = `${(end_hour[0])}:${(end_hour[1])} AM`;
+                }
+
+                return `${start_hour} - ${end_hour}`;
+
+            }
+
+            return `${this.user.start_hour} - ${this.user.end_hour}`;
+            
+        },
+        isUserAvailable(){
+            let current_hour = parseInt(this.getCurrentHour());
+            setInterval( () => { 
+                current_hour =  parseInt(this.getCurrentHour());
+            }, 60 * 1000);
+
+            let start_hour = this.user.start_hour.split(':');
+            let end_hour = this.user.end_hour.split(':');
+
+           if(current_hour >= parseInt(start_hour[0]) && current_hour <= parseInt(end_hour[0])){
+               return true;
+           }else{
+               return false;
+           }
+           
+
         },
         userToEdit(){
             let user = this.user;
@@ -127,10 +176,8 @@ export default {
                 
                 abbr.push(el);
             })
-
             return abbr.join('');
 
-            
         },
         resource(){
             return {
@@ -154,6 +201,10 @@ export default {
     methods:{
         undoDeletion(){
             this.marked_for_deletion = false;
+        },
+        getCurrentHour(){
+
+            return moment.tz(this.user.timezone).format('HH');
         }
     }
 }

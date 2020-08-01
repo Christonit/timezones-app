@@ -3831,7 +3831,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {};
   },
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['team_project', 'screen_sizes', 'device_width'])), {}, {
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['team_project', 'screen_sizes', 'device_width', 'hour_clock'])), {}, {
     viewModeToggle: function viewModeToggle() {
       this.team_project.view_mode;
     },
@@ -3839,16 +3839,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return window.innerWidth;
     }
   }),
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['toggleTeamViewMode', 'toggleSearchbox', 'toggleSidebar'])), {}, {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['toggleTeamViewMode', 'toggleSearchbox', 'toggleSidebar', 'switchHourClock'])), {}, {
     openSearchbox: function openSearchbox() {
       if (this.team_project.searchbox_visible == false) {
         return this.toggleSearchbox();
       }
-    },
-    toggleClock: function toggleClock(e) {
-      document.querySelector('.clock-type-switch .active').classList.remove('active');
-      e.target.classList.add('active');
-    }
+    } // toggleClock(e){
+    // }
+
   }),
   components: {
     Searchbox: _components_utils_searchbox_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -3931,10 +3929,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils_more_option_btn_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/more-option-btn.vue */ "./resources/js/components/utils/more-option-btn.vue");
-/* harmony import */ var _utils_time_watch_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/time-watch.vue */ "./resources/js/components/utils/time-watch.vue");
-/* harmony import */ var _utils_current_day_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/current-day.vue */ "./resources/js/components/utils/current-day.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var moment_timezone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment-timezone */ "./node_modules/moment-timezone/index.js");
+/* harmony import */ var moment_timezone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment_timezone__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils_more_option_btn_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/more-option-btn.vue */ "./resources/js/components/utils/more-option-btn.vue");
+/* harmony import */ var _utils_time_watch_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/time-watch.vue */ "./resources/js/components/utils/time-watch.vue");
+/* harmony import */ var _utils_current_day_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/current-day.vue */ "./resources/js/components/utils/current-day.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -3997,6 +3997,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4005,9 +4006,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {},
   components: {
-    MoreOptionBtn: _utils_more_option_btn_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    TimeWatch: _utils_time_watch_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    CurrentDay: _utils_current_day_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    MoreOptionBtn: _utils_more_option_btn_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    TimeWatch: _utils_time_watch_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    CurrentDay: _utils_current_day_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   props: {
     index: {
@@ -4027,7 +4028,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       type: String
     }
   },
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapState"])(['screen_sizes', 'device_width'])), {}, {
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapState"])(['screen_sizes', 'device_width', 'hour_clock'])), {}, {
     username: function username() {
       if (this.device_width < this.screen_sizes.md) {
         if (this.user.name.length >= 16) {
@@ -4044,6 +4045,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       return this.user.name;
+    },
+    available_hours: function available_hours() {
+      if (this.hour_clock == 12) {
+        var start_hour = this.user.start_hour.split(':');
+        var end_hour = this.user.end_hour.split(':');
+
+        if (start_hour[0] >= 12) {
+          start_hour = "".concat(start_hour[0] - 12, ":").concat(start_hour[1], " PM");
+        } else {
+          start_hour = "".concat(start_hour[0], ":").concat(start_hour[1], " AM");
+        }
+
+        if (end_hour[0] >= 12) {
+          end_hour = "".concat(end_hour[0] - 12, ":").concat(end_hour[1], " PM");
+        } else {
+          end_hour = "".concat(end_hour[0], ":").concat(end_hour[1], " AM");
+        }
+
+        return "".concat(start_hour, " - ").concat(end_hour);
+      }
+
+      return "".concat(this.user.start_hour, " - ").concat(this.user.end_hour);
+    },
+    isUserAvailable: function isUserAvailable() {
+      var _this = this;
+
+      var current_hour = parseInt(this.getCurrentHour());
+      setInterval(function () {
+        current_hour = parseInt(_this.getCurrentHour());
+      }, 60 * 1000);
+      var start_hour = this.user.start_hour.split(':');
+      var end_hour = this.user.end_hour.split(':');
+
+      if (current_hour >= parseInt(start_hour[0]) && current_hour <= parseInt(end_hour[0])) {
+        return true;
+      } else {
+        return false;
+      }
     },
     userToEdit: function userToEdit() {
       var user = this.user;
@@ -4088,6 +4127,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     undoDeletion: function undoDeletion() {
       this.marked_for_deletion = false;
+    },
+    getCurrentHour: function getCurrentHour() {
+      return moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(this.user.timezone).format('HH');
     }
   }
 });
@@ -4957,12 +4999,20 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment_timezone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment-timezone */ "./node_modules/moment-timezone/index.js");
 /* harmony import */ var moment_timezone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment_timezone__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
 //
 //
 //
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'time-watch',
@@ -4983,18 +5033,22 @@ __webpack_require__.r(__webpack_exports__);
     this.updateCurrentTime(this.timezone);
     setInterval(function () {
       return _this.updateCurrentTime(_this.timezone);
-    }, 1 * 10000);
+    }, 1 * 100);
   },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['hour_clock'])),
   methods: {
     updateCurrentTime: function updateCurrentTime(timezone) {
       if (timezone == null) {
         return this.currentTime = '--:--';
-      } //24 hours format
-      // this.currentTime = moment().tz('America/New_York').format('HH mm');
-      //12 hours interval
+      }
 
+      if (this.hour_clock == 12) {
+        this.currentTime = moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(timezone).format('hh:mm A');
+      }
 
-      this.currentTime = moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(timezone).format('LT');
+      if (this.hour_clock == 24) {
+        this.currentTime = moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(timezone).format('HH:mm');
+      }
     }
   }
 });
@@ -65072,11 +65126,21 @@ var render = function() {
           _c("div", { staticClass: "clock-type-switch" }, [
             _c(
               "span",
-              { staticClass: "active", on: { click: _vm.toggleClock } },
+              {
+                class: _vm.hour_clock == 24 ? "active" : "",
+                on: { click: _vm.switchHourClock }
+              },
               [_vm._v("24")]
             ),
             _vm._v(" "),
-            _c("span", { on: { click: _vm.toggleClock } }, [_vm._v("12")])
+            _c(
+              "span",
+              {
+                class: _vm.hour_clock == 12 ? "active" : "",
+                on: { click: _vm.switchHourClock }
+              },
+              [_vm._v("12")]
+            )
           ]),
           _vm._v(" "),
           _c(
@@ -65122,11 +65186,21 @@ var render = function() {
         _c("div", { staticClass: "clock-type-switch" }, [
           _c(
             "span",
-            { staticClass: "active", on: { click: _vm.toggleClock } },
+            {
+              class: _vm.hour_clock == 24 ? "active" : "",
+              on: { click: _vm.switchHourClock }
+            },
             [_vm._v("24")]
           ),
           _vm._v(" "),
-          _c("span", { on: { click: _vm.toggleClock } }, [_vm._v("12")])
+          _c(
+            "span",
+            {
+              class: _vm.hour_clock == 12 ? "active" : "",
+              on: { click: _vm.switchHourClock }
+            },
+            [_vm._v("12")]
+          )
         ]),
         _vm._v(" "),
         _c(
@@ -65354,7 +65428,10 @@ var render = function() {
                     )
                   ]),
               _vm._v(" "),
-              _c("span", { staticClass: "user-status-dot" })
+              _c("span", {
+                staticClass: "user-status-dot",
+                class: _vm.isUserAvailable ? "active" : ""
+              })
             ]),
             _vm._v(" "),
             _vm.viewMode == "card"
@@ -65375,12 +65452,7 @@ var render = function() {
                     }),
                     _vm._v(" "),
                     _c("span", { staticClass: "user-item-available-time" }, [
-                      _vm._v(
-                        "Av: " +
-                          _vm._s(_vm.user.start_hour) +
-                          " - " +
-                          _vm._s(_vm.user.end_hour)
-                      )
+                      _vm._v("Av: " + _vm._s(_vm.available_hours))
                     ])
                   ],
                   1
@@ -65395,12 +65467,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("span", { staticClass: "user-item-available-time" }, [
-                      _vm._v(
-                        "Av: " +
-                          _vm._s(_vm.user.start_hour) +
-                          " - " +
-                          _vm._s(_vm.user.end_hour)
-                      )
+                      _vm._v("Av: " + _vm._s(_vm.available_hours))
                     ])
                   ]),
                   _vm._v(" "),
@@ -86029,6 +86096,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     user: null,
+    hour_clock: 12,
     screen_sizes: {
       xs: 576,
       sm: 720,
@@ -86090,6 +86158,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
   mutations: {
     setUserInformation: function setUserInformation(state, payload) {
       state.user = payload;
+    },
+    switchHourClock: function switchHourClock(state) {
+      console.log('xxxxx');
+      return state.hour_clock == 12 ? state.hour_clock = 24 : state.hour_clock = 12;
     },
     setTeamMembers: function setTeamMembers(state, payload) {
       state.team_members = payload;

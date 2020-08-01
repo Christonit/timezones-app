@@ -5,6 +5,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state:{
         user:null,
+        hour_clock:12,
         screen_sizes:{
             xs:576,
             sm:720,
@@ -70,6 +71,10 @@ export default new Vuex.Store({
     mutations:{
         setUserInformation(state,payload){
             state.user = payload;
+        },
+        switchHourClock(state){
+            console.log('xxxxx');
+            return (state.hour_clock == 12) ? state.hour_clock = 24 : state.hour_clock = 12;
         },
         setTeamMembers(state,payload){
             state.team_members = payload;

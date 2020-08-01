@@ -5,8 +5,8 @@
         </button>
         <div class="top-bar">
             <div class="clock-type-switch">
-                <span class="active" @click="toggleClock">24</span>
-                <span @click="toggleClock">12</span>
+                <span :class="hour_clock == 24 ? 'active':''" @click="switchHourClock">24</span>
+                <span :class="hour_clock == 12 ? 'active':''" @click="switchHourClock">12</span>
             </div>
             <div id='top-searchbar' class="input-group">
                 <div class="top-searchbar-content">
@@ -45,8 +45,8 @@
 
     <header class="top-bar" v-else>
        <div class="clock-type-switch">
-           <span class="active" @click="toggleClock">24</span>
-           <span @click="toggleClock">12</span>
+            <span :class="hour_clock == 24 ? 'active':''" @click="switchHourClock">24</span>
+            <span :class="hour_clock == 12 ? 'active':''" @click="switchHourClock">12</span>
         </div>
             <div id='top-searchbar' class="input-group">
                 <div class="top-searchbar-content">
@@ -92,7 +92,7 @@ export default {
         }
     },
     computed:{
-        ...mapState(['team_project','screen_sizes','device_width']),
+        ...mapState(['team_project','screen_sizes','device_width','hour_clock']),
         viewModeToggle(){
             this.team_project.view_mode
         },
@@ -101,16 +101,15 @@ export default {
         }
     },
     methods:{
-        ...mapMutations(['toggleTeamViewMode','toggleSearchbox','toggleSidebar']),
+        ...mapMutations(['toggleTeamViewMode','toggleSearchbox','toggleSidebar','switchHourClock']),
         openSearchbox(){
             if(this.team_project.searchbox_visible == false){
                 return this.toggleSearchbox();
             }
-        },
-        toggleClock(e){
-            document.querySelector('.clock-type-switch .active').classList.remove('active');
-            e.target.classList.add('active');
         }
+        // toggleClock(e){
+           
+        // }
         
     },
     components:{

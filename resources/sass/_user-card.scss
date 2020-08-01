@@ -120,6 +120,9 @@
     border-radius: 8px;
     border: 3px solid white;
     box-sizing: content-box;
+    &.active{
+        background-color: $active; 
+    }
 }
 .active .user-status-dot{
     border: 3px solid $black;

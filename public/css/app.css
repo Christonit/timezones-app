@@ -11362,6 +11362,10 @@ body {
   box-sizing: content-box;
 }
 
+.user-status-dot.active {
+  background-color: #13bd97;
+}
+
 .active .user-status-dot {
   border: 3px solid #05060d;
 }
