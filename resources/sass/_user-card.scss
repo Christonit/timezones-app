@@ -355,6 +355,12 @@
     z-index: -1;
     
 }
+.hour-time.available.half.leave::before{
+    left: 16px;
+
+    
+}
+
 .timeline-arrow{
     position: absolute;
     left: 0;

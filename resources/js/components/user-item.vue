@@ -6,9 +6,7 @@
                 “{{user.name}}” was deleted. You can still 
                 <span class="text-link" @click="undoDeletion">Undo.</span>
             </span>
-
             <span class="time-counter">12s</span>
-
             <button class="material-icons modal-btn-close" @click="undoDeletion">
                 close
             </button>
@@ -33,10 +31,8 @@
             </span>
             <template v-if="viewMode == 'timeline'">
                 <span class="user-item-info">
-
                     <b class="user-item-name">{{username}}</b>
                     <span class="user-item-available-time">Av: {{available_hours}}</span>
-
                 </span>
 
                 <time-watch :timezone="user.timezone"></time-watch>
@@ -62,10 +58,19 @@ import { mapState } from 'vuex';
 export default {
     data(){
         return {
-            marked_for_deletion: false
+            marked_for_deletion: false,
+            time: null
         };
     },
-    mounted(){
+    created(){
+
+        this.time = moment.tz(this.user.timezone).format('HH:mm');
+
+        setInterval( () => { 
+            this.time =  moment.tz(this.user.timezone).format('HH:mm');
+                
+        }, (60 * 1000) );
+
     },
     components:{
         MoreOptionBtn,
@@ -140,20 +145,43 @@ export default {
             
         },
         isUserAvailable(){
-            let current_hour = parseInt(this.getCurrentHour());
-            setInterval( () => { 
-                current_hour =  parseInt(this.getCurrentHour());
-            }, 60 * 1000);
+            let time = this.time;
+            time = time.split(':');
+            time = {
+                hour: parseInt(time[0]),
+                minutes: parseInt(time[1])
+            }
 
             let start_hour = this.user.start_hour.split(':');
             let end_hour = this.user.end_hour.split(':');
 
-           if(current_hour >= parseInt(start_hour[0]) && current_hour <= parseInt(end_hour[0])){
-               return true;
-           }else{
-               return false;
-           }
-           
+            start_hour = {
+                hour: parseInt(start_hour[0]),
+                minutes: parseInt(start_hour[1])
+            }
+
+            end_hour = {
+                hour: parseInt(end_hour[0]),
+                minutes: parseInt(end_hour[1])
+            }
+
+            // return {time,end_hour,start_hour};
+
+            if( time.hour >= start_hour.hour && time.hour <= end_hour.hour ){
+                
+                if(time.hour == start_hour.hour && time.minutes <= start_hour.minutes){
+                    return false;
+                }
+
+                if( time.hour == end_hour.hour && time.minutes >= end_hour.minutes){
+                    return false
+                }
+
+                return true;
+
+            }
+            
+            return false;         
 
         },
         userToEdit(){
@@ -201,10 +229,6 @@ export default {
     methods:{
         undoDeletion(){
             this.marked_for_deletion = false;
-        },
-        getCurrentHour(){
-
-            return moment.tz(this.user.timezone).format('HH');
         }
     }
 }

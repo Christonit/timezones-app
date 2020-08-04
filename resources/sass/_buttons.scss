@@ -11,6 +11,9 @@
     font-size: 14px;
     align-items: center;
 
+    &:focus{
+        box-shadow: none;
+    }
 
 }
 

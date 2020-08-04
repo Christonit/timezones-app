@@ -11619,6 +11619,10 @@ body {
   z-index: -1;
 }
 
+.hour-time.available.half.leave::before {
+  left: 16px;
+}
+
 .timeline-arrow {
   position: absolute;
   left: 0;
@@ -12364,6 +12368,10 @@ input.input-field::placeholder {
   justify-content: center;
   font-size: 14px;
   align-items: center;
+}
+
+.btn:focus {
+  box-shadow: none;
 }
 
 .btn-link:active {

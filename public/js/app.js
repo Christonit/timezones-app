@@ -3989,10 +3989,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -4001,10 +3997,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      marked_for_deletion: false
+      marked_for_deletion: false,
+      time: null
     };
   },
-  mounted: function mounted() {},
+  created: function created() {
+    var _this = this;
+
+    this.time = moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(this.user.timezone).format('HH:mm');
+    setInterval(function () {
+      _this.time = moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(_this.user.timezone).format('HH:mm');
+    }, 60 * 1000);
+  },
   components: {
     MoreOptionBtn: _utils_more_option_btn_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     TimeWatch: _utils_time_watch_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -4069,20 +4073,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return "".concat(this.user.start_hour, " - ").concat(this.user.end_hour);
     },
     isUserAvailable: function isUserAvailable() {
-      var _this = this;
-
-      var current_hour = parseInt(this.getCurrentHour());
-      setInterval(function () {
-        current_hour = parseInt(_this.getCurrentHour());
-      }, 60 * 1000);
+      var time = this.time;
+      time = time.split(':');
+      time = {
+        hour: parseInt(time[0]),
+        minutes: parseInt(time[1])
+      };
       var start_hour = this.user.start_hour.split(':');
       var end_hour = this.user.end_hour.split(':');
+      start_hour = {
+        hour: parseInt(start_hour[0]),
+        minutes: parseInt(start_hour[1])
+      };
+      end_hour = {
+        hour: parseInt(end_hour[0]),
+        minutes: parseInt(end_hour[1])
+      }; // return {time,end_hour,start_hour};
 
-      if (current_hour >= parseInt(start_hour[0]) && current_hour <= parseInt(end_hour[0])) {
+      if (time.hour >= start_hour.hour && time.hour <= end_hour.hour) {
+        if (time.hour == start_hour.hour && time.minutes <= start_hour.minutes) {
+          return false;
+        }
+
+        if (time.hour == end_hour.hour && time.minutes >= end_hour.minutes) {
+          return false;
+        }
+
         return true;
-      } else {
-        return false;
       }
+
+      return false;
     },
     userToEdit: function userToEdit() {
       var user = this.user;
@@ -4127,9 +4147,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     undoDeletion: function undoDeletion() {
       this.marked_for_deletion = false;
-    },
-    getCurrentHour: function getCurrentHour() {
-      return moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(this.user.timezone).format('HH');
     }
   }
 });
@@ -4252,67 +4269,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4324,7 +4280,284 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     UserItem: _user_item_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['user'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['team_members']))
+  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['user', 'hour_clock'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['team_members'])), {}, {
+    hour_counter_24: function hour_counter_24() {
+      return ['00', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, '00', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+    },
+    hour_counter_12: function hour_counter_12() {
+      return [{
+        original: 0,
+        time: 12,
+        meridie: 'am'
+      }, {
+        original: 1,
+        time: 1,
+        meridie: 'am'
+      }, {
+        original: 2,
+        time: 2,
+        meridie: 'am'
+      }, {
+        original: 3,
+        time: 3,
+        meridie: 'am'
+      }, {
+        original: 4,
+        time: 4,
+        meridie: 'am'
+      }, {
+        original: 5,
+        time: 5,
+        meridie: 'am'
+      }, {
+        original: 6,
+        time: 6,
+        meridie: 'am'
+      }, {
+        original: 7,
+        time: 7,
+        meridie: 'am'
+      }, {
+        original: 8,
+        time: 8,
+        meridie: 'am'
+      }, {
+        original: 9,
+        time: 9,
+        meridie: 'am'
+      }, {
+        original: 10,
+        time: 10,
+        meridie: 'am'
+      }, {
+        original: 11,
+        time: 11,
+        meridie: 'am'
+      }, {
+        original: 12,
+        time: 12,
+        meridie: 'pm'
+      }, {
+        original: 13,
+        time: 1,
+        meridie: 'pm'
+      }, {
+        original: 14,
+        time: 2,
+        meridie: 'pm'
+      }, {
+        original: 15,
+        time: 3,
+        meridie: 'pm'
+      }, {
+        original: 16,
+        time: 4,
+        meridie: 'pm'
+      }, {
+        original: 17,
+        time: 5,
+        meridie: 'pm'
+      }, {
+        original: 18,
+        time: 6,
+        meridie: 'pm'
+      }, {
+        original: 19,
+        time: 7,
+        meridie: 'pm'
+      }, {
+        original: 20,
+        time: 8,
+        meridie: 'pm'
+      }, {
+        original: 21,
+        time: 9,
+        meridie: 'pm'
+      }, {
+        original: 22,
+        time: 10,
+        meridie: 'pm'
+      }, {
+        original: 23,
+        time: 11,
+        meridie: 'pm'
+      }, {
+        original: 1,
+        time: 1,
+        meridie: 'am'
+      }, {
+        original: 2,
+        time: 2,
+        meridie: 'am'
+      }, {
+        original: 3,
+        time: 3,
+        meridie: 'am'
+      }, {
+        original: 4,
+        time: 4,
+        meridie: 'am'
+      }, {
+        original: 5,
+        time: 5,
+        meridie: 'am'
+      }, {
+        original: 6,
+        time: 6,
+        meridie: 'am'
+      }, {
+        original: 7,
+        time: 7,
+        meridie: 'am'
+      }, {
+        original: 8,
+        time: 8,
+        meridie: 'am'
+      }, {
+        original: 9,
+        time: 9,
+        meridie: 'am'
+      }, {
+        original: 10,
+        time: 10,
+        meridie: 'am'
+      }, {
+        original: 11,
+        time: 11,
+        meridie: 'am'
+      }, {
+        original: 12,
+        time: 12,
+        meridie: 'pm'
+      }, {
+        original: 13,
+        time: 1,
+        meridie: 'pm'
+      }, {
+        original: 14,
+        time: 2,
+        meridie: 'pm'
+      }, {
+        original: 15,
+        time: 3,
+        meridie: 'pm'
+      }, {
+        original: 16,
+        time: 4,
+        meridie: 'pm'
+      }, {
+        original: 17,
+        time: 5,
+        meridie: 'pm'
+      }, {
+        original: 18,
+        time: 6,
+        meridie: 'pm'
+      }, {
+        original: 19,
+        time: 7,
+        meridie: 'pm'
+      }, {
+        original: 20,
+        time: 8,
+        meridie: 'pm'
+      }, {
+        original: 21,
+        time: 9,
+        meridie: 'pm'
+      }, {
+        original: 22,
+        time: 10,
+        meridie: 'pm'
+      }, {
+        original: 23,
+        time: 11,
+        meridie: 'pm'
+      }];
+    }
+  }),
+  methods: {
+    available_hour: function available_hour(start_hour, end_hour) {
+      var start = start_hour.split(":");
+      var end = end_hour.split(":");
+      return {
+        start: {
+          hour: parseInt(start[0]),
+          minutes: parseInt(start[1])
+        },
+        end: {
+          hour: parseInt(end[0]),
+          minutes: parseInt(end[1])
+        }
+      };
+    },
+    startOrEnd24: function startOrEnd24(_ref) {
+      var hour = _ref.hour,
+          start_time = _ref.start_time,
+          end_time = _ref.end_time;
+      var available_hour = this.available_hour(start_time, end_time);
+      var start = {};
+      var end = {};
+      start.hour = available_hour.start.hour;
+      end.hour = available_hour.end.hour;
+      start.minutes = available_hour.start.minutes;
+      end.minutes = available_hour.end.minutes;
+
+      if (hour >= start.hour && hour <= end.hour) {
+        if (hour == start.hour) {
+          if (start.minutes > 0) {
+            return "available half entry";
+          }
+
+          return "available entry";
+        }
+
+        if (end.minutes > 0 && hour == end.hour) {
+          return "available half leave";
+        } else if (end.minutes == 0 && hour == end.hour - 1) {
+          return "available leave";
+        } else if (hour == end.hour) {
+          return "";
+        }
+
+        return 'available';
+      }
+    },
+    startOrEnd12: function startOrEnd12(_ref2) {
+      var original = _ref2.original,
+          time = _ref2.time,
+          meridie = _ref2.meridie,
+          start_time = _ref2.start_time,
+          end_time = _ref2.end_time;
+      var available_hour = this.available_hour(start_time, end_time);
+      var start = {};
+      var end = {};
+      start.hour = available_hour.start.hour;
+      end.hour = available_hour.end.hour;
+      start.minutes = available_hour.start.minutes;
+      end.minutes = available_hour.end.minutes;
+
+      if (original >= start.hour && original <= end.hour) {
+        if (original == start.hour) {
+          if (start.minutes > 0) {
+            return "available half entry";
+          }
+
+          return "available entry";
+        }
+
+        if (end.minutes > 0 && original == end.hour) {
+          return "available half leave";
+        } else if (end.minutes == 0 && original == end.hour - 1) {
+          return "available leave";
+        } else if (original == end.hour) {
+          return "";
+        }
+
+        return 'available';
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -65593,104 +65826,94 @@ var render = function() {
       [
         _vm._m(0),
         _vm._v(" "),
-        _vm._m(1),
+        _c("div", { staticClass: "timeline-header" }, [
+          _c(
+            "div",
+            { staticClass: "hour-timeframe" },
+            [
+              _vm._l(_vm.hour_counter_24, function(hour, key) {
+                return _vm.hour_clock == 24
+                  ? _c(
+                      "span",
+                      {
+                        staticClass: "hour-time",
+                        class: _vm.startOrEnd24({
+                          hour: hour,
+                          start_time: _vm.user.start_hour,
+                          end_time: _vm.user.end_hour
+                        })
+                      },
+                      [_vm._v(" " + _vm._s(hour == "" ? "00" : hour))]
+                    )
+                  : _vm._e()
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.hour_counter_12, function(hour, key) {
+                return _vm.hour_clock == 12
+                  ? _c(
+                      "span",
+                      {
+                        staticClass: "hour-time",
+                        class: _vm.startOrEnd12({
+                          original: hour.original,
+                          time: hour.time,
+                          meridie: hour.meridie,
+                          start_time: _vm.user.start_hour,
+                          end_time: _vm.user.end_hour
+                        })
+                      },
+                      [_vm._v(_vm._s(hour.time))]
+                    )
+                  : _vm._e()
+              })
+            ],
+            2
+          )
+        ]),
         _vm._v(" "),
-        _vm._l(_vm.team_members, function(ref) {
-          var member = ref.member
-          var key = ref.key
-          return _c("div", { key: key, staticClass: "hour-timeframe" }, [
-            _c("span", { staticClass: "hour-time" }, [_vm._v("1")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("2")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("3")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("4")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("5")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("6")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("7")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("8")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time available entry" }, [
-              _vm._v("9")
-            ]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time available" }, [_vm._v("10")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time available" }, [_vm._v("11")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time available" }, [_vm._v("12")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time available" }, [_vm._v("13")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time available" }, [_vm._v("14")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time available" }, [_vm._v("15")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time available" }, [_vm._v("16")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time available" }, [_vm._v("17")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time available" }, [_vm._v("18")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time available" }, [_vm._v("19")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time available leave" }, [
-              _vm._v("20")
-            ]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("21")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("22")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("23")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("24")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("25")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("26")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("27")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("28")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("29")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("30")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("31")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("32")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("33")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("34")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("35")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("36")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("37")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("38")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("39")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("40")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("41")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("42")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("43")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "hour-time" }, [_vm._v("44")])
-          ])
+        _vm._l(_vm.team_members, function(member, key) {
+          return _c(
+            "div",
+            { key: key, staticClass: "hour-timeframe" },
+            [
+              _vm._l(_vm.hour_counter_24, function(hour, key) {
+                return _vm.hour_clock == 24
+                  ? _c(
+                      "span",
+                      {
+                        staticClass: "hour-time",
+                        class: _vm.startOrEnd24({
+                          hour: hour,
+                          start_time: member.start_hour,
+                          end_time: member.end_hour
+                        })
+                      },
+                      [_vm._v(" " + _vm._s(hour == "" ? "00" : hour))]
+                    )
+                  : _vm._e()
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.hour_counter_12, function(hour, key) {
+                return _vm.hour_clock == 12
+                  ? _c(
+                      "span",
+                      {
+                        staticClass: "hour-time",
+                        class: _vm.startOrEnd12({
+                          original: hour.original,
+                          time: hour.time,
+                          meridie: hour.meridie,
+                          start_time: member.start_hour,
+                          end_time: member.end_hour
+                        })
+                      },
+                      [_vm._v(_vm._s(hour.time))]
+                    )
+                  : _vm._e()
+              })
+            ],
+            2
+          )
         })
       ],
       2
@@ -65709,106 +65932,6 @@ var staticRenderFns = [
       }),
       _vm._v(" "),
       _c("i", { staticClass: "arrow-line" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "timeline-header" }, [
-      _c("div", { staticClass: "hour-timeframe" }, [
-        _c("span", { staticClass: "hour-time" }, [_vm._v("1")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("2")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("3")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("4")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("5")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("6")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("7")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("8")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("9")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time available half entry" }, [
-          _vm._v("10")
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time  available" }, [_vm._v("11")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time available " }, [_vm._v("12")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time available " }, [_vm._v("13")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time  available" }, [_vm._v("14")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time  available" }, [_vm._v("15")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time  available" }, [_vm._v("16")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time  available" }, [_vm._v("17")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time  available" }, [_vm._v("18")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time  available leave" }, [
-          _vm._v("19")
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("20")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("21")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("22")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("23")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("24")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("25")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("26")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("27")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("28")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("29")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("30")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("31")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("32")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("33")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("34")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("35")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("36")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("37")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("38")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("39")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("40")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("41")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("42")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("43")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "hour-time" }, [_vm._v("44")])
-      ])
     ])
   }
 ]
@@ -86115,7 +86238,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       invite_people: false
     },
     team_project: {
-      view_mode: 'card',
+      view_mode: 'timeline',
       searchbox_visible: false,
       name: null,
       id: null

@@ -25,7 +25,7 @@ export default new Vuex.Store({
             
         },
         team_project:{
-            view_mode:'card',
+            view_mode:'timeline',
             searchbox_visible:false,
             name: null,
             id:null,
