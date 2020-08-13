@@ -4005,8 +4005,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _this = this;
 
     this.time = moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(this.user.timezone).format('HH:mm');
+    this.$emit('currentTime', moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(this.user.timezone).format('HH'));
+    this.$emit('currentTeammateTime', {
+      index: this.index,
+      time: moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(this.user.timezone).format('HH')
+    });
     setInterval(function () {
       _this.time = moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(_this.user.timezone).format('HH:mm');
+
+      _this.$emit('currentTime', moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(_this.user.timezone).format('HH'));
+
+      _this.$emit('currentTeammateTime', {
+        index: _this.index,
+        time: moment_timezone__WEBPACK_IMPORTED_MODULE_0___default.a.tz(_this.user.timezone).format('HH')
+      });
     }, 60 * 1000);
   },
   components: {
@@ -4269,214 +4281,401 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+      numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      current_time: null,
+      current_hour_timeframe: null,
+      teammates_current_time: [],
+      hour_counter_24: ["00", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, "00", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+      hour_counter_12: [{
+        original: 0,
+        time: 12,
+        meridie: "pm"
+      }, {
+        original: 1,
+        time: 1,
+        meridie: "am"
+      }, {
+        original: 2,
+        time: 2,
+        meridie: "am"
+      }, {
+        original: 3,
+        time: 3,
+        meridie: "am"
+      }, {
+        original: 4,
+        time: 4,
+        meridie: "am"
+      }, {
+        original: 5,
+        time: 5,
+        meridie: "am"
+      }, {
+        original: 6,
+        time: 6,
+        meridie: "am"
+      }, {
+        original: 7,
+        time: 7,
+        meridie: "am"
+      }, {
+        original: 8,
+        time: 8,
+        meridie: "am"
+      }, {
+        original: 9,
+        time: 9,
+        meridie: "am"
+      }, {
+        original: 10,
+        time: 10,
+        meridie: "am"
+      }, {
+        original: 11,
+        time: 11,
+        meridie: "am"
+      }, {
+        original: 12,
+        time: 12,
+        meridie: "am"
+      }, {
+        original: 13,
+        time: 1,
+        meridie: "pm"
+      }, {
+        original: 14,
+        time: 2,
+        meridie: "pm"
+      }, {
+        original: 15,
+        time: 3,
+        meridie: "pm"
+      }, {
+        original: 16,
+        time: 4,
+        meridie: "pm"
+      }, {
+        original: 17,
+        time: 5,
+        meridie: "pm"
+      }, {
+        original: 18,
+        time: 6,
+        meridie: "pm"
+      }, {
+        original: 19,
+        time: 7,
+        meridie: "pm"
+      }, {
+        original: 20,
+        time: 8,
+        meridie: "pm"
+      }, {
+        original: 21,
+        time: 9,
+        meridie: "pm"
+      }, {
+        original: 22,
+        time: 10,
+        meridie: "pm"
+      }, {
+        original: 23,
+        time: 11,
+        meridie: "pm"
+      }, {
+        original: 0,
+        time: 12,
+        meridie: "pm"
+      }, {
+        original: 1,
+        time: 1,
+        meridie: "am"
+      }, {
+        original: 2,
+        time: 2,
+        meridie: "am"
+      }, {
+        original: 3,
+        time: 3,
+        meridie: "am"
+      }, {
+        original: 4,
+        time: 4,
+        meridie: "am"
+      }, {
+        original: 5,
+        time: 5,
+        meridie: "am"
+      }, {
+        original: 6,
+        time: 6,
+        meridie: "am"
+      }, {
+        original: 7,
+        time: 7,
+        meridie: "am"
+      }, {
+        original: 8,
+        time: 8,
+        meridie: "am"
+      }, {
+        original: 9,
+        time: 9,
+        meridie: "am"
+      }, {
+        original: 10,
+        time: 10,
+        meridie: "am"
+      }, {
+        original: 11,
+        time: 11,
+        meridie: "am"
+      }, {
+        original: 12,
+        time: 12,
+        meridie: "am"
+      }, {
+        original: 13,
+        time: 1,
+        meridie: "pm"
+      }, {
+        original: 14,
+        time: 2,
+        meridie: "pm"
+      }, {
+        original: 15,
+        time: 3,
+        meridie: "pm"
+      }, {
+        original: 16,
+        time: 4,
+        meridie: "pm"
+      }, {
+        original: 17,
+        time: 5,
+        meridie: "pm"
+      }, {
+        original: 18,
+        time: 6,
+        meridie: "pm"
+      }, {
+        original: 19,
+        time: 7,
+        meridie: "pm"
+      }, {
+        original: 20,
+        time: 8,
+        meridie: "pm"
+      }, {
+        original: 21,
+        time: 9,
+        meridie: "pm"
+      }, {
+        original: 22,
+        time: 10,
+        meridie: "pm"
+      }, {
+        original: 23,
+        time: 11,
+        meridie: "pm"
+      }]
     };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.setCurrentTarget();
+    this.moveTimeRuler();
+
+    var _int = setInterval(function () {
+      _this.setCurrentTarget();
+
+      _this.moveTimeRuler();
+
+      clearInterval(_int);
+    }, 100);
+
+    setInterval(function () {
+      _this.setCurrentTarget();
+
+      _this.moveTimeRuler();
+    }, 180 * 1000);
   },
   components: {
     UserItem: _user_item_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['user', 'hour_clock'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['team_members'])), {}, {
-    hour_counter_24: function hour_counter_24() {
-      return ['00', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, '00', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(["user", "hour_clock"])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(["team_members"])), {}, {
+    current_hour: function current_hour() {
+      if (this.current_time != null) {
+        var hour = this.current_time;
+
+        if (this.hour_clock == 12) {
+          if (hour < 10) {
+            hour = hour.split("")[1];
+          }
+
+          hour = {
+            hour: hour > 12 ? hour - 12 : hour,
+            meridie: hour > 12 ? 'pm' : 'am'
+          };
+
+          if (hour.hour == "0") {
+            hour.hour = 12;
+            hour.meridie = "pm";
+          }
+
+          return "".concat(hour.hour).concat(hour.meridie);
+        }
+
+        return hour;
+      }
+
+      return false;
     },
-    hour_counter_12: function hour_counter_12() {
-      return [{
-        original: 0,
-        time: 12,
-        meridie: 'am'
-      }, {
-        original: 1,
-        time: 1,
-        meridie: 'am'
-      }, {
-        original: 2,
-        time: 2,
-        meridie: 'am'
-      }, {
-        original: 3,
-        time: 3,
-        meridie: 'am'
-      }, {
-        original: 4,
-        time: 4,
-        meridie: 'am'
-      }, {
-        original: 5,
-        time: 5,
-        meridie: 'am'
-      }, {
-        original: 6,
-        time: 6,
-        meridie: 'am'
-      }, {
-        original: 7,
-        time: 7,
-        meridie: 'am'
-      }, {
-        original: 8,
-        time: 8,
-        meridie: 'am'
-      }, {
-        original: 9,
-        time: 9,
-        meridie: 'am'
-      }, {
-        original: 10,
-        time: 10,
-        meridie: 'am'
-      }, {
-        original: 11,
-        time: 11,
-        meridie: 'am'
-      }, {
-        original: 12,
-        time: 12,
-        meridie: 'pm'
-      }, {
-        original: 13,
-        time: 1,
-        meridie: 'pm'
-      }, {
-        original: 14,
-        time: 2,
-        meridie: 'pm'
-      }, {
-        original: 15,
-        time: 3,
-        meridie: 'pm'
-      }, {
-        original: 16,
-        time: 4,
-        meridie: 'pm'
-      }, {
-        original: 17,
-        time: 5,
-        meridie: 'pm'
-      }, {
-        original: 18,
-        time: 6,
-        meridie: 'pm'
-      }, {
-        original: 19,
-        time: 7,
-        meridie: 'pm'
-      }, {
-        original: 20,
-        time: 8,
-        meridie: 'pm'
-      }, {
-        original: 21,
-        time: 9,
-        meridie: 'pm'
-      }, {
-        original: 22,
-        time: 10,
-        meridie: 'pm'
-      }, {
-        original: 23,
-        time: 11,
-        meridie: 'pm'
-      }, {
-        original: 1,
-        time: 1,
-        meridie: 'am'
-      }, {
-        original: 2,
-        time: 2,
-        meridie: 'am'
-      }, {
-        original: 3,
-        time: 3,
-        meridie: 'am'
-      }, {
-        original: 4,
-        time: 4,
-        meridie: 'am'
-      }, {
-        original: 5,
-        time: 5,
-        meridie: 'am'
-      }, {
-        original: 6,
-        time: 6,
-        meridie: 'am'
-      }, {
-        original: 7,
-        time: 7,
-        meridie: 'am'
-      }, {
-        original: 8,
-        time: 8,
-        meridie: 'am'
-      }, {
-        original: 9,
-        time: 9,
-        meridie: 'am'
-      }, {
-        original: 10,
-        time: 10,
-        meridie: 'am'
-      }, {
-        original: 11,
-        time: 11,
-        meridie: 'am'
-      }, {
-        original: 12,
-        time: 12,
-        meridie: 'pm'
-      }, {
-        original: 13,
-        time: 1,
-        meridie: 'pm'
-      }, {
-        original: 14,
-        time: 2,
-        meridie: 'pm'
-      }, {
-        original: 15,
-        time: 3,
-        meridie: 'pm'
-      }, {
-        original: 16,
-        time: 4,
-        meridie: 'pm'
-      }, {
-        original: 17,
-        time: 5,
-        meridie: 'pm'
-      }, {
-        original: 18,
-        time: 6,
-        meridie: 'pm'
-      }, {
-        original: 19,
-        time: 7,
-        meridie: 'pm'
-      }, {
-        original: 20,
-        time: 8,
-        meridie: 'pm'
-      }, {
-        original: 21,
-        time: 9,
-        meridie: 'pm'
-      }, {
-        original: 22,
-        time: 10,
-        meridie: 'pm'
-      }, {
-        original: 23,
-        time: 11,
-        meridie: 'pm'
-      }];
-    }
+    teammates_current_hour: function (_teammates_current_hour) {
+      function teammates_current_hour() {
+        return _teammates_current_hour.apply(this, arguments);
+      }
+
+      teammates_current_hour.toString = function () {
+        return _teammates_current_hour.toString();
+      };
+
+      return teammates_current_hour;
+    }(function () {
+      if (this.teammates_current_time.length > 0) {
+        var arr = [];
+
+        if (this.hour_clock == 12) {
+          this.teammates_current_time.forEach(function (hour) {
+            var el = hour;
+            var obj = null;
+
+            if (el < 10) {
+              el = hour.split("")[1];
+            }
+
+            obj = el;
+            obj = {
+              hour: el > 12 ? el - 12 : el,
+              meridie: el > 12 ? 'pm' : 'am'
+            };
+
+            if (obj.hour == "0") {
+              obj.hour = 12;
+              obj.meridie = "pm";
+            }
+
+            arr.push("".concat(obj.hour).concat(obj.meridie));
+          });
+        } else {
+          this.teammates_current_time.forEach(function (hour) {
+            arr.push(hour);
+          });
+        }
+
+        return arr;
+      }
+
+      return teammates_current_hour;
+    })
   }),
   methods: {
+    setCurrentTarget: function setCurrentTarget() {
+      var current_hour_timeframe = document.querySelector("#logged-user-timeframe .available[data-time='" + this.current_hour + "']");
+
+      if (current_hour_timeframe == undefined) {
+        current_hour_timeframe = document.querySelector("#logged-user-timeframe .hour-time.available.leave ~ .hour-time[data-time~='".concat(this.current_hour, "']"));
+      }
+
+      this.current_hour_timeframe = current_hour_timeframe;
+    },
+    moveTimeRuler: function moveTimeRuler() {
+      var _this2 = this;
+
+      var current_hour = this.current_hour_timeframe;
+      var current_hour_pos = current_hour.offsetLeft;
+      var arrow = document.querySelector(".timeline-arrow").offsetLeft;
+      var timeframe_ruler = document.querySelector("#logged-user-timeframe");
+      var teammates_rulers = [];
+      var position = null;
+      var hour_counter_12 = this.hour_counter_12;
+      var hour_counter_24 = this.hour_counter_24;
+      var calculation = arrow - current_hour_pos - 6;
+
+      if (current_hour_pos < arrow) {
+        if (this.hour_counter_12.length < 52) {
+          var new_12 = [{
+            original: 20,
+            time: 8,
+            meridie: "pm"
+          }, {
+            original: 21,
+            time: 9,
+            meridie: "pm"
+          }, {
+            original: 22,
+            time: 10,
+            meridie: "pm"
+          }, {
+            original: 23,
+            time: 11,
+            meridie: "pm"
+          }];
+          var new_24 = this.hour_counter_24.splice(35);
+          new_12.reverse().map(function (item) {
+            _this2.hour_counter_12.unshift(item);
+          });
+        }
+      }
+
+      this.team_members.forEach(function (member) {
+        var timeframe = document.querySelector(".hour-timeframe[data-teammate=\"".concat(member.id, "\"]"));
+        teammates_rulers.push(timeframe);
+      });
+      teammates_rulers.forEach(function (ruler, key) {
+        var nodes = ruler.children;
+        var hour_dom_node = document.querySelector(".hour-timeframe[data-teammate=\"".concat(key + 1, "\"] .available.hour-time[data-time=\"").concat(_this2.teammates_current_hour[key], "\"]"));
+
+        if (hour_dom_node == null) {
+          hour_dom_node = document.querySelector(".hour-timeframe[data-teammate=\"".concat(key + 1, "\"] .hour-time.available.leave ~ .hour-time[data-time=\"").concat(_this2.teammates_current_hour[key], "\"]"));
+        }
+
+        position = hour_dom_node.offsetLeft;
+        calculation = arrow - position - 6;
+        ruler.style.left = "".concat(calculation, "px");
+      });
+    },
     available_hour: function available_hour(start_hour, end_hour) {
       var start = start_hour.split(":");
       var end = end_hour.split(":");
@@ -4520,7 +4719,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           return "";
         }
 
-        return 'available';
+        return "available";
       }
     },
     startOrEnd12: function startOrEnd12(_ref2) {
@@ -4554,7 +4753,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           return "";
         }
 
-        return 'available';
+        return "available";
       }
     }
   }
@@ -65804,7 +66003,16 @@ var render = function() {
           { staticClass: "timeline-header" },
           [
             _c("user-item", {
-              attrs: { "view-mode": "timeline", user: _vm.user }
+              attrs: {
+                id: "logged-user",
+                "view-mode": "timeline",
+                user: _vm.user
+              },
+              on: {
+                currentTime: function($event) {
+                  _vm.current_time = $event
+                }
+              }
             })
           ],
           1
@@ -65813,7 +66021,12 @@ var render = function() {
         _vm._l(_vm.team_members, function(member, key) {
           return _c("user-item", {
             key: key,
-            attrs: { user: member, index: key, "view-mode": "timeline" }
+            attrs: { user: member, index: key, "view-mode": "timeline" },
+            on: {
+              currentTeammateTime: function($event) {
+                _vm.teammates_current_time[$event.index] = $event.time
+              }
+            }
           })
         })
       ],
@@ -65829,41 +66042,55 @@ var render = function() {
         _c("div", { staticClass: "timeline-header" }, [
           _c(
             "div",
-            { staticClass: "hour-timeframe" },
+            {
+              staticClass: "hour-timeframe",
+              attrs: { id: "logged-user-timeframe" }
+            },
             [
               _vm._l(_vm.hour_counter_24, function(hour, key) {
                 return _vm.hour_clock == 24
-                  ? _c(
-                      "span",
-                      {
-                        staticClass: "hour-time",
-                        class: _vm.startOrEnd24({
-                          hour: hour,
-                          start_time: _vm.user.start_hour,
-                          end_time: _vm.user.end_hour
-                        })
-                      },
-                      [_vm._v(" " + _vm._s(hour == "" ? "00" : hour))]
-                    )
+                  ? [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "hour-time",
+                          class: _vm.startOrEnd24({
+                            hour: hour,
+                            start_time: _vm.user.start_hour,
+                            end_time: _vm.user.end_hour
+                          }),
+                          attrs: { "data-time": hour }
+                        },
+                        [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(hour == "" ? "00" : hour)
+                          )
+                        ]
+                      )
+                    ]
                   : _vm._e()
               }),
               _vm._v(" "),
               _vm._l(_vm.hour_counter_12, function(hour, key) {
                 return _vm.hour_clock == 12
-                  ? _c(
-                      "span",
-                      {
-                        staticClass: "hour-time",
-                        class: _vm.startOrEnd12({
-                          original: hour.original,
-                          time: hour.time,
-                          meridie: hour.meridie,
-                          start_time: _vm.user.start_hour,
-                          end_time: _vm.user.end_hour
-                        })
-                      },
-                      [_vm._v(_vm._s(hour.time))]
-                    )
+                  ? [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "hour-time",
+                          class: _vm.startOrEnd12({
+                            original: hour.original,
+                            time: hour.time,
+                            meridie: hour.meridie,
+                            start_time: _vm.user.start_hour,
+                            end_time: _vm.user.end_hour
+                          }),
+                          attrs: { "data-time": hour.time + hour.meridie }
+                        },
+                        [_vm._v(_vm._s(hour.time))]
+                      )
+                    ]
                   : _vm._e()
               })
             ],
@@ -65874,7 +66101,11 @@ var render = function() {
         _vm._l(_vm.team_members, function(member, key) {
           return _c(
             "div",
-            { key: key, staticClass: "hour-timeframe" },
+            {
+              key: key,
+              staticClass: "hour-timeframe",
+              attrs: { "data-teammate": member.id }
+            },
             [
               _vm._l(_vm.hour_counter_24, function(hour, key) {
                 return _vm.hour_clock == 24
@@ -65886,9 +66117,14 @@ var render = function() {
                           hour: hour,
                           start_time: member.start_hour,
                           end_time: member.end_hour
-                        })
+                        }),
+                        attrs: { "data-time": hour }
                       },
-                      [_vm._v(" " + _vm._s(hour == "" ? "00" : hour))]
+                      [
+                        _vm._v(
+                          "\n            " + _vm._s(hour == "" ? "00" : hour)
+                        )
+                      ]
                     )
                   : _vm._e()
               }),
@@ -65905,7 +66141,8 @@ var render = function() {
                           meridie: hour.meridie,
                           start_time: member.start_hour,
                           end_time: member.end_hour
-                        })
+                        }),
+                        attrs: { "data-time": hour.time + hour.meridie }
                       },
                       [_vm._v(_vm._s(hour.time))]
                     )

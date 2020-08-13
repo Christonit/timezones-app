@@ -65,10 +65,18 @@ export default {
     created(){
 
         this.time = moment.tz(this.user.timezone).format('HH:mm');
+        this.$emit('currentTime',moment.tz(this.user.timezone).format('HH'));   
+        this.$emit('currentTeammateTime',{
+            index:this.index,
+            time: moment.tz(this.user.timezone).format('HH')});   
 
         setInterval( () => { 
             this.time =  moment.tz(this.user.timezone).format('HH:mm');
-                
+            this.$emit('currentTime', moment.tz(this.user.timezone).format('HH'));
+            this.$emit('currentTeammateTime',{
+            index:this.index,
+            time: moment.tz(this.user.timezone).format('HH')});   
+               
         }, (60 * 1000) );
 
     },
