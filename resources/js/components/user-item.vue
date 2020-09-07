@@ -121,6 +121,9 @@ export default {
             return this.user.name
         },
         available_hours(){
+            if(this.user.start_hour == null || this.user.end_hour == null){
+                return "-- : --";
+            }
 
             if(this.hour_clock == 12){
 
@@ -153,6 +156,9 @@ export default {
             
         },
         isUserAvailable(){
+            if(this.user.start_hour == null || this.user.end_hour == null){
+                return false;
+            }
             let time = this.time;
             time = time.split(':');
             time = {

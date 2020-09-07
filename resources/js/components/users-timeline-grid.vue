@@ -273,6 +273,9 @@ export default {
             };
         },
         startOrEnd24({ hour, start_time, end_time }) {
+            if(start_time == null || end_time == null){
+                return ""
+            }
             let available_hour = this.available_hour(start_time, end_time);
             let start = {};
             let end = {};
@@ -301,6 +304,9 @@ export default {
             }
         },
         startOrEnd12({ original, time, meridie, start_time, end_time }) {
+             if(start_time == null || end_time == null){
+                return ""
+            }
             let available_hour = this.available_hour(start_time, end_time);
 
             let start = {};

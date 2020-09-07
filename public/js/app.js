@@ -4063,6 +4063,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.user.name;
     },
     available_hours: function available_hours() {
+      if (this.user.start_hour == null || this.user.end_hour == null) {
+        return "-- : --";
+      }
+
       if (this.hour_clock == 12) {
         var start_hour = this.user.start_hour.split(':');
         var end_hour = this.user.end_hour.split(':');
@@ -4085,6 +4089,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return "".concat(this.user.start_hour, " - ").concat(this.user.end_hour);
     },
     isUserAvailable: function isUserAvailable() {
+      if (this.user.start_hour == null || this.user.end_hour == null) {
+        return false;
+      }
+
       var time = this.time;
       time = time.split(':');
       time = {
@@ -4694,6 +4702,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var hour = _ref.hour,
           start_time = _ref.start_time,
           end_time = _ref.end_time;
+
+      if (start_time == null || end_time == null) {
+        return "";
+      }
+
       var available_hour = this.available_hour(start_time, end_time);
       var start = {};
       var end = {};
@@ -4728,6 +4741,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           meridie = _ref2.meridie,
           start_time = _ref2.start_time,
           end_time = _ref2.end_time;
+
+      if (start_time == null || end_time == null) {
+        return "";
+      }
+
       var available_hour = this.available_hour(start_time, end_time);
       var start = {};
       var end = {};
@@ -86475,7 +86493,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       invite_people: false
     },
     team_project: {
-      view_mode: 'timeline',
+      view_mode: 'card',
       searchbox_visible: false,
       name: null,
       id: null
