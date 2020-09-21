@@ -95,7 +95,7 @@ export default {
         },
 
         updateProfile(){
-            
+            console.log('ex1:'+ this.start_time)
             let payload = new FormData();
 
             payload.append('timezone',this.timezone.id);

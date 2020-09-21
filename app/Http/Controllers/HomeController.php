@@ -51,20 +51,18 @@ class HomeController extends Controller
             $user = User::find($user_id);
         }
 
-
         if($request->has('name') && $request->name != Auth::user()->name){
             $user->name = $request->input('name');
         }
 
         if($request->has('start_hour') && $request->start_hour != Auth::user()->start_hour ){
 
-            $user->start_hour = $request->input('start_hour');
+            $user->start_hour = ($request->input('start_hour') == "null" ? null : $request->input('start_hour')) ;
             
         }
 
-
         if($request->has('end_hour') && $request->end_hour != Auth::user()->end_hour ){
-            $user->end_hour = $request->input('end_hour');
+            $user->end_hour = ($request->input('end_hour') == "null" ? null : $request->input('end_hour'));
         }
 
         if( $request->has('timezone') && ($request->timezone != Auth::user()->timezone || $request->timezone_abbr != Auth::user()->timezone_abbr) ){
@@ -79,8 +77,6 @@ class HomeController extends Controller
         }
 
         $user->save();
-
-
 
         return $user;
 

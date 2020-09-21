@@ -121,38 +121,42 @@ export default {
             return this.user.name
         },
         available_hours(){
-            if(this.user.start_hour == null || this.user.end_hour == null){
+            if(this.user.start_hour == null && this.user.end_hour == null){
                 return "-- : --";
             }
 
             if(this.hour_clock == 12){
 
-                let start_hour = this.user.start_hour.split(':');
-                let end_hour = this.user.end_hour.split(':');
+                let start_hour = this.user.start_hour == null ? '--' : this.user.start_hour.split(':');
+                let end_hour = this.user.end_hour == null ? '--' : this.user.end_hour.split(':');
                 
+               
                 if(start_hour[0] >= 12){
 
-                    start_hour = `${(start_hour[0] - 12)}:${(start_hour[1])} PM`;
+
+                    start_hour = start_hour != '--' ? `${(start_hour[0] - 12)}:${(start_hour[1])} PM` : 'No start';
 
                 }else{
 
-                    start_hour = `${(start_hour[0])}:${(start_hour[1])} AM`;
+                    start_hour = start_hour != '--' ? `${(start_hour[0])}:${(start_hour[1])} AM` : 'No start';
 
                 }
 
                 if(end_hour[0] >= 12){
 
-                    end_hour = `${(end_hour[0] - 12)}:${(end_hour[1])} PM`;
+                    end_hour = end_hour != '--' ? `${(end_hour[0] - 12)}:${(end_hour[1])} PM` : 'No end';
 
                 }else{
-                    end_hour = `${(end_hour[0])}:${(end_hour[1])} AM`;
+                    end_hour = end_hour != '--' ? `${(end_hour[0])}:${(end_hour[1])} AM` : 'No end';
                 }
 
+                this.user.start_hour == null ? '--' : this.user.start_hour
                 return `${start_hour} - ${end_hour}`;
 
             }
 
-            return `${this.user.start_hour} - ${this.user.end_hour}`;
+
+            return `${this.user.start_hour == null ? '--' : this.user.start_hour} - ${this.user.end_hour == null ? '--' : this.user.end_hour}`;
             
         },
         isUserAvailable(){

@@ -1,7 +1,7 @@
 <template>
 
     <modal-template modal_name="edit-info" width-type='slim'>
-
+        <loading v-if="loading"></loading>
         <template>
             <h2 class="subtitle text-center mb-0">Edit Profile</h2>
 
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import Loading from '../utils/loading.vue';
 import ModalTemplate from './template.vue';
 import TimePicker from '../utils/time-picker-comp.vue';
 import InputTimezone from '../utils/input-timezone.vue';
@@ -53,7 +54,8 @@ export default {
         TimePicker,
         ContinueBtn,
         InputTimezone,
-        InputField
+        InputField,
+        Loading
     },
     data(){
         return {
@@ -61,6 +63,7 @@ export default {
             start_time:null,
             end_time:null,
             profile_pic:null,
+            loading:false
 
         }
     },
@@ -89,31 +92,37 @@ export default {
 
         },
         updateThisMember(){
-           this.updateProfile().then(res => {
-                let data = JSON.parse(res) 
-                    console.log(data)
+            this.loading = true;
 
-        
+            // return this.updateProfile();
+            setTimeout( ()=>{
 
-                if( data.hasOwnProperty('teams_id') ){
-                    this.getMemberInfo(this.info_edits.id).then( (data)=>{
-                        this.setSpecificTeamMember({
-                            index : this.info_edits.key,
-                            team_member : data
-                        })
-                    })
-                    .then(() => this.closeModal('edit-info') );
+                this.updateProfile().then(res => {
+                    let data = JSON.parse(res) 
+                        console.log(data)
 
-                }else{
+                    if( data.hasOwnProperty('teams_id') ){
+                        this.getMemberInfo(this.info_edits.id).then( (data)=>{
+                            this.setSpecificTeamMember({
+                                index : this.info_edits.key,
+                                team_member : data
+                            })
+                        }).then(()=> this.loading = false)
+                        .then(() => this.closeModal('edit-info') );
 
-                   this.getMemberInfo(this.info_edits.id, true).then( (data)=>{
-                        this.setUserInformation(data)
-                    })
-                    .then(() => this.closeModal('edit-info') );
+                    }else{
 
-                }
+                    this.getMemberInfo(this.info_edits.id, true).then( (data)=>{
+                            this.setUserInformation(data)
+                        }).then(()=> this.loading = false)
+                        .then(() => this.closeModal('edit-info') );
 
-           }) 
+                    }
+                })
+
+            }, 1000)
+            console.log(`${this.start_time} - ${this.end_time}`)
+             
         }
     }
 }
