@@ -9,14 +9,7 @@
                 :input-value="name" 
                 @focus='changeName'
                 @input="name = $event"></input-field>
-                <!-- <input class="type-text-input" type="text" value="Team Name" 
-                    v-model="name" 
-                    ref='input'
-                    @focus='changeName'
-                   >
-                <h2 class="title placeholder" ref='title'>{{name}}</h2>
-                -->
-
+               
             </div>
 
             <div class="w-100 ">

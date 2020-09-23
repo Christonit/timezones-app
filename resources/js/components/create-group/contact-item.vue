@@ -8,7 +8,7 @@
         </figure>
         <span class="contact-name">{{name}}</span>
 
-        <checkbox></checkbox>
+        <checkbox @click="addOrRemoveTeammate($event)"></checkbox>
         
     </div>
 </template>
@@ -31,7 +31,12 @@ export default {
             type:Number,
             default:0,
             required:false
-        }
+        },
+        // key:{
+        //     type:Number
+        // }
+    },
+    mounted(){
     },
     components:{
         Checkbox
@@ -55,6 +60,15 @@ export default {
 
             return abbr.join('');
  
+        }
+    },
+    methods:{
+        addOrRemoveTeammate(check){
+            if(check == true){
+                this.$emit('addTeammate',this.id);
+            }else{
+                this.$emit('removeTeammate',this.id);
+            }
         }
     }
 }

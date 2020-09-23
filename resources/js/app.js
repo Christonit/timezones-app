@@ -36,6 +36,7 @@ import SignInSignUp from './components/modals/sign-in-sign-up.vue';
 import EditTeamProfileModal from './components/modals/edit-team-profile.vue';
 import EditProfileModal from './components/modals/edit-profile.vue';
 import ChangeGroupNameModal from './components/modals/change-group-name.vue';
+import NameProjectCategoryModal from './components/modals/name-project-category.vue';
 import UsersCreatedModal from './components/modals/users-created-successfully.vue';
 import TeamCreatedModal from './components/modals/team-created.vue'
 import AddTeammateModal from './components/modals/add-teammate.vue'
@@ -75,7 +76,8 @@ const app = new Vue({
         EditTeamProfileModal,
         EditProfileModal,
         DeleteProjectModal,
-        NewTeamModal
+        NewTeamModal,
+        NameProjectCategoryModal
     },
     computed:{
         ...mapState(['modal_visible','modal','sidebar_visible']),

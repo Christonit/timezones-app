@@ -11,6 +11,7 @@
         <new-team-modal v-if='modal.new_team'></new-team-modal>
         <edit-profile-modal v-if='modal.edit_my_profile'></edit-profile-modal>
         <change-group-name-modal v-if='modal.change_name'></change-group-name-modal>
+        <name-project-category-modal v-if="modal.project_category_name"></name-project-category-modal>
         <!-- <add-email-modal ></add-email-modal> -->
         <!-- <team-created-modal></team-created-modal> -->
         <!-- <add-teammate-modal></add-teammate-modal> -->

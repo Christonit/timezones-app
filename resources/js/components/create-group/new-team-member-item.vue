@@ -62,8 +62,7 @@ export default {
     },
     methods:{
         deleteMember(){
-            console.log('ddd')
-            return '';
+            this.$emit('removeTeammate',this.id);
 
         }
     }

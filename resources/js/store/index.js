@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+    strict:true,
     state:{
         user:null,
         hour_clock:12,
@@ -22,7 +23,7 @@ export default new Vuex.Store({
             delete_group:false,
             edit_my_profile:false,
             invite_people:false,
-            
+            project_category_name:false
         },
         team_project:{
             view_mode:'card',
@@ -35,10 +36,16 @@ export default new Vuex.Store({
             // {name:'Parametrics',id:'1'},
             // {name:'Orca',id:'2'}
         ],
+        new_project_group:{
+            name:null,
+            clients:[],
+            teammates:[]
+        },
         team_members:[],
         new_team_members:[],
         info_edits:null,
-        resource_to_delete:null
+        resource_to_delete:null,
+        potential_clients:[]
 
     },
     getters:{
@@ -128,6 +135,9 @@ export default new Vuex.Store({
             if(payload == 'user_created_successfully'){
                 return state.modal.user_created_successfully = true;
             }
+            if(payload == 'project_category_name'){
+                return state.modal.project_category_name = true;
+            }
             if(payload.name == 'delete-group'){
                 state.resource_to_delete = payload.resource;
                 return state.modal.delete_group = true;
@@ -153,6 +163,9 @@ export default new Vuex.Store({
             }
             if(payload == 'user_created_successfully'){
                return state.modal.user_created_successfully = false;
+            }
+            if(payload == 'project_category_name'){
+               return state.modal.project_category_name = false;
             }
             if(payload == 'delete-group'){
                state.resource_to_delete = null;
@@ -203,6 +216,13 @@ export default new Vuex.Store({
         },
         removeTeamMember(state, payload){
             state.team_members.splice(payload,1);
+        },
+        setNewClient(state,payload){
+            //Create a group related state.
+            state.potential_clients.push(payload);
+        },
+        setProjectGroupName(state,payload){
+            state.new_project_group.name = payload;
         }
 
 

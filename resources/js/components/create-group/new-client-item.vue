@@ -2,13 +2,12 @@
     <div class="input-field-group">
 
         <input-field name="Full name" 
-                :input-value="name" 
-                @focus='changeName'
+                :input-value="client.name" 
                 @input="name = $event"></input-field>
 
-        <input-timezone class="timezone-field" timezone_name="GTM+20"></input-timezone>
+        <input-timezone class="timezone-field"  @timezone-select="setTimezone($event)" :timezone_name="client.timezone.name"></input-timezone>
 
-        <delete-btn class="large"></delete-btn>
+        <delete-btn class="large" @click="deteleClient(id)"></delete-btn>
     </div>
 </template>
 
@@ -21,7 +20,8 @@ export default {
 
     data(){
         return {
-            name:'Francis Pujols'
+            name:'Francis Pujols',
+            timezone: 'GMT+2'
         }
     },
     components:{
@@ -30,5 +30,14 @@ export default {
         DeleteBtn,
         
     },
+    props:['client','id'],
+    methods:{
+        setTimezone(input){
+            this.timezone = input;
+        },
+        deteleClient(id){
+            this.$emit('removeClient',id);
+        }
+    }
 }
 </script>
