@@ -8,7 +8,8 @@
             <template v-else>
 
                 <label class="input-label" >Timezone</label>
-                <span class="input-timezone-text">{{timezone_name}}</span>
+                <span class="input-timezone-text">{{timezone_abbr_14_char(timezone_name)}}</span>
+                <!-- <span class="input-timezone-text">{{timezone_name}}</span> -->
 
             </template>
 
@@ -23,7 +24,8 @@
                 <span class="timezone-item" 
                 :data-timezone-id="item.id"
                 @click="selectTimezones(item.name)">
-                    {{item.name}}
+                 {{timezone_abbr(item.name)}}
+                    <!-- {{ item.name.length > 16 ? (item.name.slice(0,16)+'...') : item.name }} -->
                 </span>
             </template>
         </div>
@@ -51,7 +53,28 @@ export default {
     },
     created(){
     },
+    computed:{
+        
+    },
     methods:{
+        timezone_abbr(name){
+            if(name.length > 17){
+                let result = name.slice(0,17);
+
+                return result + "...";
+            }else{
+                return name;
+            }
+        },
+        timezone_abbr_14_char(name){
+            if(name.length > 14){
+                let result = name.slice(0,14);
+
+                return result + "...";
+            }else{
+                return name;
+            }
+        },
         openPicker(e){
             let el =  this.$refs.timezonePicker;
 

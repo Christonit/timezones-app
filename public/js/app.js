@@ -5382,6 +5382,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'input-timezone',
@@ -5397,7 +5399,24 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {},
+  computed: {},
   methods: {
+    timezone_abbr: function timezone_abbr(name) {
+      if (name.length > 17) {
+        var result = name.slice(0, 17);
+        return result + "...";
+      } else {
+        return name;
+      }
+    },
+    timezone_abbr_14_char: function timezone_abbr_14_char(name) {
+      if (name.length > 14) {
+        var result = name.slice(0, 14);
+        return result + "...";
+      } else {
+        return name;
+      }
+    },
     openPicker: function openPicker(e) {
       var el = this.$refs.timezonePicker;
 
@@ -66935,7 +66954,7 @@ var render = function() {
               _c("label", { staticClass: "input-label" }, [_vm._v("Timezone")]),
               _vm._v(" "),
               _c("span", { staticClass: "input-timezone-text" }, [
-                _vm._v(_vm._s(_vm.timezone_name))
+                _vm._v(_vm._s(_vm.timezone_abbr_14_char(_vm.timezone_name)))
               ])
             ],
         _vm._v(" "),
@@ -66987,7 +67006,9 @@ var render = function() {
               },
               [
                 _vm._v(
-                  "\n                " + _vm._s(item.name) + "\n            "
+                  "\n             " +
+                    _vm._s(_vm.timezone_abbr(item.name)) +
+                    "\n                "
                 )
               ]
             )
