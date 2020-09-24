@@ -30,7 +30,7 @@
                     @click="openModal('project_category_name')">
                     {{new_project_group.name == null ? 'Group name' : new_project_group.name}}</h2>
 
-                    <continue-btn></continue-btn>
+                    <continue-btn @click="createGroup"></continue-btn>
             </header>
             <div class="row">
                 <div class="content ">
@@ -106,8 +106,8 @@ export default {
         NewClientForm
     },
     computed:{
-        ...mapState(['new_project_group']),
-        ...mapGetters(['team_members']),
+        ...mapState(['new_project_group','team_project']),
+        ...mapGetters(['team_members','basic_header']),
 
     },
     methods:{
@@ -137,6 +137,27 @@ export default {
         removeTeammateOfCategoryFromList(id){
             this.removeTeammateOfCategory(id);
             document.querySelector(`[data-teammate-id="teammate${id}"] input[type="checkbox"]`).checked = false;
+        },
+        createGroup(){
+            let teammates_ids = this.team_members_to_group.map( teammate => {
+                return teammate.id;
+            })
+            let body = {
+                teammates: teammates_ids,
+                name:this.new_project_group.name};
+
+            if(this.hasClients == true && this.clients.length > 0){
+                body.clients = this.clients;
+            }
+
+            // console.log(body);
+
+            // return teammates_ids;
+            return fetch(`/create-project-category/team/${this.team_project.id}`,
+                {method:'POST',
+                headers:this.basic_header,
+                body:JSON.stringify(body)
+                })
         }
 
 

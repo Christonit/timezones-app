@@ -67,6 +67,10 @@ Route::middleware('auth')->group( function (){
     Route::post('/search-timezones','TimezonesController@search_timezone');
     Route::post('/update-user','HomeController@updateUser');
 
+    Route::post('/create-project-category/team/{team}','ProjectsGroupController@createGroup');
+    Route::post('/update-project-category/team/{team}','xxxx@xxxxx');
+    Route::delete('/delete-project-category/team/{team}','xxxx@xxxxx');
+
 
 });
 

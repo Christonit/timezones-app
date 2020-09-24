@@ -2323,7 +2323,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     InputTimezone: _utils_input_timezone_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
     NewClientForm: _create_group_new_client_form_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['new_project_group'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['team_members'])),
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['new_project_group', 'team_project'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['team_members', 'basic_header'])),
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal', 'setNewClient'])), {}, {
     clearClientForm: function clearClientForm() {
       this.client.name = '';
@@ -2348,6 +2348,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     removeTeammateOfCategoryFromList: function removeTeammateOfCategoryFromList(id) {
       this.removeTeammateOfCategory(id);
       document.querySelector("[data-teammate-id=\"teammate".concat(id, "\"] input[type=\"checkbox\"]")).checked = false;
+    },
+    createGroup: function createGroup() {
+      var teammates_ids = this.team_members_to_group.map(function (teammate) {
+        return teammate.id;
+      });
+      var body = {
+        teammates: teammates_ids,
+        name: this.new_project_group.name
+      };
+
+      if (this.hasClients == true && this.clients.length > 0) {
+        body.clients = this.clients;
+      } // console.log(body);
+      // return teammates_ids;
+
+
+      return fetch("/create-project-category/team/".concat(this.team_project.id), {
+        method: 'POST',
+        headers: this.basic_header,
+        body: JSON.stringify(body)
+      });
     }
   })
 });
@@ -64285,7 +64306,7 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _c("continue-btn")
+          _c("continue-btn", { on: { click: _vm.createGroup } })
         ],
         1
       ),

@@ -18,7 +18,7 @@ class CreateProjectsTable extends Migration
             $table->string('name',100);
 
             $table->unsignedBigInteger('teams_id');
-            $table->foreign('teams_id')->references('id')->on('teams');
+            $table->foreign('teams_id')->references('id')->on('teams')->onDelete('cascade');
 
             $table->unsignedBigInteger('created_by_id');
             $table->foreign('created_by_id')->references('id')->on('users');
