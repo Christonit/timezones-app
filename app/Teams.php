@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\TeamMembers;
+use App\ProjectsGroup;
 
 class Teams extends Model
 {
@@ -22,5 +23,10 @@ class Teams extends Model
     public function teamMembers(){
         return $this->hasMany(TeamMembers::class);
     }
+    
+    public function projectsGroup(){
+        return $this->hasMany(ProjectsGroup::class);
+    }
+
     
 }

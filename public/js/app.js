@@ -3879,13 +3879,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['teams', 'team_project', 'sidebar_visible', 'projects'])), {}, {
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['teams', 'team_project', 'sidebar_visible', 'team_projects_groups'])), {}, {
     mobile_sidebar_visible: function mobile_sidebar_visible() {
       return this.sidebar_visible == true ? 'active' : '';
     }
   }),
-  methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal', 'setActiveTeam'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getTeamMembers'])), {}, {
+  methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal', 'setActiveTeam'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getTeamMembers', 'getTeamProjects'])), {}, {
     selectTeam: function selectTeam(name, id) {
+      var _this = this;
+
       if (document.querySelector('.team-dropdown .dropdown-item.active')) {
         document.querySelector('.team-dropdown .dropdown-item.active').classList.remove('active');
       }
@@ -3895,7 +3897,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: name,
         id: id
       });
-      this.getTeamMembers();
+      this.getTeamMembers().then(function () {
+        _this.getTeamProjects({
+          name: name,
+          id: id
+        });
+      });
     }
   }),
   components: {
@@ -65896,42 +65903,34 @@ var render = function() {
               1
             ),
             _vm._v(" "),
-            _vm.projects.length > 0
-              ? _c("ul", { staticClass: "item-lists" }, [
-                  _c(
-                    "li",
-                    { staticClass: "item" },
-                    [
-                      _vm._v("\n            Parametrics Cabinet\n            "),
-                      _c("more-option-btn", {
-                        attrs: {
-                          mode: "dark",
-                          "edit-name": true,
-                          "delete-project-btn": true,
-                          "add-btn": true
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    { staticClass: "item active" },
-                    [
-                      _vm._v("\n            Parametrics Cabinet\n            "),
-                      _c("more-option-btn", {
-                        attrs: {
-                          mode: "dark",
-                          "edit-name": true,
-                          "delete-project-btn": true,
-                          "add-btn": true
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ])
+            _vm.team_projects_groups.length > 0
+              ? _c(
+                  "ul",
+                  { staticClass: "item-lists" },
+                  _vm._l(_vm.team_projects_groups, function(project, key) {
+                    return _c(
+                      "li",
+                      { staticClass: "item" },
+                      [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(project.name) +
+                            "\n            "
+                        ),
+                        _c("more-option-btn", {
+                          attrs: {
+                            mode: "dark",
+                            "edit-name": true,
+                            "delete-project-btn": true,
+                            "add-btn": true
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  }),
+                  0
+                )
               : _vm._e()
           ])
         : _vm._e(),
@@ -84404,6 +84403,11 @@ var app = new Vue({
           name: name,
           id: id
         });
+
+        _this.getTeamProjects({
+          name: name,
+          id: id
+        });
       }
     });
   },
@@ -84446,7 +84450,7 @@ var app = new Vue({
       _this2.getTeamMembers();
     });
   },
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['toggleSidebar', 'setDeviceWidth'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getUserTeams', 'getTeamMembers']))
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['toggleSidebar', 'setDeviceWidth'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getUserTeams', 'getTeamMembers', 'getTeamProjects']))
 });
 
 /***/ }),
@@ -87240,7 +87244,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     new_team_members: [],
     info_edits: null,
     resource_to_delete: null,
-    potential_clients: []
+    potential_clients: [],
+    team_projects_groups: []
   },
   getters: {
     team_members: function team_members(state) {
@@ -87434,6 +87439,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     setProjectGroupName: function setProjectGroupName(state, payload) {
       state.new_project_group.name = payload;
+    },
+    setTeamProjects: function setTeamProjects(state, payload) {
+      state.team_projects_groups = payload;
     }
   },
   actions: {
@@ -87470,6 +87478,18 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
         return res.text();
       }).then(function (data) {
         commit('setTeamMembers', JSON.parse(data));
+      });
+    },
+    getTeamProjects: function getTeamProjects(_ref10, _ref11) {
+      var commit = _ref10.commit;
+      var name = _ref11.name,
+          id = _ref11.id;
+      var url_name = name.toLowerCase().split(" ").join("-");
+      return fetch("".concat(url_name, "/team?id=").concat(id)).then(function (res) {
+        return res.text();
+      }).then(function (data) {
+        var payload = JSON.parse(data);
+        commit('setTeamProjects', payload);
       });
     }
   }

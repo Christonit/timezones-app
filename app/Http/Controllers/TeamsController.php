@@ -118,6 +118,12 @@ class TeamsController extends Controller
         return TeamMembers::destroy($id);
         
     }
+
+    protected function allProjectGroups(Request $request, $name){
+        $id = $request->id;
+        
+        return Teams::where('owner_id',Auth::id())->find($id)->projectsGroup;
+    }
    
     
 }

@@ -45,7 +45,8 @@ export default new Vuex.Store({
         new_team_members:[],
         info_edits:null,
         resource_to_delete:null,
-        potential_clients:[]
+        potential_clients:[],
+        team_projects_groups:[]
 
     },
     getters:{
@@ -223,6 +224,9 @@ export default new Vuex.Store({
         },
         setProjectGroupName(state,payload){
             state.new_project_group.name = payload;
+        },
+        setTeamProjects(state,payload){
+            state.team_projects_groups = payload
         }
 
 
@@ -255,6 +259,16 @@ export default new Vuex.Store({
                     .then(data => {
                         commit('setTeamMembers',JSON.parse(data))
                     })
+        },
+        getTeamProjects({commit},{name,id}){
+            let url_name = name.toLowerCase().split(" ").join("-");
+
+            return fetch(`${url_name}/team?id=${id}`)
+                    .then(res => res.text())
+                    .then( data => {
+                        let payload = JSON.parse(data);
+                        commit('setTeamProjects',payload);
+                    });
         }
 
     }

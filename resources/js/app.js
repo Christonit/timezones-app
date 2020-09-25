@@ -60,6 +60,7 @@ const app = new Vue({
                 let name = data[0].name;
                 let id = data[0].id;
                 this.$store.commit("setActiveTeam",{ name, id })
+                this.getTeamProjects({ name, id })
             }
         });
     },
@@ -109,7 +110,7 @@ const app = new Vue({
     },
     methods:{
         ...mapMutations(['toggleSidebar','setDeviceWidth']),
-        ...mapActions(['getUserTeams','getTeamMembers'])
+        ...mapActions(['getUserTeams','getTeamMembers','getTeamProjects'])
     }
 
     

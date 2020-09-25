@@ -68,15 +68,15 @@
              
         </div>
 
-        <ul class="item-lists" v-if="projects.length > 0">
-            <li class="item">
-                Parametrics Cabinet
+        <ul class="item-lists" v-if="team_projects_groups.length > 0">
+            <li class="item" v-for="(project,key) in team_projects_groups">
+                {{project.name}}
                 <more-option-btn mode="dark" :edit-name="true" :delete-project-btn="true" :add-btn="true"></more-option-btn>
             </li>
-            <li class="item active">
+            <!-- <li class="item active">
                 Parametrics Cabinet
                 <more-option-btn mode="dark" :edit-name="true" :delete-project-btn="true" :add-btn="true"></more-option-btn>
-            </li>
+            </li> -->
         </ul>
         
     </div>
@@ -93,14 +93,14 @@ export default {
     mounted() {
     },
     computed:{
-        ...mapState(['teams','team_project','sidebar_visible','projects']),
+        ...mapState(['teams','team_project','sidebar_visible','team_projects_groups']),
         mobile_sidebar_visible(){
             return this.sidebar_visible == true ? 'active' : '';
         }
     },
     methods:{
         ...mapMutations(['openModal','setActiveTeam']),
-        ...mapActions(['getTeamMembers']),
+        ...mapActions(['getTeamMembers','getTeamProjects']),
 
         selectTeam(name,id){
             if(document.querySelector('.team-dropdown .dropdown-item.active')){
@@ -108,7 +108,9 @@ export default {
             }            
             event.target.classList.add('active')
             this.setActiveTeam({name,id});
-            this.getTeamMembers();
+            this.getTeamMembers().then(()=>{
+             this.getTeamProjects({ name, id })
+            });
 
         }
     },

@@ -53,7 +53,9 @@ Route::middleware('auth')->group( function (){
 
     Route::get('/list-teams', 'TeamsController@list');
 
-    Route::get('test', 'TeamsController@teams');
+    //Gets team's projects from query parameter
+    Route::get('/{team_name}/team','TeamsController@allProjectGroups');
+
 
     //Uses ID query parameter, ex: /get-teammate?id=10
     Route::get('/get-teammate','TeamsController@getTeammate');
@@ -67,6 +69,14 @@ Route::middleware('auth')->group( function (){
     Route::post('/search-timezones','TimezonesController@search_timezone');
     Route::post('/update-user','HomeController@updateUser');
 
+    //Gets project category owner from team ID as query parameter, ex: team?id=5. 
+    Route::get('/project-category/team','ProjectsGroupController@ownerTeam');
+
+    //Gets all info pertaing a project category by query parametters.
+    #Example url: /{team name}/project?name={project category name}&id={project id}
+    #Has multiple optional query parameters: only_clients and only_teammates.
+    #Example url: /claro-team/project?name=grupo-1&id=14&only_clients=true
+    Route::get('/{team_name}/project','ProjectsGroupController@membersOfGroup');
     Route::post('/create-project-category/team/{team}','ProjectsGroupController@createGroup');
     Route::post('/update-project-category/team/{team}','xxxx@xxxxx');
     Route::delete('/delete-project-category/team/{team}','xxxx@xxxxx');
