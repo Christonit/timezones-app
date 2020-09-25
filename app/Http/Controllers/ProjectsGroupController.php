@@ -25,10 +25,15 @@ class ProjectsGroupController extends Controller
 
         //Gets all projects clients.
         $clients = Clients::where('project_id',$project_id)->get(['id','name','timezone']);        ;
-        
+        $clients_updated = [];
+        foreach ($clients as $key => $client) {
+            # code...
+            $client['member_type'] = 'client';
+            $clients_updated[] = $client;
+        }
         #returns only clients
         if($request->only_clients == true){
-            return $clients;
+            return $clients_updated;
         }
 
         //Gets all projects teammates
@@ -39,15 +44,17 @@ class ProjectsGroupController extends Controller
 
             if($team_id != null){
                 $teammate = TeamMembers::where('id',$team_id)->get(['id','name','email','start_hour','end_hour','timezone','timezone_abbr','avatar']);
+                $teammate[0]['member_type'] = "teammate";
                 $teammates[] = $teammate[0];
             }
         }
+        
         #return only teammates
         if($request->only_teammates == true){
             return $teammates;
         }
 
-        return ["teammates"=>$teammates,"clients"=>$clients];
+        return array_merge($teammates,$clients_updated);
 
     }
 

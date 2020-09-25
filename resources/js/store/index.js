@@ -42,6 +42,8 @@ export default new Vuex.Store({
             teammates:[]
         },
         team_members:[],
+        // team member filters can be all, mates or clients only. To filter in the UI only. 
+        team_members_filter:"all",
         new_team_members:[],
         info_edits:null,
         resource_to_delete:null,
@@ -72,6 +74,16 @@ export default new Vuex.Store({
         ajax_delete(state){
             return {
                 _method: "DELETE"
+            }
+        },
+        is_teammember_type_mixed(state){
+            let onlyTeammate = state.team_members.every( item => item.member_type == 'teammate');
+            let onlyClient = state.team_members.every( item => item.member_type == 'client');
+
+            if(onlyTeammate == false && onlyClient == false){
+                return true;
+            }else{
+                return false;
             }
         }
 
@@ -227,6 +239,12 @@ export default new Vuex.Store({
         },
         setTeamProjects(state,payload){
             state.team_projects_groups = payload
+        },
+        setTeamMembersFilter(state,payload){
+            state.team_members_filter = payload;
+        },
+        setActiveProject(state,payload){
+
         }
 
 

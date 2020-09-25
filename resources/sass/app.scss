@@ -231,7 +231,11 @@
         justify-content: space-between;
         align-items: center;
         color: white;
-
+        cursor: pointer;
+        &:hover{
+            color: #b1d6ff;
+            background-color: #0e1122;
+        }
         &.active{
             color: #b1d6ff;
             background-color: #070913;

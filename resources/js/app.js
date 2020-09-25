@@ -60,6 +60,7 @@ const app = new Vue({
                 let name = data[0].name;
                 let id = data[0].id;
                 this.$store.commit("setActiveTeam",{ name, id })
+                // router.push(name.toLowerCase().split(" ").join('-'));
                 this.getTeamProjects({ name, id })
             }
         });

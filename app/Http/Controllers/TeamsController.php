@@ -7,6 +7,8 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Teams;
+use App\Clients;
+use App\Projects;
 use App\TeamMembers;
 
 class TeamsController extends Controller
@@ -78,15 +80,35 @@ class TeamsController extends Controller
     }
 
     public function getTeamMembers($team){
-        
+        $projects = Teams::find(1)->projectsGroup;
+
+        $projects = $projects->pluck('id');
+
+        $clients = [];
+        $client_list = collect([]);
+
+        foreach ($projects as $key => $id) {
+            $clients[] = Clients::where('project_id', $id)->get(['id','name','timezone']);
+        }
+        foreach ($clients as $key => $client) {
+            $client_list = $client_list->concat($client);
+        }
+
+        $client_list = $client_list->unique('name');
+
+        foreach ($client_list as $key => $client) {
+            $client['member_type'] = 'client';
+        }
+
         $team_members = TeamMembers::where('teams_id',$team)->get();
         foreach($team_members as $member){
 
             $member['avatar'] = ($member['avatar'] == null) ? null : asset('/storage/'.$member->avatar);
-
+            $member['member_type'] = 'teammate';
         }
 
-        return $team_members;
+        // return $team_members;
+        return collect($team_members)->concat($client_list);
 
     }
 

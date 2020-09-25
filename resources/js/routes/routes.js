@@ -11,6 +11,10 @@ export default new VueRouter({
             path: '/',
             component:TeamProjectOverview
         },
+        // {
+        //     path: '/:projct-name',
+        //     component:TeamProjectOverview
+        // },
         {
             path: '/team/:projectName',
             component:AddNewTeamMember

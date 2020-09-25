@@ -3874,7 +3874,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3882,11 +3881,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['teams', 'team_project', 'sidebar_visible', 'team_projects_groups'])), {}, {
     mobile_sidebar_visible: function mobile_sidebar_visible() {
       return this.sidebar_visible == true ? 'active' : '';
+    },
+    team_name: function team_name() {
+      return this.team_project.name.toLowerCase().split(' ').join('-');
     }
   }),
-  methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal', 'setActiveTeam'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getTeamMembers', 'getTeamProjects'])), {}, {
-    selectTeam: function selectTeam(name, id) {
+  methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal', 'setActiveTeam', 'setTeamMembers'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getTeamMembers', 'getTeamProjects'])), {}, {
+    selectProject: function selectProject(e) {
       var _this = this;
+
+      var project_name = e.target.getAttribute('data-project-name').toLowerCase().split(' ').join('-');
+      var project_id = e.target.getAttribute('data-project-id');
+      var el = e.target.parentElement.querySelector('.item.active');
+      el != null ? el.classList.remove('active') : '';
+      fetch("/".concat(this.team_name, "/project?id=").concat(project_id)).then(function (res) {
+        return res.text();
+      }).then(function (data) {
+        return _this.setTeamMembers(JSON.parse(data));
+      });
+      e.target.classList.add('active');
+      e.stopPropagation;
+    },
+    selectTeam: function selectTeam(name, id) {
+      var _this2 = this;
 
       if (document.querySelector('.team-dropdown .dropdown-item.active')) {
         document.querySelector('.team-dropdown .dropdown-item.active').classList.remove('active');
@@ -3898,11 +3915,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         id: id
       });
       this.getTeamMembers().then(function () {
-        _this.getTeamProjects({
+        _this2.getTeamProjects({
           name: name,
           id: id
         });
       });
+    },
+    setDefaultTeammates: function setDefaultTeammates() {
+      var active_project = document.querySelector('.project-list .item-lists .item.active');
+      active_project != null || active_project != undefined ? active_project.classList.remove('active') : '';
+      this.getTeamMembers();
     }
   }),
   components: {
@@ -4164,13 +4186,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       avatar: null
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['user'])),
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['user', 'team_members_filter'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['is_teammember_type_mixed'])),
   components: {
     UserItem: _user_item_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   created: function created() {},
   mounted: function mounted() {},
-  methods: {}
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['setTeamMembersFilter']))
 });
 
 /***/ }),
@@ -4196,6 +4218,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
 //
 //
 //
@@ -4451,6 +4475,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4460,7 +4488,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     UserItem: _user_item_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['team_members'])), {}, {
+  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['team_members_filter'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['team_members'])), {}, {
     users: function users() {
       return this.team_members;
     }
@@ -65868,7 +65896,10 @@ var render = function() {
       _vm._v(" "),
       _c(
         "button",
-        { staticClass: "btn btn-link white justify-content-start" },
+        {
+          staticClass: "btn btn-link white justify-content-start",
+          on: { click: _vm.setDefaultTeammates }
+        },
         [_vm._v("\n    All team members\n")]
       ),
       _vm._v(" "),
@@ -65910,7 +65941,14 @@ var render = function() {
                   _vm._l(_vm.team_projects_groups, function(project, key) {
                     return _c(
                       "li",
-                      { staticClass: "item" },
+                      {
+                        staticClass: "item",
+                        attrs: {
+                          "data-project-id": project.id,
+                          "data-project-name": project.name
+                        },
+                        on: { click: _vm.selectProject }
+                      },
                       [
                         _vm._v(
                           "\n            " +
@@ -66247,35 +66285,67 @@ var render = function() {
             attrs: { "view-mode": "card", user: _vm.user, "logged-user": true }
           }),
           _vm._v(" "),
-          _vm._m(0)
+          _vm.is_teammember_type_mixed
+            ? _c("div", { attrs: { id: "user-type-filters" } }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-link btn-filter",
+                    class: _vm.team_members_filter == "all" ? "active" : "",
+                    on: {
+                      click: function($event) {
+                        return _vm.setTeamMembersFilter("all")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v("\n            All\n            "),
+                    _c("span", { staticClass: "small-right-arrow-icon" })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-link btn-filter",
+                    class:
+                      _vm.team_members_filter == "teammate" ? "active" : "",
+                    on: {
+                      click: function($event) {
+                        return _vm.setTeamMembersFilter("teammate")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v("\n            Teammates\n            "),
+                    _c("span", { staticClass: "small-right-arrow-icon" })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-link btn-filter",
+                    class: _vm.team_members_filter == "client" ? "active" : "",
+                    on: {
+                      click: function($event) {
+                        return _vm.setTeamMembersFilter("client")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v("\n            Clients\n            "),
+                    _c("span", { staticClass: "small-right-arrow-icon" })
+                  ]
+                )
+              ])
+            : _vm._e()
         ],
         1
       )
     : _vm._e()
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "user-type-filters" } }, [
-      _c("button", { staticClass: "btn btn-link btn-filter active" }, [
-        _vm._v("\n            All\n            "),
-        _c("span", { staticClass: "small-right-arrow-icon" })
-      ]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-link btn-filter" }, [
-        _vm._v("\n            Teammates\n            "),
-        _c("span", { staticClass: "small-right-arrow-icon" })
-      ]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-link btn-filter" }, [
-        _vm._v("\n            Clients\n            "),
-        _c("span", { staticClass: "small-right-arrow-icon" })
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -66371,9 +66441,17 @@ var render = function() {
                       attrs: { timezone: _vm.user.timezone }
                     }),
                     _vm._v(" "),
-                    _c("span", { staticClass: "user-item-available-time" }, [
-                      _vm._v("Av: " + _vm._s(_vm.available_hours))
-                    ])
+                    _vm.user.member_type == "teammate"
+                      ? _c(
+                          "span",
+                          { staticClass: "user-item-available-time" },
+                          [_vm._v("Av: " + _vm._s(_vm.available_hours))]
+                        )
+                      : _c(
+                          "span",
+                          { staticClass: "user-item-available-time" },
+                          [_vm._v("Client")]
+                        )
                   ],
                   1
                 )
@@ -66386,9 +66464,17 @@ var render = function() {
                       _vm._v(_vm._s(_vm.username))
                     ]),
                     _vm._v(" "),
-                    _c("span", { staticClass: "user-item-available-time" }, [
-                      _vm._v("Av: " + _vm._s(_vm.available_hours))
-                    ])
+                    _vm.user.member_type == "teammate"
+                      ? _c(
+                          "span",
+                          { staticClass: "user-item-available-time" },
+                          [_vm._v("Av: " + _vm._s(_vm.available_hours))]
+                        )
+                      : _c(
+                          "span",
+                          { staticClass: "user-item-available-time" },
+                          [_vm._v("Client")]
+                        )
                   ]),
                   _vm._v(" "),
                   _c("time-watch", { attrs: { timezone: _vm.user.timezone } }),
@@ -66449,13 +66535,47 @@ var render = function() {
     ? _c(
         "div",
         { staticClass: "card-grid" },
-        _vm._l(_vm.team_members, function(team_member, key) {
-          return _c("user-item", {
-            key: key,
-            attrs: { "view-mode": "card", index: key, user: team_member }
+        [
+          _vm._l(_vm.team_members, function(team_member, key) {
+            return [
+              _vm.team_members_filter == "all"
+                ? _c("user-item", {
+                    key: key,
+                    attrs: {
+                      "view-mode": "card",
+                      index: key,
+                      user: team_member
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.team_members_filter == "teammate" &&
+              team_member.member_type == "teammate"
+                ? _c("user-item", {
+                    key: key,
+                    attrs: {
+                      "view-mode": "card",
+                      index: key,
+                      user: team_member
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.team_members_filter == "client" &&
+              team_member.member_type == "client"
+                ? _c("user-item", {
+                    key: key,
+                    attrs: {
+                      "view-mode": "card",
+                      index: key,
+                      user: team_member
+                    }
+                  })
+                : _vm._e()
+            ]
           })
-        }),
-        1
+        ],
+        2
       )
     : _vm._e()
 }
@@ -84402,7 +84522,8 @@ var app = new Vue({
         _this.$store.commit("setActiveTeam", {
           name: name,
           id: id
-        });
+        }); // router.push(name.toLowerCase().split(" ").join('-'));
+
 
         _this.getTeamProjects({
           name: name,
@@ -87174,7 +87295,11 @@ __webpack_require__.r(__webpack_exports__);
   routes: [{
     path: '/',
     component: _components_team_project_overview_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
-  }, {
+  }, // {
+  //     path: '/:projct-name',
+  //     component:TeamProjectOverview
+  // },
+  {
     path: '/team/:projectName',
     component: _components_add_new_team_member_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   }, {
@@ -87241,6 +87366,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       teammates: []
     },
     team_members: [],
+    // team member filters can be all, mates or clients only. To filter in the UI only. 
+    team_members_filter: "all",
     new_team_members: [],
     info_edits: null,
     resource_to_delete: null,
@@ -87271,6 +87398,20 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       return {
         _method: "DELETE"
       };
+    },
+    is_teammember_type_mixed: function is_teammember_type_mixed(state) {
+      var onlyTeammate = state.team_members.every(function (item) {
+        return item.member_type == 'teammate';
+      });
+      var onlyClient = state.team_members.every(function (item) {
+        return item.member_type == 'client';
+      });
+
+      if (onlyTeammate == false && onlyClient == false) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   mutations: {
@@ -87442,7 +87583,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     setTeamProjects: function setTeamProjects(state, payload) {
       state.team_projects_groups = payload;
-    }
+    },
+    setTeamMembersFilter: function setTeamMembersFilter(state, payload) {
+      state.team_members_filter = payload;
+    },
+    setActiveProject: function setActiveProject(state, payload) {}
   },
   actions: {
     getUserTeams: function getUserTeams(_ref7, event) {

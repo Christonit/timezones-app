@@ -13152,6 +13152,12 @@ input.input-field::placeholder {
   justify-content: space-between;
   align-items: center;
   color: white;
+  cursor: pointer;
+}
+
+.item-lists .item:hover {
+  color: #b1d6ff;
+  background-color: #0e1122;
 }
 
 .item-lists .item.active {

@@ -52,7 +52,7 @@
         
         </div>
 
-    <button class="btn btn-link white justify-content-start">
+    <button class="btn btn-link white justify-content-start" @click="setDefaultTeammates">
         All team members
     </button>
 
@@ -69,14 +69,13 @@
         </div>
 
         <ul class="item-lists" v-if="team_projects_groups.length > 0">
-            <li class="item" v-for="(project,key) in team_projects_groups">
+            <li class="item" v-for="(project,key) in team_projects_groups"
+            :data-project-id="project.id" 
+            :data-project-name="project.name"
+            @click="selectProject">
                 {{project.name}}
                 <more-option-btn mode="dark" :edit-name="true" :delete-project-btn="true" :add-btn="true"></more-option-btn>
-            </li>
-            <!-- <li class="item active">
-                Parametrics Cabinet
-                <more-option-btn mode="dark" :edit-name="true" :delete-project-btn="true" :add-btn="true"></more-option-btn>
-            </li> -->
+            </li>            
         </ul>
         
     </div>
@@ -85,7 +84,7 @@
 </template>
 
 <script>
-import {mapMutations,mapActions, mapState} from 'vuex';
+import {mapMutations,mapActions, mapState, mapGetters} from 'vuex';
 
 import MoreOptionBtn from "./utils/more-option-btn.vue";
 
@@ -96,12 +95,29 @@ export default {
         ...mapState(['teams','team_project','sidebar_visible','team_projects_groups']),
         mobile_sidebar_visible(){
             return this.sidebar_visible == true ? 'active' : '';
+        },
+        team_name(){
+            return this.team_project.name.toLowerCase().split(' ').join('-');
         }
+
     },
     methods:{
-        ...mapMutations(['openModal','setActiveTeam']),
+        ...mapMutations(['openModal','setActiveTeam','setTeamMembers']),
         ...mapActions(['getTeamMembers','getTeamProjects']),
+        selectProject(e){
+            let project_name = e.target.getAttribute('data-project-name').toLowerCase().split(' ').join('-');
+            let project_id = e.target.getAttribute('data-project-id');
+            let el = e.target.parentElement.querySelector('.item.active');
+            
+            (el != null) ? el.classList.remove('active') : '';
 
+            fetch( `/${this.team_name}/project?id=${project_id}`)
+            .then(res => res.text())
+            .then(data => this.setTeamMembers(JSON.parse(data) ))
+            e.target.classList.add('active')
+            
+            e.stopPropagation;
+        },
         selectTeam(name,id){
             if(document.querySelector('.team-dropdown .dropdown-item.active')){
                 document.querySelector('.team-dropdown .dropdown-item.active').classList.remove('active');
@@ -112,6 +128,12 @@ export default {
              this.getTeamProjects({ name, id })
             });
 
+        },
+        setDefaultTeammates(){
+            let active_project = document.querySelector('.project-list .item-lists .item.active');
+            (active_project != null || active_project != undefined) ? active_project.classList.remove('active'): '';
+            
+            this.getTeamMembers();
         }
     },
     components:{
