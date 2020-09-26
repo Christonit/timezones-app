@@ -124,6 +124,7 @@ class TeamsController extends Controller
             }
             $teammate = TeamMembers::findOrFail($request->id);
             $teammate['avatar'] = $teammate['avatar'] == null ? null : asset('/storage/'.$teammate->avatar);
+            $teammate['member_type'] = "teammate";
 
             return $teammate;
 
