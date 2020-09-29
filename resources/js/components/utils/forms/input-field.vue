@@ -1,7 +1,7 @@
 <template>
     <div class="input-field">
         <label class="input-label" :class="(inputValue == null || inputValue == '') ? 'placeholder': '' " :for="name"> {{name}}</label>
-        <input class="input" :type="type" :data-name="name" @focusin="removePlaceholder" @keyup="emitKeyup" v-model="input_val" @input="emitInput">
+        <input class="input" :type="type" :data-name="name" @focusin="removePlaceholder" @keyup="emitKeyup" v-model="input_val" @input="emitInput" @keypress="emitKeyPress">
     </div>
 </template>
 <script>
@@ -45,6 +45,9 @@ export default {
         },
         emitKeyup(){
             this.$emit('keyup');
+        },
+        emitKeyPress(e){
+            this.$emit('keypress',e);
         },
         emitFocus(){
             this.$emit('focus');

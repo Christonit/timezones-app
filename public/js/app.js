@@ -2008,6 +2008,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     NewTeamMemberRow: _add_new_team_member_new_team_member_row_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal', 'addNewTeamMember', 'deleteNewTeamMember', 'modifyNewTeamMemberName', 'modifyNewTeamMemberEmail', 'modifyNewTeamMemberTimezone'])), {}, {
+    prueba: function prueba(el) {
+      console.log(el);
+    },
     addNew: function addNew() {
       var timezone = this.member.timezone;
       var name = this.member.name;
@@ -2124,11 +2127,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['index', 'member'],
+  props: ['index'],
   data: function data() {
     return {
-      name: this.member.name,
-      email: this.member.email,
+      name: null,
+      email: null,
       timezone: null,
       validation: {
         name: true,
@@ -2141,15 +2144,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.email = null;
   },
   mounted: function mounted() {
-    this.name = this.member.name;
-    this.email = this.member.email;
+    if (window.getSelection) {
+      console.log(window.getSelection());
+    }
+
+    this.name = this.new_user.name;
+    this.email = this.new_user.email;
   },
   beforeUpdate: function beforeUpdate() {
     var _this = this;
 
     setTimeout(function () {
-      _this.name = _this.member.name;
-      _this.email = _this.member.email;
+      _this.name = _this.new_user.name;
+      _this.email = _this.new_user.email;
     }, 100);
   },
   updated: function updated() {},
@@ -2159,32 +2166,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     DeleteBtn: _utils_buttons_delete_btn__WEBPACK_IMPORTED_MODULE_2__["default"],
     InputField: _utils_forms_input_field__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapState"])(['new_team_members'])), {}, {
+    new_user: function new_user() {
+      return this.new_team_members[this.index];
+    }
+  }),
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapMutations"])(['modifyNewTeamMemberTimezone', 'modifyNewTeamMemberName', 'modifyNewTeamMemberEmail', 'deleteNewTeamMember'])), {}, {
-    modifyName: function modifyName() {
-      var validation = this.validateName(this.name);
-
-      if (validation) {
-        this.modifyNewTeamMemberName({
-          index: this.index,
-          name: this.name
-        });
-        this.validation.name = true;
-      } else {
-        this.validation.name = false;
-      }
+    prueba: function prueba(el) {
+      console.log(el);
     },
-    modifyEmail: function modifyEmail() {
-      var validation = this.validateEmail(this.email);
-
-      if (validation) {
-        this.modifyNewTeamMemberEmail({
-          index: this.index,
-          email: this.email
-        });
-        this.validation.email = true;
-      } else {
-        this.validation.email = false;
-      }
+    modifyName: function modifyName(input) {
+      // let validation = this.validateName(input);
+      // if(validation){
+      this.name = input;
+      this.modifyNewTeamMemberName({
+        index: this.index,
+        name: input
+      }); // this.validation.name = true
+      // }else{
+      // this.validation.name = false;
+      // }
+    },
+    modifyEmail: function modifyEmail(input) {
+      // let validation = this.validateEmail(input);
+      // if(validation){
+      this.email = input;
+      this.modifyNewTeamMemberEmail({
+        index: this.index,
+        email: input
+      }); // this.validation.email = true
+      // }else{
+      // this.validation.email = false;
+      // }
     },
     removePlaceholder: function removePlaceholder(e) {
       var placeholder = e.target.previousElementSibling;
@@ -5380,6 +5393,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     emitKeyup: function emitKeyup() {
       this.$emit('keyup');
+    },
+    emitKeyPress: function emitKeyPress(e) {
+      this.$emit('keypress', e);
     },
     emitFocus: function emitFocus() {
       this.$emit('focus');
@@ -64163,7 +64179,7 @@ var render = function() {
                 ? [
                     _c("new-team-member-row", {
                       key: key,
-                      attrs: { member: new_member, index: key }
+                      attrs: { index: key }
                     })
                   ]
                 : _vm._e()
@@ -64205,9 +64221,11 @@ var render = function() {
         key: _vm.index + "A",
         attrs: { name: "Full name", "input-value": _vm.name },
         on: {
-          keyup: _vm.modifyName,
+          keypress: function($event) {
+            return _vm.prueba($event)
+          },
           input: function($event) {
-            _vm.name = $event
+            return _vm.modifyName($event)
           }
         }
       }),
@@ -64216,15 +64234,17 @@ var render = function() {
         key: _vm.index + "B",
         attrs: { name: "Email", "input-value": _vm.email },
         on: {
-          keyup: _vm.modifyEmail,
+          keypress: function($event) {
+            return _vm.prueba($event)
+          },
           input: function($event) {
-            _vm.email = $event
+            return _vm.modifyEmail($event)
           }
         }
       }),
       _vm._v(" "),
       _c("input-timezone", {
-        attrs: { timezone_name: _vm.member.timezone.name },
+        attrs: { timezone_name: _vm.new_user.timezone.name },
         on: {
           "timezone-select": function($event) {
             return _vm.modifyNewTeamMemberTimezone({
@@ -66988,6 +67008,7 @@ var render = function() {
             focusin: _vm.removePlaceholder,
             keyup: _vm.emitKeyup,
             input: _vm.emitInput,
+            keypress: _vm.emitKeyPress,
             change: function($event) {
               var $$a = _vm.input_val,
                 $$el = $event.target,
@@ -67026,6 +67047,7 @@ var render = function() {
             focusin: _vm.removePlaceholder,
             keyup: _vm.emitKeyup,
             input: _vm.emitInput,
+            keypress: _vm.emitKeyPress,
             change: function($event) {
               _vm.input_val = null
             }
@@ -67054,7 +67076,8 @@ var render = function() {
                 _vm.input_val = $event.target.value
               },
               _vm.emitInput
-            ]
+            ],
+            keypress: _vm.emitKeyPress
           }
         })
   ])

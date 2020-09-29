@@ -34,7 +34,7 @@
                     <template 
                         v-if="new_team_members.length > 0" 
                         v-for="(new_member,key) in new_team_members">
-                        <new-team-member-row :member="new_member" :key="key" :index="key">
+                        <new-team-member-row :key="key" :index="key">
                         </new-team-member-row>
                     </template>
                 </div>
@@ -76,6 +76,7 @@ export default {
     computed:{
         ...mapState(['team_project','new_team_members']),
         ...mapGetters(['basic_header']),
+      
         
     },
     components:{
@@ -95,6 +96,9 @@ export default {
         'modifyNewTeamMemberName',
         'modifyNewTeamMemberEmail',
         'modifyNewTeamMemberTimezone']),
+        prueba(el){
+            console.log(el)
+        },
         addNew(){
 
             const timezone = this.member.timezone

@@ -1,12 +1,12 @@
 <template>
     <div class="input-field-group  my-3">
         <input-field name="Full name"  :key="index + 'A'"
-        :input-value="name" @keyup="modifyName" @input="name = $event"></input-field>
+        :input-value="name" @keypress="prueba($event)"  @input="modifyName($event)"></input-field>
         
         <input-field name="Email" :key="index + 'B'"
-        :input-value="email" @keyup="modifyEmail" @input="email = $event"></input-field>
+        :input-value="email" @keypress="prueba($event)" @input="modifyEmail($event)"></input-field>
         
-        <input-timezone @timezone-select="modifyNewTeamMemberTimezone({index,timezone:$event})" :timezone_name="member.timezone.name"></input-timezone>
+        <input-timezone @timezone-select="modifyNewTeamMemberTimezone({index,timezone:$event})" :timezone_name="new_user.timezone.name"></input-timezone>
 
         <delete-btn class="large" @click="deleteNewTeamMember(index)"></delete-btn>
     </div>
@@ -17,14 +17,14 @@ import InputTimezone from "../utils/input-timezone";
 import InputField from "../utils/forms/input-field";
 import DeleteBtn from "../utils/buttons/delete-btn";
 import validations from "../../mixins/validators.vue";
-import { mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 
 export default {
-    props:['index','member'],
+    props:['index'],
     data(){
         return {
-            name: this.member.name,
-            email: this.member.email,
+            name: null,
+            email: null,
             timezone:null,
             validation:{
                 name: true,
@@ -39,14 +39,16 @@ export default {
         
     },
     mounted(){
-
-        this.name = this.member.name;
-        this.email = this.member.email;
+        if (window.getSelection){
+            console.log( window.getSelection() );
+        }
+        this.name = this.new_user.name;
+        this.email = this.new_user.email;
     },
     beforeUpdate(){
         setTimeout( ()=>{
-        this.name = this.member.name;
-        this.email = this.member.email;
+            this.name = this.new_user.name;
+            this.email = this.new_user.email;
         },100)
 
     },
@@ -59,35 +61,48 @@ export default {
         DeleteBtn,
         InputField
     },
+    computed:{
+        ...mapState(['new_team_members']),
+          new_user(){
+            return this.new_team_members[this.index];
+
+        }
+    },
     methods:{
         ...mapMutations([
             'modifyNewTeamMemberTimezone',
             'modifyNewTeamMemberName',
             'modifyNewTeamMemberEmail',
             'deleteNewTeamMember']),
-        
-        modifyName(){
-            
-            let validation = this.validateName(this.name);
 
-            if(validation){
-                this.modifyNewTeamMemberName({index: this.index, name: this.name})
-                this.validation.name = true
-            }else{
-                this.validation.name = false;
-            }
+        prueba(el){
+            console.log(el)
+        },
+        
+        modifyName(input){
+            
+            // let validation = this.validateName(input);
+
+            // if(validation){
+                this.name = input;
+                this.modifyNewTeamMemberName({index: this.index, name: input})
+                // this.validation.name = true
+            // }else{
+                // this.validation.name = false;
+            // }
 
         },
-        modifyEmail(){
+        modifyEmail(input){
 
-            let validation = this.validateEmail(this.email);
+            // let validation = this.validateEmail(input);
 
-            if(validation){
-                this.modifyNewTeamMemberEmail({index: this.index, email: this.email})
-                this.validation.email = true
-            }else{
-                this.validation.email = false;
-            }
+            // if(validation){
+                this.email = input;
+                this.modifyNewTeamMemberEmail({index: this.index, email: input})
+                // this.validation.email = true
+            // }else{
+                // this.validation.email = false;
+            // }
 
         },
         removePlaceholder(e){

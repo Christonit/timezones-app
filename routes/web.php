@@ -81,6 +81,11 @@ Route::middleware('auth')->group( function (){
     Route::post('/update-project-category/team/{team}','xxxx@xxxxx');
     Route::delete('/delete-project-category/team/{team}','xxxx@xxxxx');
 
+    #Search keyboards from a team by an url with query parameters, ex: /search?team={id}&q={stuff to search}
+    Route::get('/search','SearchController@searchbar');
+
+
+
 
 });
 
