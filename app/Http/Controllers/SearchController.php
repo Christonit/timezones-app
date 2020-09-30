@@ -11,8 +11,8 @@ class SearchController extends Controller
 {
     //
 
-    public function searchbar(Request $reqest){
-        $q = $reqest->q;
+    public function searchbar(Request $request){
+        $q = $request->q;
         $id = $request->team;
 
         $results = collect([]);

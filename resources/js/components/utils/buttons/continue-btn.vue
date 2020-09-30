@@ -1,5 +1,5 @@
 <template>
-    <button class="btn btn-primary next" :class="alignment_direction" @click="click">
+    <button class="btn btn-primary next" :class="alignment_direction" @click="click" :disabled="is_disabled">
         <img src="/img/long-arrow.svg"/> 
     </button>
 </template>
@@ -11,6 +11,10 @@ export default {
             type: String,
             default: 'none'
         },
+        disabled:{
+            type:String,
+            default:'available'
+        }
         // click:{
         //     type:Function,
         //     default: () =>{
@@ -19,6 +23,13 @@ export default {
         // }
     },
     computed:{
+        is_disabled(){
+            if (this.disabled == 'disable'){
+                return true;
+            }else{
+                return false;
+            }
+        },
         alignment_direction(){
 
             if(this.alignment == 'center' ){ 

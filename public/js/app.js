@@ -2008,9 +2008,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     NewTeamMemberRow: _add_new_team_member_new_team_member_row_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal', 'addNewTeamMember', 'deleteNewTeamMember', 'modifyNewTeamMemberName', 'modifyNewTeamMemberEmail', 'modifyNewTeamMemberTimezone'])), {}, {
-    prueba: function prueba(el) {
-      console.log(el);
-    },
     addNew: function addNew() {
       var timezone = this.member.timezone;
       var name = this.member.name;
@@ -4114,12 +4111,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      query: null,
+      queryResults: [],
+      keywords_selected: []
+    };
   },
   computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['team_project', 'screen_sizes', 'device_width', 'hour_clock'])), {}, {
     viewModeToggle: function viewModeToggle() {
@@ -4134,9 +4134,45 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.team_project.searchbox_visible == false) {
         return this.toggleSearchbox();
       }
-    } // toggleClock(e){
-    // }
+    },
+    searchKeywords: function searchKeywords() {
+      var _this = this;
 
+      //BUG
+
+      /*There is a bug where checklist remain selected in position/index 
+      even when data changes, temporary solution is to manuale check false 
+      all the checkboxes in results.
+        Problem is if final result is the same as one alredy selected we dont 
+      have that result selected an appears as new
+      */
+      var checkboxes = document.querySelectorAll('.searchbox-result-item input[type="checkbox"]');
+
+      if (checkboxes != null) {
+        checkboxes.forEach(function (item) {
+          return item.checked = false;
+        });
+      } // END OF SOLUTION
+
+
+      return fetch("/search?team=".concat(this.team_project.id, "&q=").concat(this.query)).then(function (res) {
+        return res.text();
+      }).then(function (data) {
+        _this.queryResults = JSON.parse(data);
+      }).then(function () {
+        // Make script to check if any new result is equal to anyone alredy selected.
+        //Solution #1:
+        var selected_keywords = document.querySelectorAll('.searchbox-keywords i[data-value]');
+        var searchbox_result = document.querySelectorAll('.searchbox-result-item span[data-keyword-value]');
+        searchbox_result.forEach(function (item) {
+          selected_keywords.forEach(function (selected) {
+            if (item.getAttribute('data-keyword-value') == selected.getAttribute('data-value')) {
+              return item.children[0].checked = true;
+            }
+          });
+        });
+      });
+    }
   }),
   components: {
     Searchbox: _components_utils_searchbox_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -5164,6 +5200,10 @@ __webpack_require__.r(__webpack_exports__);
     alignment: {
       type: String,
       "default": 'none'
+    },
+    disabled: {
+      type: String,
+      "default": 'available'
     } // click:{
     //     type:Function,
     //     default: () =>{
@@ -5173,6 +5213,13 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   computed: {
+    is_disabled: function is_disabled() {
+      if (this.disabled == 'disable') {
+        return true;
+      } else {
+        return false;
+      }
+    },
     alignment_direction: function alignment_direction() {
       if (this.alignment == 'center') {
         return 'mx-auto';
@@ -5275,6 +5322,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'checkbox',
+  beforeUpdate: function beforeUpdate() {
+    this.$refs.customCheck.checked = false;
+  },
+  activated: function activated() {
+    this.$refs.customCheck.checked = false;
+  },
   methods: {
     onClick: function onClick(e) {
       this.$emit('click', e.target.checked);
@@ -5657,29 +5710,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Checkbox: _utils_checkbox_input__WEBPACK_IMPORTED_MODULE_0__["default"],
     ContinueBtn: _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      preliminaryKeywords: []
+    };
+  },
+  props: {
+    results: {
+      type: Array,
+      "default": []
+    }
+  },
+  methods: {
+    handleToggle: function handleToggle(data) {
+      var _this = this;
+
+      // console.log(event.target)
+      var val = event.target.parentElement.getAttribute('data-keyword-value');
+
+      if (data == true) {
+        var payload = {};
+        payload.value = val;
+        payload.key = event.target.parentElement.getAttribute('data-keyword-key');
+        this.preliminaryKeywords.push(payload);
+      } else {
+        this.preliminaryKeywords.find(function (el, index) {
+          if (el.value == val) {
+            _this.preliminaryKeywords.splice(index, 1);
+          }
+        });
+      }
+    },
+    removeKeyword: function removeKeyword(e) {
+      var _this2 = this;
+
+      var val = e.target.getAttribute('data-value');
+      var checkbox = document.querySelector('.searchbox .checkbox[data-keyword-value="' + val + '"] input[type="checkbox"]');
+      checkbox.checked = false;
+      this.preliminaryKeywords.find(function (el, index) {
+        if (el.value == val) {
+          _this2.preliminaryKeywords.splice(index, 1);
+        }
+      });
+    }
   }
 });
 
@@ -66189,18 +66269,38 @@ var render = function() {
               _c("i", { staticClass: "search-icon" }),
               _vm._v(" "),
               _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.query,
+                    expression: "query"
+                  }
+                ],
                 staticClass: "form-control top-searchbar-input",
                 attrs: {
                   type: "text",
                   placeholder: "Employee name, New York, GTM-1, project 01"
                 },
-                on: { click: _vm.openSearchbox }
+                domProps: { value: _vm.query },
+                on: {
+                  click: _vm.openSearchbox,
+                  keyup: _vm.searchKeywords,
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.query = $event.target.value
+                  }
+                }
               })
             ]),
             _vm._v(" "),
             _vm._m(1),
             _vm._v(" "),
-            _vm.team_project.searchbox_visible ? _c("searchbox") : _vm._e()
+            _vm.team_project.searchbox_visible && _vm.queryResults.length > 0
+              ? _c("searchbox", { attrs: { results: _vm.queryResults } })
+              : _vm._e()
           ],
           1
         ),
@@ -66253,22 +66353,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "selected-keywords" }, [
       _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
+        _vm._v("GMT+1"),
         _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
       ])
     ])
@@ -66863,6 +66948,7 @@ var render = function() {
     {
       staticClass: "btn btn-primary next",
       class: _vm.alignment_direction,
+      attrs: { disabled: _vm.is_disabled },
       on: { click: _vm.click }
     },
     [_c("img", { attrs: { src: "/img/long-arrow.svg" } })]
@@ -66920,6 +67006,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("span", { staticClass: "checkbox" }, [
     _c("input", {
+      ref: "customCheck",
       attrs: { type: "checkbox", name: "contact-1", value: "minie person" },
       on: { click: _vm.onClick }
     }),
@@ -67411,115 +67498,79 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "searchbox" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "searchbox-results" }, [
-      _c(
-        "span",
-        { staticClass: "searchbox-result-item" },
-        [
-          _c("span", { staticClass: "text" }, [_vm._v("GMT + 2")]),
-          _vm._v(" "),
-          _c("checkbox")
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "span",
-        { staticClass: "searchbox-result-item" },
-        [
-          _c("span", { staticClass: "text" }, [_vm._v("GMT + 2")]),
-          _vm._v(" "),
-          _c("checkbox")
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "span",
-        { staticClass: "searchbox-result-item" },
-        [
-          _c("span", { staticClass: "text" }, [_vm._v("GMT + 2")]),
-          _vm._v(" "),
-          _c("checkbox")
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "span",
-        { staticClass: "searchbox-result-item" },
-        [
-          _c("span", { staticClass: "text" }, [_vm._v("GMT + 2")]),
-          _vm._v(" "),
-          _c("checkbox")
-        ],
-        1
-      )
-    ]),
+    _vm.preliminaryKeywords.length > 0
+      ? _c(
+          "div",
+          { staticClass: "searchbox-keywords" },
+          _vm._l(_vm.preliminaryKeywords, function(keyword, index) {
+            return _c("span", { staticClass: "keyword-chip" }, [
+              _vm._v(_vm._s(keyword.value) + "\n            "),
+              _c(
+                "i",
+                {
+                  staticClass: "keyword-chip-del",
+                  attrs: { "data-value": keyword.value },
+                  on: { click: _vm.removeKeyword }
+                },
+                [_vm._v("close")]
+              )
+            ])
+          }),
+          0
+        )
+      : _vm._e(),
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "w-100 my-4" },
-      [_c("continue-btn", { attrs: { alignment: "center" } })],
+      { staticClass: "searchbox-results" },
+      _vm._l(_vm.results, function(result, index) {
+        return _c(
+          "span",
+          {
+            key: index,
+            staticClass: "searchbox-result-item",
+            attrs: { "data-keyword-value": result.value }
+          },
+          [
+            _c("span", { staticClass: "text" }, [_vm._v(_vm._s(result.value))]),
+            _vm._v(" "),
+            _c("checkbox", {
+              key: index,
+              attrs: {
+                "data-keyword-value": result.value,
+                "data-keyword-key": result.key
+              },
+              on: {
+                click: function($event) {
+                  return _vm.handleToggle($event)
+                }
+              }
+            })
+          ],
+          1
+        )
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "searchbox-footnote my-4" },
+      [
+        _c("continue-btn", {
+          attrs: {
+            alignment: "center",
+            disabled:
+              _vm.preliminaryKeywords.length > 0 ? "available" : "disable"
+          },
+          on: { click: function($event) {} }
+        })
+      ],
       1
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "searchbox-keywords" }, [
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

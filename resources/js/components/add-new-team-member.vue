@@ -96,9 +96,7 @@ export default {
         'modifyNewTeamMemberName',
         'modifyNewTeamMemberEmail',
         'modifyNewTeamMemberTimezone']),
-        prueba(el){
-            console.log(el)
-        },
+        
         addNew(){
 
             const timezone = this.member.timezone

@@ -3,7 +3,7 @@
     width: 456px;
     height: auto;
     min-height: 324px;
-    max-height: 532px;
+    // max-height: 532px;
     top: 52px;
     background: white;
     border: solid 1px #f1f5f5;
@@ -24,7 +24,14 @@
 
 .searchbox-results{
     padding: 10px 0;
+    max-height: 342px;
+    overflow-y: scroll;
     border-bottom: 1px solid rgba($color: #979797, $alpha: 0.08);
+}
+
+.searchbox-footnote{
+    width: 100%;
+    background-color: white;
 }
 
 .keyword-chip-del{
