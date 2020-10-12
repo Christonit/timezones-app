@@ -5687,6 +5687,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_checkbox_input__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/checkbox-input */ "./resources/js/components/utils/checkbox-input.vue");
 /* harmony import */ var _utils_buttons_continue_btn__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/buttons/continue-btn */ "./resources/js/components/utils/buttons/continue-btn.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -5710,6 +5717,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5728,11 +5736,44 @@ __webpack_require__.r(__webpack_exports__);
       "default": []
     }
   },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])(['basic_header'])),
   methods: {
+    sendQuery: function sendQuery() {
+      var timezone_abbr = [];
+      var names = [];
+      var groups = [];
+      var timezones = [];
+      this.preliminaryKeywords.forEach(function (item) {
+        if (item.key == "abbr") {
+          timezone_abbr.push(item.value);
+        }
+
+        if (item.key == "name") {
+          names.push(item.value);
+        }
+
+        if (item.key == "timezone") {
+          timezones.push(item.value);
+        }
+
+        if (item.key == "project") {
+          groups.push(item.value);
+        }
+      });
+      return fetch('/search-keywords', {
+        method: 'POST',
+        headers: this.basic_header,
+        body: JSON.stringify({
+          timezone_abbr: timezone_abbr,
+          names: names,
+          groups: groups,
+          timezones: timezones
+        })
+      });
+    },
     handleToggle: function handleToggle(data) {
       var _this = this;
 
-      // console.log(event.target)
       var val = event.target.parentElement.getAttribute('data-keyword-value');
 
       if (data == true) {
@@ -67563,7 +67604,7 @@ var render = function() {
             disabled:
               _vm.preliminaryKeywords.length > 0 ? "available" : "disable"
           },
-          on: { click: function($event) {} }
+          on: { click: _vm.sendQuery }
         })
       ],
       1

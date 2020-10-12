@@ -83,6 +83,8 @@ Route::middleware('auth')->group( function (){
 
     #Search keyboards from a team by an url with query parameters, ex: /search?team={id}&q={stuff to search}
     Route::get('/search','SearchController@searchbar');
+    Route::post('/search-keywords','SearchController@searchQuery');
+
 
 
 

@@ -15,7 +15,7 @@
         </div>
 
         <div class="searchbox-footnote my-4">
-                <continue-btn alignment="center" @click="" :disabled="preliminaryKeywords.length > 0 ? 'available': 'disable' "></continue-btn>
+                <continue-btn alignment="center" @click="sendQuery" :disabled="preliminaryKeywords.length > 0 ? 'available': 'disable' "></continue-btn>
         </div>
         
     </div>
@@ -24,6 +24,7 @@
 <script>
 import Checkbox from '../utils/checkbox-input';
 import ContinueBtn from '../utils/buttons/continue-btn';
+import { mapGetters } from 'vuex';
 
 export default {
     components:{
@@ -41,9 +42,38 @@ export default {
             default:[]
         }
     },
+    computed:{
+        ...mapGetters(['basic_header'])
+    },
     methods:{
+        sendQuery(){
+            let timezone_abbr = [];
+            let names = [];
+            let groups = [];
+            let timezones = [];
+            this.preliminaryKeywords.forEach( item => {
+                if(item.key == "abbr"){
+                  timezone_abbr.push(item.value);  
+                }
+                if(item.key == "name"){
+                  names.push(item.value);  
+                }
+                if(item.key == "timezone"){
+                  timezones.push(item.value);  
+                }
+                if(item.key == "project"){
+                  groups.push(item.value);  
+                }
+            })
+
+            return fetch('/search-keywords',{
+                method:'POST',
+                headers:this.basic_header,
+                body: JSON.stringify({timezone_abbr,names,groups,timezones})
+            })
+
+        },
         handleToggle(data){
-            // console.log(event.target)
             let val = event.target.parentElement.getAttribute('data-keyword-value');
             if(data == true){
                 let payload = {};
