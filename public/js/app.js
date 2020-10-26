@@ -4111,6 +4111,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4121,7 +4124,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       keywords_selected: []
     };
   },
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['team_project', 'screen_sizes', 'device_width', 'hour_clock'])), {}, {
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['team_project', 'active_query_keywords', 'screen_sizes', 'device_width', 'hour_clock'])), {}, {
     viewModeToggle: function viewModeToggle() {
       this.team_project.view_mode;
     },
@@ -4129,7 +4132,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return window.innerWidth;
     }
   }),
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['toggleTeamViewMode', 'toggleSearchbox', 'toggleSidebar', 'switchHourClock'])), {}, {
+  methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['toggleTeamViewMode', 'toggleSearchbox', 'toggleSidebar', 'switchHourClock'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])(['updateQueryKeywords'])), {}, {
     openSearchbox: function openSearchbox() {
       if (this.team_project.searchbox_visible == false) {
         return this.toggleSearchbox();
@@ -5734,16 +5737,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     results: {
       type: Array,
       "default": []
+    },
+    team_id: {
+      type: Number,
+      "default": null
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])(['basic_header'])),
-  methods: {
+  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])(['basic_header'])), Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapState"])(['active_query_keywords'])), {}, {
+    keywords: function keywords() {
+      return this.preliminaryKeywords.concat(this.active_query_keywords);
+    }
+  }),
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapMutations"])(['toggleSearchbox', 'setTeamMembers', 'setQueryKeywords'])), {}, {
     sendQuery: function sendQuery() {
+      var _this = this;
+
+      var team_id = this.team_id;
       var timezone_abbr = [];
       var names = [];
       var groups = [];
       var timezones = [];
-      this.preliminaryKeywords.forEach(function (item) {
+      this.keywords.forEach(function (item) {
         if (item.key == "abbr") {
           timezone_abbr.push(item.value);
         }
@@ -5767,12 +5781,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           timezone_abbr: timezone_abbr,
           names: names,
           groups: groups,
-          timezones: timezones
+          timezones: timezones,
+          team_id: team_id
         })
+      }).then(function (res) {
+        if (res.status == 200) {
+          return res.text();
+        }
+      }).then(function (data) {
+        var mates = JSON.parse(data);
+
+        _this.setTeamMembers(mates);
+
+        _this.preliminaryKeywords.forEach(function (keyword) {
+          _this.setQueryKeywords(keyword);
+        });
+      }).then(function () {
+        _this.$emit('clearQuery');
+
+        _this.toggleSearchbox();
+      });
+    },
+    handleResult: function handleResult() {
+      this.sendQuery().then(function (res) {
+        return console.log;
       });
     },
     handleToggle: function handleToggle(data) {
-      var _this = this;
+      var _this2 = this;
 
       var val = event.target.parentElement.getAttribute('data-keyword-value');
 
@@ -5784,24 +5820,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } else {
         this.preliminaryKeywords.find(function (el, index) {
           if (el.value == val) {
-            _this.preliminaryKeywords.splice(index, 1);
+            _this2.preliminaryKeywords.splice(index, 1);
           }
         });
       }
     },
     removeKeyword: function removeKeyword(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       var val = e.target.getAttribute('data-value');
       var checkbox = document.querySelector('.searchbox .checkbox[data-keyword-value="' + val + '"] input[type="checkbox"]');
       checkbox.checked = false;
       this.preliminaryKeywords.find(function (el, index) {
         if (el.value == val) {
-          _this2.preliminaryKeywords.splice(index, 1);
+          _this3.preliminaryKeywords.splice(index, 1);
         }
       });
     }
-  }
+  })
 });
 
 /***/ }),
@@ -66337,10 +66373,43 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _vm._m(1),
+            _vm.active_query_keywords.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "selected-keywords" },
+                  _vm._l(_vm.active_query_keywords, function(keyword, key) {
+                    return _c("span", { staticClass: "keyword-chip" }, [
+                      _vm._v(_vm._s(keyword.value)),
+                      _c(
+                        "i",
+                        {
+                          staticClass: "keyword-chip-del",
+                          on: {
+                            click: function($event) {
+                              return _vm.updateQueryKeywords(key)
+                            }
+                          }
+                        },
+                        [_vm._v("close")]
+                      )
+                    ])
+                  }),
+                  0
+                )
+              : _vm._e(),
             _vm._v(" "),
             _vm.team_project.searchbox_visible && _vm.queryResults.length > 0
-              ? _c("searchbox", { attrs: { results: _vm.queryResults } })
+              ? _c("searchbox", {
+                  attrs: {
+                    team_id: _vm.team_project.id,
+                    results: _vm.queryResults
+                  },
+                  on: {
+                    clearQuery: function($event) {
+                      _vm.query = ""
+                    }
+                  }
+                })
               : _vm._e()
           ],
           1
@@ -66384,17 +66453,6 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("span", { staticClass: "keyword-chip" }, [
         _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "selected-keywords" }, [
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT+1"),
         _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
       ])
     ])
@@ -87487,7 +87545,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     info_edits: null,
     resource_to_delete: null,
     potential_clients: [],
-    team_projects_groups: []
+    team_projects_groups: [],
+    active_query_keywords: []
   },
   getters: {
     team_members: function team_members(state) {
@@ -87702,7 +87761,14 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     setTeamMembersFilter: function setTeamMembersFilter(state, payload) {
       state.team_members_filter = payload;
     },
-    setActiveProject: function setActiveProject(state, payload) {}
+    setActiveProject: function setActiveProject(state, payload) {},
+    setQueryKeywords: function setQueryKeywords(state, payload) {
+      state.active_query_keywords.push(payload);
+    },
+    removeQueryKeywords: function removeQueryKeywords(state, payload) {
+      state.active_query_keywords.splice(payload, 1);
+      console.log("2");
+    }
   },
   actions: {
     getUserTeams: function getUserTeams(_ref7, event) {
@@ -87751,6 +87817,61 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
         var payload = JSON.parse(data);
         commit('setTeamProjects', payload);
       });
+    },
+    updateQueryKeywords: function updateQueryKeywords(_ref12, payload) {
+      var state = _ref12.state,
+          getters = _ref12.getters,
+          commit = _ref12.commit,
+          dispatch = _ref12.dispatch;
+      console.log("1"); // return false;
+
+      commit('removeQueryKeywords', payload);
+      console.log("3");
+      var timezone_abbr = [];
+      var names = [];
+      var groups = [];
+      var timezones = [];
+      var team_id = state.team_project.id;
+      state.active_query_keywords.forEach(function (item) {
+        if (item.key == "abbr") {
+          timezone_abbr.push(item.value);
+        }
+
+        if (item.key == "name") {
+          names.push(item.value);
+        }
+
+        if (item.key == "timezone") {
+          timezones.push(item.value);
+        }
+
+        if (item.key == "project") {
+          groups.push(item.value);
+        }
+      });
+
+      if (state.active_query_keywords.length == 0) {
+        return dispatch("getTeamMembers", team_id);
+      } else {
+        return fetch('/search-keywords', {
+          method: 'POST',
+          headers: getters.basic_header,
+          body: JSON.stringify({
+            timezone_abbr: timezone_abbr,
+            names: names,
+            groups: groups,
+            timezones: timezones,
+            team_id: team_id
+          })
+        }).then(function (res) {
+          if (res.status == 200) {
+            return res.text();
+          }
+        }).then(function (data) {
+          var mates = JSON.parse(data);
+          commit("setTeamMembers", mates);
+        });
+      }
     }
   }
 }));

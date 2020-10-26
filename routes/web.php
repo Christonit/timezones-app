@@ -85,10 +85,6 @@ Route::middleware('auth')->group( function (){
     Route::get('/search','SearchController@searchbar');
     Route::post('/search-keywords','SearchController@searchQuery');
 
-
-
-
-
 });
 
 

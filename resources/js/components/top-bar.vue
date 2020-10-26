@@ -60,11 +60,14 @@
                         placeholder="Employee name, New York, GTM-1, project 01"/>
                 </div>
 
-                <div class="selected-keywords">
-                    <span class="keyword-chip" >GMT+1<i class="keyword-chip-del">close</i> </span>
+                <div class="selected-keywords" v-if="active_query_keywords.length > 0">
+                    <span class="keyword-chip" v-for="(keyword,key) in active_query_keywords">{{keyword.value}}<i class="keyword-chip-del" @click="updateQueryKeywords(key)">close</i> </span>
                 </div>
 
-                <searchbox v-if="team_project.searchbox_visible && queryResults.length > 0" :results="queryResults"></searchbox>
+                <searchbox v-if="team_project.searchbox_visible && queryResults.length > 0" 
+                    @clearQuery="query = ''"
+                    :team_id="team_project.id" 
+                    :results="queryResults"></searchbox>
             
             </div>
             <div class="view-toggle">
@@ -83,7 +86,7 @@
 
 <script>
 import Searchbox from '../components/utils/searchbox.vue';
-import {mapState,mapMutations} from 'vuex';
+import {mapState,mapMutations, mapActions} from 'vuex';
 export default {
     data(){
         return {
@@ -93,7 +96,7 @@ export default {
         }
     },
     computed:{
-        ...mapState(['team_project','screen_sizes','device_width','hour_clock']),
+        ...mapState(['team_project','active_query_keywords','screen_sizes','device_width','hour_clock']),
         viewModeToggle(){
             this.team_project.view_mode
         },
@@ -103,6 +106,7 @@ export default {
     },
     methods:{
         ...mapMutations(['toggleTeamViewMode','toggleSearchbox','toggleSidebar','switchHourClock']),
+        ...mapActions(['updateQueryKeywords']),
         openSearchbox(){
             if(this.team_project.searchbox_visible == false){
                 return this.toggleSearchbox();

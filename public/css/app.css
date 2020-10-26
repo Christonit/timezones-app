@@ -11194,6 +11194,10 @@ body {
   color: rgba(5, 6, 13, 0.77);
 }
 
+.top-searchbar-input:focus {
+  box-shadow: unset;
+}
+
 .view-toggle {
   margin-left: auto;
   display: flex;

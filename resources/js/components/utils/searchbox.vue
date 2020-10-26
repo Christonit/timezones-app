@@ -24,7 +24,7 @@
 <script>
 import Checkbox from '../utils/checkbox-input';
 import ContinueBtn from '../utils/buttons/continue-btn';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations, mapState } from 'vuex';
 
 export default {
     components:{
@@ -40,18 +40,28 @@ export default {
         results:{
             type:Array,
             default:[]
+        },
+        team_id:{
+            type:Number,
+            default:null
         }
     },
     computed:{
-        ...mapGetters(['basic_header'])
+        ...mapGetters(['basic_header']),
+        ...mapState(['active_query_keywords']),
+        keywords(){
+            return this.preliminaryKeywords.concat(this.active_query_keywords)
+        }
     },
     methods:{
+        ...mapMutations(['toggleSearchbox','setTeamMembers','setQueryKeywords']),
         sendQuery(){
+            let team_id = this.team_id;
             let timezone_abbr = [];
             let names = [];
             let groups = [];
             let timezones = [];
-            this.preliminaryKeywords.forEach( item => {
+            this.keywords.forEach( item => {
                 if(item.key == "abbr"){
                   timezone_abbr.push(item.value);  
                 }
@@ -69,9 +79,30 @@ export default {
             return fetch('/search-keywords',{
                 method:'POST',
                 headers:this.basic_header,
-                body: JSON.stringify({timezone_abbr,names,groups,timezones})
+                body: JSON.stringify({timezone_abbr,names,groups,timezones, team_id})
+            }).then(res => {
+                if(res.status == 200){
+                 return res.text();   
+                } 
             })
+            .then( data => {
+                let mates = JSON.parse(data)
 
+                this.setTeamMembers(mates);
+                this.preliminaryKeywords.forEach(keyword => {
+                    this.setQueryKeywords(keyword);
+                })
+            })
+            .then( ()=>{
+                this.$emit('clearQuery');
+                this.toggleSearchbox();
+            })
+           
+
+        },
+        handleResult(){
+
+            this.sendQuery().then(res => console.log)
         },
         handleToggle(data){
             let val = event.target.parentElement.getAttribute('data-keyword-value');
@@ -97,6 +128,8 @@ export default {
                     this.preliminaryKeywords.splice(index,1)
                 }
             })
+
+            
         }
     }
 }

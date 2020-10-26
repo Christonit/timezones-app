@@ -138,6 +138,8 @@ class TeamsController extends Controller
 
     protected function destroyTeamMember($id){
         
+        return TeamMembers::find($id)->delete();
+
         return TeamMembers::destroy($id);
         
     }

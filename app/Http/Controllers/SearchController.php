@@ -60,10 +60,10 @@ class SearchController extends Controller
 
     }
 
-
     //Function for searchbar query
     public function searchQuery(Request $request){
 
+        // return $request;
         $names = $request->names;
         $timezones = $request->timezones;
         $timezones_abbr = $request->timezone_abbr;
@@ -71,55 +71,64 @@ class SearchController extends Controller
 
         $teammembers = null;
 
+
         //Search Names only
         if(sizeof($names) > 0 && 
             (sizeof($timezones) == 0 && sizeof($timezones_abbr) == 0 && sizeof($groups) == 0)){
-            $teammembers = TeamMembers::whereIn('name',$names)->get(); 
+            $teammembers = TeamMembers::where('teams_id',$request->team_id)->whereIn('name',$names)->get(); 
         }
+        
         
         //Search by Names and timezones
         if((sizeof($names) > 0 && sizeof($timezones) > 0) && 
             (sizeof($timezones_abbr) == 0 && sizeof($groups) == 0)){
 
-            $teammembers =  TeamMembers::whereIn('name',$names)
-               ->whereIn('timezone',$timezones)->get(); 
+            $teammembers =  TeamMembers::where('teams_id',$request->team_id)
+                ->whereIn('name',$names)
+                ->whereIn('timezone',$timezones)->get(); 
         }
 
         //Search by Names and timezones abbr
         if((sizeof($names) > 0 && sizeof($timezones_abbr) > 0) && 
             (sizeof($timezones) == 0 && sizeof($groups) == 0)){
 
-            $teammembers =  TeamMembers::whereIn('name',$names)
-               ->whereIn('timezone_abbr',$timezones_abbr)->get(); 
+            $teammembers =  TeamMembers::where('teams_id',$request->team_id)
+                ->whereIn('name',$names)
+                ->whereIn('timezone_abbr',$timezones_abbr)->get(); 
         }
 
         //Search by Names, timezones_Abbr and timezones
         if((sizeof($names) > 0 && sizeof($timezones) > 0 && sizeof($timezones_abbr) > 0)){
                 // return 'xxx';
-            $teammembers =  TeamMembers::whereIn('name',$names)
-               ->whereIn('timezone',$timezones)
-               ->whereIn('timezone_abbr',$timezones_abbr)->get(); 
+            $teammembers =  TeamMembers::where('teams_id',$request->team_id)
+                ->whereIn('name',$names)
+                ->whereIn('timezone',$timezones)
+                ->whereIn('timezone_abbr',$timezones_abbr)->get(); 
         }
 
         // Search by timezones_Abbr and timezones
         if((sizeof($timezones) > 0 && sizeof($timezones_abbr) > 0) &&
             (sizeof($names) == 0)){
 
-            $teammembers =  TeamMembers::whereIn('timezone',$timezones)
-               ->whereIn('timezone_abbr',$timezones_abbr)->get(); 
+            $teammembers =  TeamMembers::where('teams_id',$request->team_id)
+                ->whereIn('timezone',$timezones)
+                ->whereIn('timezone_abbr',$timezones_abbr)->get(); 
         }
 
         // Search by Timezones
         if( sizeof($timezones) > 0 &&
             (sizeof($names) == 0) && sizeof($timezones_abbr) == 0){
-            $teammembers =  TeamMembers::whereIn('timezone',$timezones)->get(); 
+            $teammembers =  TeamMembers::where('teams_id',$request->team_id)
+                ->whereIn('timezone',$timezones)->get(); 
         }
 
         // Search by timezones_Abbr
         if( sizeof($timezones_abbr) > 0 &&
             (sizeof($names) == 0) && sizeof($timezones) == 0){
 
-            $teammembers =  TeamMembers::whereIn('timezone_abbr',$timezones_abbr)->get(); 
+            $teammembers =  TeamMembers::where('teams_id',$request->team_id)
+            ->whereIn('timezone_abbr',$timezones_abbr)->get(); 
+
         }
 
         //Executes it if in the query there are any groups
@@ -134,6 +143,13 @@ class SearchController extends Controller
             //Returns matching  teammembers in a group
             return $teammembers->find($project_members);
         }
+
+        foreach ($teammembers as $key => $teammate) {
+            $teammate['member_type'] = "teammate";
+        }
+
+
+        return $teammembers;
 
         
 

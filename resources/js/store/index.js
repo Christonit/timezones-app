@@ -48,7 +48,8 @@ export default new Vuex.Store({
         info_edits:null,
         resource_to_delete:null,
         potential_clients:[],
-        team_projects_groups:[]
+        team_projects_groups:[],
+        active_query_keywords:[]
 
     },
     getters:{
@@ -245,12 +246,22 @@ export default new Vuex.Store({
         },
         setActiveProject(state,payload){
 
+        },
+        setQueryKeywords(state,payload){
+            state.active_query_keywords.push(payload);
+        },
+        removeQueryKeywords(state,payload){
+            state.active_query_keywords.splice(payload,1);
+            console.log("2");
+
         }
+        
 
 
     },
     actions:{
         getUserTeams({state,commit},event){
+
 
             return fetch('/list-teams').then( res => {
                 if(res.status == 200){
@@ -287,6 +298,53 @@ export default new Vuex.Store({
                         let payload = JSON.parse(data);
                         commit('setTeamProjects',payload);
                     });
+        },
+        updateQueryKeywords({state,getters,commit,dispatch},payload){
+            console.log("1");
+            // return false;
+            commit('removeQueryKeywords',payload);
+            console.log("3");
+            let timezone_abbr = [];
+            let names = [];
+            let groups = [];
+            let timezones = [];
+            let team_id = state.team_project.id;
+
+            state.active_query_keywords.forEach( item => {
+                if(item.key == "abbr"){
+                  timezone_abbr.push(item.value);  
+                }
+                if(item.key == "name"){
+                  names.push(item.value);  
+                }
+                if(item.key == "timezone"){
+                  timezones.push(item.value);  
+                }
+                if(item.key == "project"){
+                  groups.push(item.value);  
+                }
+            })
+
+            if(state.active_query_keywords.length == 0){
+                return dispatch("getTeamMembers",team_id)
+            }else{
+
+                return fetch('/search-keywords',{
+                    method:'POST',
+                    headers: getters.basic_header,
+                    body: JSON.stringify({timezone_abbr,names,groups,timezones,team_id})
+                }).then(res => {
+                    if(res.status == 200){
+                     return res.text();   
+                    } 
+                })
+                .then( data => {
+                    let mates = JSON.parse(data)
+
+                    commit("setTeamMembers",mates);
+                })
+
+            }
         }
 
     }
