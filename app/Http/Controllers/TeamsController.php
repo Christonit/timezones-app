@@ -10,6 +10,7 @@ use App\Teams;
 use App\Clients;
 use App\Projects;
 use App\TeamMembers;
+use App\ProjectsGroupMembers;
 
 class TeamsController extends Controller
 {
@@ -137,8 +138,13 @@ class TeamsController extends Controller
     }
 
     protected function destroyTeamMember($id){
-        
-        return TeamMembers::find($id)->delete();
+        $presence_in_projects = ProjectsGroupMembers::where('team_members_id',$id)->pluck('id');
+
+        if($presence_in_projects->count() > 0){
+                foreach ($presence_in_projects as $teammate) {
+                    ProjectsGroupMembers::destroy($teammate);
+                }
+        }
 
         return TeamMembers::destroy($id);
         
