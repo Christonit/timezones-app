@@ -58,6 +58,20 @@ class ProjectsGroupController extends Controller
 
     }
 
+    public function destroy(Request $request, $project){
+
+        try{
+            ProjectsGroupMembers::where("projects_id", $project)->delete();
+        
+            ProjectsGroup::where("id", $project)->where("teams_id", $request->team_id)->delete();
+
+            return response("success",200);
+
+        }catch( Exception $e){
+            return response('Rrror in projects group creation', 500);
+        }
+    }
+
     public function createGroup(Request $request, $team){
         try{
 

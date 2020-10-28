@@ -41,6 +41,7 @@ import UsersCreatedModal from './components/modals/users-created-successfully.vu
 import TeamCreatedModal from './components/modals/team-created.vue'
 import AddTeammateModal from './components/modals/add-teammate.vue'
 import DeleteProjectModal from './components/modals/delete-project.vue';
+import DeleteTeammateModal from './components/modals/delete-teammate.vue';
 import {mapState,mapActions, mapMutations} from 'vuex';
 import moment from 'moment';
 /**
@@ -78,6 +79,7 @@ const app = new Vue({
         EditTeamProfileModal,
         EditProfileModal,
         DeleteProjectModal,
+        DeleteTeammateModal,
         NewTeamModal,
         NameProjectCategoryModal
     },

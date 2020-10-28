@@ -20,7 +20,8 @@ export default new Vuex.Store({
             new_team:false,
             user_created_successfully: false,
             change_name:false,
-            delete_group:false,
+            delete_teammate:false,
+            delete_project:false,
             edit_my_profile:false,
             invite_people:false,
             project_category_name:false
@@ -152,9 +153,13 @@ export default new Vuex.Store({
             if(payload == 'project_category_name'){
                 return state.modal.project_category_name = true;
             }
-            if(payload.name == 'delete-group'){
+            if(payload.name == 'delete-teammate'){
                 state.resource_to_delete = payload.resource;
-                return state.modal.delete_group = true;
+                return state.modal.delete_teammate = true;
+            }
+            if(payload.name == 'delete-project'){
+                state.resource_to_delete = payload;
+                return state.modal.delete_project = true;
             }
             if(payload.name == 'change-name' ){
                 state.info_edits = payload.resource;
@@ -165,8 +170,7 @@ export default new Vuex.Store({
                 return state.modal.edit_my_profile = true;
             }
             state.modal_visible = true;
-    
-            event.stopPropagation();
+            
         },
         closeModal(state,payload){
             if(payload == 'new_team_name'){
@@ -181,9 +185,13 @@ export default new Vuex.Store({
             if(payload == 'project_category_name'){
                return state.modal.project_category_name = false;
             }
-            if(payload == 'delete-group'){
+            if(payload == 'delete-teammate'){
                state.resource_to_delete = null;
-               return state.modal.delete_group = false;
+               return state.modal.delete_teammate = false;
+            }
+            if(payload == 'delete-project'){
+               state.resource_to_project = null;
+               return state.modal.delete_project = false;
             }
             if(payload == 'change-name'){
                 state.info_edits = null;
@@ -240,6 +248,9 @@ export default new Vuex.Store({
         },
         setTeamProjects(state,payload){
             state.team_projects_groups = payload
+        },
+        removeTeamProject(state,payload){
+            state.team_projects_groups.splice(payload, 1);
         },
         setTeamMembersFilter(state,payload){
             state.team_members_filter = payload;

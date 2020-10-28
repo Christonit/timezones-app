@@ -74,7 +74,7 @@
             :data-project-name="project.name"
             @click="selectProject">
                 {{project.name}}
-                <more-option-btn mode="dark" :edit-name="true" :delete-project-btn="true" :add-btn="true"></more-option-btn>
+                <more-option-btn mode="dark" :edit-name="true" :delete-project-btn="true" :add-btn="true" :resource="project"></more-option-btn>
             </li>            
         </ul>
         
@@ -105,6 +105,7 @@ export default {
         ...mapMutations(['openModal','setActiveTeam','setTeamMembers']),
         ...mapActions(['getTeamMembers','getTeamProjects']),
         selectProject(e){
+            console.log('zzzz top')
             let project_name = e.target.getAttribute('data-project-name').toLowerCase().split(' ').join('-');
             let project_id = e.target.getAttribute('data-project-id');
             let el = e.target.parentElement.querySelector('.item.active');
@@ -116,7 +117,8 @@ export default {
             .then(data => this.setTeamMembers(JSON.parse(data) ))
             e.target.classList.add('active')
             
-            e.stopPropagation;
+            e.preventDefault();
+            e.stopPropagation();
         },
         selectTeam(name,id){
             if(document.querySelector('.team-dropdown .dropdown-item.active')){
