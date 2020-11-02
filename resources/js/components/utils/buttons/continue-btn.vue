@@ -12,7 +12,7 @@ export default {
             default: 'none'
         },
         disabled:{
-            type:String,
+            type:[String, Boolean],
             default:'available'
         }
         // click:{

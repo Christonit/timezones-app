@@ -68,14 +68,14 @@
              
         </div>
 
+
         <ul class="item-lists" v-if="team_projects_groups.length > 0">
-            <li class="item" v-for="(project,key) in team_projects_groups"
+
+            <project-list-item  v-for="(project,key) in team_projects_groups"
             :data-project-id="project.id" 
-            :data-project-name="project.name"
-            @click="selectProject">
-                {{project.name}}
-                <more-option-btn mode="dark" :edit-name="true" :delete-project-btn="true" :add-btn="true" :resource="project"></more-option-btn>
-            </li>            
+            :key="project.name"
+            :index="key">
+            </project-list-item>            
         </ul>
         
     </div>
@@ -85,14 +85,19 @@
 
 <script>
 import {mapMutations,mapActions, mapState, mapGetters} from 'vuex';
-
+import {bus} from "../app.js";
 import MoreOptionBtn from "./utils/more-option-btn.vue";
+import ProjectListItem from "./sidebar/project-list-item.vue";
 
 export default {
     mounted() {
+        bus.$on('changedProjectName',() => {
+           this.$forceUpdate();
+       })
     },
     computed:{
         ...mapState(['teams','team_project','sidebar_visible','team_projects_groups']),
+        ...mapGetters(['projects']),
         mobile_sidebar_visible(){
             return this.sidebar_visible == true ? 'active' : '';
         },
@@ -105,11 +110,10 @@ export default {
         ...mapMutations(['openModal','setActiveTeam','setTeamMembers']),
         ...mapActions(['getTeamMembers','getTeamProjects']),
         selectProject(e){
-            console.log('zzzz top')
             let project_name = e.target.getAttribute('data-project-name').toLowerCase().split(' ').join('-');
             let project_id = e.target.getAttribute('data-project-id');
             let el = e.target.parentElement.querySelector('.item.active');
-            
+            console.log('xxx')
             (el != null) ? el.classList.remove('active') : '';
 
             fetch( `/${this.team_name}/project?id=${project_id}`)
@@ -139,7 +143,8 @@ export default {
         }
     },
     components:{
-        MoreOptionBtn
+        MoreOptionBtn,
+        ProjectListItem
     }
 
 }

@@ -58,6 +58,19 @@ class ProjectsGroupController extends Controller
 
     }
 
+    public function changeName(Request $request, ProjectsGroup $project){
+
+        try{
+        
+            $project->name = $request->name;
+            $project->save();
+
+            return response($project,200);
+
+        }catch( Exception $e){
+            return response('Rrror in projects group creation', 500);
+        }
+    }
     public function destroy(Request $request, $project){
 
         try{
@@ -109,7 +122,7 @@ class ProjectsGroupController extends Controller
 
             };
 
-            return response('confirmed',200);
+            return response($project_group,200);
 
         }catch( Exception $e){
             return response('Rrror in projects group creation', 500);

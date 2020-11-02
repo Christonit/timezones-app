@@ -246,8 +246,19 @@ export default new Vuex.Store({
         setProjectGroupName(state,payload){
             state.new_project_group.name = payload;
         },
+        emptyProjectGroup(state){
+            state.new_project_group.name = null;
+            state.new_project_group.clients = [];
+            state.new_project_group.teammates = [];
+        },
+        addTeamProjects(state,payload){
+            state.team_projects_groups.push(payload)
+        },
         setTeamProjects(state,payload){
             state.team_projects_groups = payload
+        },
+        editTeamProjects(state,{key,content}){
+            state.team_projects_groups[key] = content
         },
         removeTeamProject(state,payload){
             state.team_projects_groups.splice(payload, 1);

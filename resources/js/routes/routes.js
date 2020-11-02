@@ -21,7 +21,13 @@ export default new VueRouter({
         },
         {
             path: '/:projectName/new-project',
-            component:CreateGroup
+            component:CreateGroup,
+            props: true
+        },
+        {
+            path: '/:projectName/edit-project',
+            component:CreateGroup,
+            props: true
         }
     ]
 })

@@ -28,13 +28,15 @@
                 <time-watch :timezone="user.timezone"></time-watch>
                 <current-day :timezone="user.timezone"></current-day>
                 <span class="user-item-available-time" v-if="user.member_type =='teammate'">Av: {{available_hours}}</span>
-                <span class="user-item-available-time" v-else>Client</span>
+                <span class="user-item-available-time" v-else-if="user.member_type =='client'">Client</span>
+                <span class="user-item-available-time" v-else>Av: {{available_hours}}</span>
             </span>
             <template v-if="viewMode == 'timeline'">
                 <span class="user-item-info">
                     <b class="user-item-name">{{username}}</b>
                     <span class="user-item-available-time" v-if="user.member_type =='teammate'">Av: {{available_hours}}</span>
-                    <span class="user-item-available-time" v-else>Client</span>
+                    <span class="user-item-available-time" v-else-if="user.member_type =='client'">Client</span>
+                    <span class="user-item-available-time" v-else>Av: {{available_hours}}</span>
                 </span>
 
                 <time-watch :timezone="user.timezone"></time-watch>

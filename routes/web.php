@@ -78,7 +78,7 @@ Route::middleware('auth')->group( function (){
     #Example url: /claro-team/project?name=grupo-1&id=14&only_clients=true
     Route::get('/{team_name}/project','ProjectsGroupController@membersOfGroup');
     Route::post('/create-project-category/team/{team}','ProjectsGroupController@createGroup');
-    Route::post('/update-project-category/team/{team}','xxxx@xxxxx');
+    Route::put('/update-project-category/{project}','ProjectsGroupController@changeName');
     Route::delete('/delete-project-category/{project}','ProjectsGroupController@destroy');
 
     #Search keyboards from a team by an url with query parameters, ex: /search?team={id}&q={stuff to search}

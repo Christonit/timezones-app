@@ -9,9 +9,10 @@
             </div>
 
             <contact-item v-for="(teammate,key) in team_members" 
+            v-if="teammate.member_type == 'teammate' "
             :key="key" :name="teammate.name" 
             :avatar="teammate.avatar" :id="teammate.id"
-            :data-teammate-id="'teammate'+teammate.id"
+            :data-teammate-id="teammate.id"
             @addTeammate="addTeammateToCategory($event)"
             @removeTeammate="removeTeammateOfCategory($event)"></contact-item>
             
@@ -19,13 +20,16 @@
 
         <div class="new-group-container">
             <header class="row section-header">
-                    <router-link to="/" tag="button" class="btn btn-secondary-link prev">
+                    <cancel-btn class="btn-secondary-link prev" @click="closeNewGroup">
+                    </cancel-btn>
+                    <!-- <router-link to="/" tag="button" class="btn btn-secondary-link prev">
                         <span>
                             Cancel
                         </span>
-                    </router-link>
-                    
+                    </router-link> -->
+                    <h2 class="title text-center mb-0" v-if="isProjectEdit">{{$route.query.name}}</h2>
                     <h2 class="title text-center mb-0" 
+                    v-else
                     :class="new_project_group.name == null ? 'btn-dashed-link':'' " 
                     @click="openModal('project_category_name')">
                     {{new_project_group.name == null ? 'Group name' : new_project_group.name}}</h2>
@@ -79,6 +83,7 @@
 import {mapGetters,mapMutations, mapState} from 'vuex';
 
 import ContinueBtn from './utils/buttons/continue-btn.vue';
+import CancelBtn from './utils/buttons/cancel-btn.vue';
 import NewClientForm from './create-group/new-client-form.vue';
 import NewTeamMember from './create-group/new-team-member-item.vue';
 import ContactItem from './create-group/contact-item.vue';
@@ -96,11 +101,64 @@ export default {
             team_members_to_group:[]
         }
     },
+    mounted(){
+
+
+        if(this.$route.query.id != null) {
+            let project_name = this.$route.params.projectName;
+            let id = this.$route.query.id;
+
+            fetch(`${project_name}/project?id=${id}`)
+            .then( (res)=> {
+                return res.text();
+            })
+            .then( data =>{ 
+                let members = JSON.parse(data);
+
+                members.forEach(member => {
+                    if(member.member_type == "teammate"){
+                        this.team_members_to_group.push(member)
+                    }
+                    else{ 
+                        let id = member.id
+                        let member_type = member.member_type
+                        let name = member.name
+                        let timezone = {}
+                        timezone.id = member.timezone
+
+                        this.clients.push({id,name,member_type,timezone})
+                    }
+                })
+
+                return members
+            })
+            .then( (data)=>{
+
+                data.forEach( item => {
+
+                    let interval = setInterval( ()=> {
+                        let el = document.querySelector(`[data-teammate-id="${item.id}"]`);
+                        if( el ){
+                            document.querySelector(`[data-teammate-id="${item.id}"] input[type="checkbox"] `).checked = true;
+                            clearInterval(interval)
+                        }  
+                    },50)
+                    
+                })
+
+                if(this.clients.length > 0 && this.hasClients == false){
+                    this.hasClients = true
+                }
+
+            })
+        }
+    },
     components:{
         NewTeamMember,
         ContactItem,
         NewClientItem,
         ContinueBtn,
+        CancelBtn,
         InputField,
         InputTimezone,
         NewClientForm
@@ -108,11 +166,21 @@ export default {
     computed:{
         ...mapState(['new_project_group','team_project']),
         ...mapGetters(['team_members','basic_header']),
+        isProjectToEdit(){
+            if(this.$route.query.name != undefined && this.$route.query.id != undefined && this.$route.query.name.length > 0){
+                return true
+            }else{
+                return false
+            }
+        }
 
     },
     methods:{
-        ...mapMutations(['openModal','setNewClient']),
-        
+        ...mapMutations(['openModal','setNewClient','addTeamProjects','emptyProjectGroup']),
+        closeNewGroup(){
+            this.emptyProjectGroup();
+            this.$router.go(-1)
+        },
         clearClientForm(){
             this.client.name = '';
             this.client.timezone.name = '';
@@ -136,7 +204,7 @@ export default {
         },
         removeTeammateOfCategoryFromList(id){
             this.removeTeammateOfCategory(id);
-            document.querySelector(`[data-teammate-id="teammate${id}"] input[type="checkbox"]`).checked = false;
+            document.querySelector(`[data-teammate-id="${id}"] input[type="checkbox"]`).checked = false;
         },
         createGroup(){
             let teammates_ids = this.team_members_to_group.map( teammate => {
@@ -157,6 +225,16 @@ export default {
                 {method:'POST',
                 headers:this.basic_header,
                 body:JSON.stringify(body)
+                }).then( res => {
+                    if(res.status == 201 || res.status == 200){
+                        return res.text();
+                    }
+                }).then( data => {
+                    let project = JSON.parse(data);
+                    this.emptyProjectGroup();
+                    this.addTeamProjects(project);
+                    this.$router.go(-1)
+
                 })
         }
 

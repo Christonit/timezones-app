@@ -1,12 +1,13 @@
 <template>
     <span class="more-option-btn" :class="mode">
         <div class="more-options">
-            <router-link v-if="addBtn" :to="`/team/${team_project.name.split(' ').join('-').toLowerCase()}`" tag='span' class="more-options-item">
+           
+            <span v-if="editGroup" @click="editProjectGroup" class="more-options-item">
                 <img src="../../../img/add-icon.svg" class="more-options-icon" alt="More options delete icon">
                 Add teammate
-            </router-link>
+            </span>
             <span class="more-options-item" v-if="editBtn" @click="openModal({name:'edit-info',userToEdit})"><img src="../../../img/edit-icon.svg" class="more-options-icon" alt="More options delete icon"> Edit info </span>
-            <span class="more-options-item" v-if="editName" @click="openModal({name:'change-name',resource})"><img src="../../../img/edit-icon.svg" class="more-options-icon" alt="More options delete icon"> Edit name </span>
+            <span class="more-options-item" v-if="editName" @click="changeName"><img src="../../../img/edit-icon.svg" class="more-options-icon" alt="More options delete icon"> Edit name </span>
             <span class="more-options-item delete" v-if="deleteMemberBtn" @click="openModal({name:'delete-teammate', resource})"><img src="../../../img/delete-icon-white.svg" class="more-options-icon" alt="More options delete icon"> Delete teammate</span>
             <span class="more-options-item delete" v-if="deleteProjectBtn" @click="deleteProject"><img src="../../../img/delete-icon-white.svg" class="more-options-icon" alt="More options delete icon"> Delete project</span>
         </div>
@@ -20,6 +21,10 @@ export default {
         mode:{
             type:String,
             default: ''
+        },
+        editGroup:{
+            type:Boolean,
+            default:false
         },
         addBtn:{
             type:Boolean,
@@ -63,8 +68,20 @@ export default {
     },
     methods:{
         ...mapMutations(['openModal']),
-        deleteProject(e){
+        editProjectGroup(e){
             
+            this.$router.push(`${this.team_project.name.split(' ').join('-').toLowerCase()}/edit-project?id=${this.resource.id}&name=${this.resource.name}`)
+            e.stopPropagation();
+            e.preventDefault();
+        },
+        changeName(e){
+            
+            this.openModal({name:'change-name', resource: this.resource})
+            e.stopPropagation();
+            e.preventDefault();
+        },
+        deleteProject(e){
+
             this.openModal({name:'delete-project', resource: this.resource})
             e.stopPropagation();
             e.preventDefault();
