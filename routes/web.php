@@ -79,6 +79,7 @@ Route::middleware('auth')->group( function (){
     Route::get('/{team_name}/project','ProjectsGroupController@membersOfGroup');
     Route::post('/create-project-category/team/{team}','ProjectsGroupController@createGroup');
     Route::put('/update-project-category/{project}','ProjectsGroupController@changeName');
+    Route::put('/update-project-category-members/{project}','ProjectsGroupController@updateGroup');
     Route::delete('/delete-project-category/{project}','ProjectsGroupController@destroy');
 
     #Search keyboards from a team by an url with query parameters, ex: /search?team={id}&q={stuff to search}

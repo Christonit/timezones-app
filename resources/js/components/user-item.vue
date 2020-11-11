@@ -111,8 +111,8 @@ export default {
         ...mapState(['screen_sizes','device_width','hour_clock']),
         username(){
             if( this.device_width < this.screen_sizes.md){
-                if(this.user.name.length >= 16){
-                    return `${this.user.name.substring(0,16)}...`;
+                if(this.user.name.length >= 15){
+                    return `${this.user.name.substring(0,15)}...`;
                 }
             }else{
                 if(this.user.name.length > 20 & this.viewMode == "card"){

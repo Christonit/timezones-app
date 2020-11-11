@@ -27,14 +27,14 @@
                             Cancel
                         </span>
                     </router-link> -->
-                    <h2 class="title text-center mb-0" v-if="isProjectEdit">{{$route.query.name}}</h2>
+                    <h2 class="title text-center mb-0" v-if="isProjectToEdit == true">{{$route.query.name}}</h2>
                     <h2 class="title text-center mb-0" 
-                    v-else
+                    v-if="isProjectToEdit == false"
                     :class="new_project_group.name == null ? 'btn-dashed-link':'' " 
                     @click="openModal('project_category_name')">
                     {{new_project_group.name == null ? 'Group name' : new_project_group.name}}</h2>
 
-                    <continue-btn @click="createGroup"></continue-btn>
+                    <continue-btn @click="submitFunction"></continue-btn>
             </header>
             <div class="row">
                 <div class="content ">
@@ -80,7 +80,7 @@
     </div>
 </template>
 <script>
-import {mapGetters,mapMutations, mapState} from 'vuex';
+import {mapActions, mapGetters,mapMutations, mapState} from 'vuex';
 
 import ContinueBtn from './utils/buttons/continue-btn.vue';
 import CancelBtn from './utils/buttons/cancel-btn.vue';
@@ -97,8 +97,10 @@ export default {
         return {
             
             clients:[],
+            og_clients:[],
             hasClients:false,
-            team_members_to_group:[]
+            team_members_to_group:[],
+            og_teammates:[]
         }
     },
     mounted(){
@@ -107,6 +109,9 @@ export default {
         if(this.$route.query.id != null) {
             let project_name = this.$route.params.projectName;
             let id = this.$route.query.id;
+            let team_id = this.team_project.id;
+
+            this.getTeamMembers()
 
             fetch(`${project_name}/project?id=${id}`)
             .then( (res)=> {
@@ -118,14 +123,15 @@ export default {
                 members.forEach(member => {
                     if(member.member_type == "teammate"){
                         this.team_members_to_group.push(member)
+                        this.og_teammates.push(member)
                     }
                     else{ 
                         let id = member.id
                         let member_type = member.member_type
                         let name = member.name
-                        let timezone = {}
-                        timezone.id = member.timezone
+                        let timezone = member.timezone
 
+                        this.og_clients.push({id,name,member_type,timezone})
                         this.clients.push({id,name,member_type,timezone})
                     }
                 })
@@ -169,14 +175,16 @@ export default {
         isProjectToEdit(){
             if(this.$route.query.name != undefined && this.$route.query.id != undefined && this.$route.query.name.length > 0){
                 return true
-            }else{
-                return false
             }
+
+            return false
+            
         }
 
     },
     methods:{
-        ...mapMutations(['openModal','setNewClient','addTeamProjects','emptyProjectGroup']),
+        ...mapMutations(['openModal','setNewClient','addTeamProjects','emptyProjectGroup','getTeamMembers']),
+        ...mapActions(['getTeamMembers']),
         closeNewGroup(){
             this.emptyProjectGroup();
             this.$router.go(-1)
@@ -205,6 +213,54 @@ export default {
         removeTeammateOfCategoryFromList(id){
             this.removeTeammateOfCategory(id);
             document.querySelector(`[data-teammate-id="${id}"] input[type="checkbox"]`).checked = false;
+        },
+        submitFunction(){
+
+            if(this.isProjectToEdit){
+                return this.updateGroup();
+            }else{
+                return this.createGroup();
+            }
+
+        },
+        updateGroup(){
+
+            let body = {};
+
+            let project_id = this.$route.query.id;
+            let teammates_ids = this.team_members_to_group.map( teammate => {
+                return teammate.id;
+            })
+            let og_teammates_ids = this.og_teammates.map( teammate => {
+                return teammate.id;
+            })
+
+            body.teammates = teammates_ids;
+            body.og_teammates = og_teammates_ids;
+            body._method = "PUT";
+
+            if(this.hasClients == true && this.clients.length > 0){
+                body.clients = this.clients;
+            }
+            body.og_clients = this.og_clients;
+
+            return fetch(`/update-project-category-members/${project_id}`,
+                {method:'PUT',
+                headers:this.basic_header,
+                body:JSON.stringify(body)
+                }).then( res => {
+                    if(res.status == 201 || res.status == 200){
+                        return res.text();
+                    }
+                }).then( data => {
+                    let project_nav = document.querySelector('.project-list .item.active');
+                    this.emptyProjectGroup();
+                    this.$router.go(-1)
+                    project_nav != null && project_nav != undefined ? project_nav.classList.remove('active') : null;
+
+                })
+               
+
         },
         createGroup(){
             let teammates_ids = this.team_members_to_group.map( teammate => {

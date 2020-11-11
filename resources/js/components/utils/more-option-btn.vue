@@ -4,7 +4,7 @@
            
             <span v-if="editGroup" @click="editProjectGroup" class="more-options-item">
                 <img src="../../../img/add-icon.svg" class="more-options-icon" alt="More options delete icon">
-                Add teammate
+                Modify project
             </span>
             <span class="more-options-item" v-if="editBtn" @click="openModal({name:'edit-info',userToEdit})"><img src="../../../img/edit-icon.svg" class="more-options-icon" alt="More options delete icon"> Edit info </span>
             <span class="more-options-item" v-if="editName" @click="changeName"><img src="../../../img/edit-icon.svg" class="more-options-icon" alt="More options delete icon"> Edit name </span>

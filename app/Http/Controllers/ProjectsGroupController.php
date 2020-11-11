@@ -111,7 +111,7 @@ class ProjectsGroupController extends Controller
                 foreach ($request->clients as $key => $new_client) {
                     $client = new Clients;            
                     $client->name = $new_client['name'];
-                    $client->timezone = $new_client['timezone']['id'];
+                    $client->timezone = $new_client['timezone'];
                     $client->project_id = $project_group_id;
                     $client->save();
                     ProjectsGroupMembers::create([
@@ -123,6 +123,81 @@ class ProjectsGroupController extends Controller
             };
 
             return response($project_group,200);
+
+        }catch( Exception $e){
+            return response('Rrror in projects group creation', 500);
+        }
+        
+
+    }
+    
+    public function updateGroup(Request $request, $project){
+        try{
+
+            #Creates a new project group category
+            $teammate_to_remove = null;
+            $client_to_remove = [];
+            $clients = null;
+
+            #Members to remove.
+            if( count($request->teammates) > 0 ){
+                $teammate_to_remove = collect($request->og_teammates)->diff($request->teammates);
+                if(count($teammate_to_remove) > 0){
+
+                    foreach ($teammate_to_remove as $key => $pal) {
+                        ProjectsGroupMembers::where('projects_id', $project)
+                        ->where('team_members_id', $pal )->delete();
+                        # code...
+                    }
+                }
+            }
+
+            #Adds teammates to project group category;
+
+            if(count($request->teammates) > 0){
+                foreach ($request->teammates as $key => $teammate) {
+                    ProjectsGroupMembers::firstOrCreate([
+                        'team_members_id'=> $teammate,
+                        'projects_id'=> $project                        
+                    ]);
+                }
+            }          
+
+            
+            if( is_array($request->og_clients) && count($request->og_clients) > 0 ){
+                
+                $clients = $request->og_clients;
+
+                foreach ($clients as $key => $client) {
+
+                    ProjectsGroupMembers::where('projects_id', $project)
+                    ->where('clients_id', $client['id'] )->delete();
+
+                    Clients::find($client['id'])->delete();
+
+                }
+            }
+
+            # Run this code if payload has any clients
+            if(is_array($request->clients) && count($request->clients) > 0 ){
+                foreach ($request->clients as $key => $new_client) {
+                    $timezone_id = $new_client['timezone'];
+
+                    $client = new Clients;            
+                    $client->name = $new_client['name'];
+                    $client->timezone = is_array($timezone_id) ? $timezone_id['id'] : $timezone_id;
+                    $client->project_id = $project;
+                    $client->save();
+                    
+                    ProjectsGroupMembers::create([
+                        'projects_id'=> $project,
+                        'clients_id'=> $client->id
+                    ]);
+                }
+
+            };
+
+            return response($project,200);
 
         }catch( Exception $e){
             return response('Rrror in projects group creation', 500);

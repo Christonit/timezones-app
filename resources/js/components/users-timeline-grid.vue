@@ -29,6 +29,7 @@
 
                     <template v-if="hour_clock == 24" v-for="(hour, key) in hour_counter_24">
                         <span class="hour-time"
+                        :key="key"
                         :class=" startOrEnd24({
                         hour: hour,
                         start_time: user.start_hour,
@@ -39,6 +40,7 @@
                 
                     <template v-for="(hour, key) in hour_counter_12" v-if="hour_clock == 12">
                         <span class="hour-time"
+                        :key="key"
                         :class="startOrEnd12({
                         original: hour.original,
                         time: hour.time,
@@ -57,6 +59,7 @@
                 <span
                 class="hour-time"
                 v-for="(hour, key) in hour_counter_24"
+                :key="key"
                 :class="
                 startOrEnd24({
                     hour: hour,
@@ -67,6 +70,7 @@
                 {{ hour == "" ? "00" : hour }}</span>
                 <span
                 class="hour-time"
+                :key="key"
                 v-for="(hour, key) in hour_counter_12"
                 :class="
                     startOrEnd12({
@@ -116,16 +120,27 @@ export default {
     mounted(){
         this.setCurrentTarget();
         this.moveTimeRuler();
+        this.moveTimeRulerForUsers();
+
         let int = setInterval( ()=>{
             this.setCurrentTarget();
             this.moveTimeRuler();
+            this.moveTimeRulerForUsers();
             clearInterval(int);
         },100)
 
         setInterval( ()=>{
             this.setCurrentTarget();
             this.moveTimeRuler();
+            this.moveTimeRulerForUsers();
+
         }, 180 * 1000)
+
+        window.onresize = () => {
+            this.setCurrentTarget();
+            this.moveTimeRuler();
+            this.moveTimeRulerForUsers();
+        }
     },
     components: {
         UserItem
@@ -191,7 +206,12 @@ export default {
                 }else{
 
                     this.teammates_current_time.forEach(hour => {
-                        arr.push(hour);
+                        if(hour.split("")[0] == 0){
+                            arr.push(hour.split("")[1]);
+                        }else{
+                            arr.push(hour);
+                        }
+
                     })
 
                 }
@@ -201,7 +221,8 @@ export default {
 
             return teammates_current_hour;
             
-        }
+        },
+        
 
     },
     methods: {
@@ -236,6 +257,7 @@ export default {
             }
 
             this.team_members.forEach(member => {
+
                 let timeframe = document.querySelector(`.hour-timeframe[data-teammate="${member.id}"]`);
                 teammates_rulers.push(timeframe)
 
@@ -244,17 +266,55 @@ export default {
             teammates_rulers.forEach( (ruler,key) => {
 
                 let nodes = ruler.children;
+                let hour_dom_node = document.querySelector(`.hour-timeframe[data-teammate="${ruler.getAttribute('data-teammate')}"] .available.hour-time[data-time="${this.teammates_current_hour[key]}"]`)
 
-                let hour_dom_node = document.querySelector(`.hour-timeframe[data-teammate="${key + 1}"] .available.hour-time[data-time="${this.teammates_current_hour[key]}"]`)
-                
                 if(hour_dom_node == null){
-                    hour_dom_node = document.querySelector(`.hour-timeframe[data-teammate="${key + 1}"] .hour-time.available.leave ~ .hour-time[data-time="${this.teammates_current_hour[key]}"]`)
+                    hour_dom_node = document.querySelector(`.hour-timeframe[data-teammate="${ruler.getAttribute('data-teammate')}"] .hour-time ~ .hour-time[data-time="${this.teammates_current_hour[key]}"]`)
                 }
 
                 position = hour_dom_node.offsetLeft
                 calculation = (arrow - position - 6);
                 ruler.style.left = `${calculation}px`;
+                
             })
+
+        },
+        moveTimeRulerForUsers(){
+            let current_hour =  this.current_hour_timeframe;
+            let current_hour_pos =  current_hour.offsetLeft;
+            let arrow = document.querySelector(".timeline-arrow").offsetLeft;
+            let timeframe_ruler = document.querySelector("#logged-user-timeframe");
+            let teammates_rulers = [];
+            let position = null;
+            let hour_counter_12 = this.hour_counter_12;
+            let hour_counter_24 = this.hour_counter_24;
+            let calculation = (arrow - current_hour_pos - 6);
+            let user_timeframe = document.querySelector(`#logged-user-timeframe.hour-timeframe`);
+
+            if(current_hour_pos < arrow){
+
+                if(this.hour_counter_12.length < 52){
+                    let new_12 = [{ original: 20, time: 8, meridie: "pm" },{ original: 21, time: 9, meridie: "pm" },{ original: 22, time: 10, meridie: "pm" },{ original: 23, time: 11, meridie: "pm" }];
+                    let new_24 = this.hour_counter_24.splice(35);
+                    
+                    new_12.reverse().map( item => {
+                        this.hour_counter_12.unshift(item);
+                    } )
+                }
+            }                
+           
+            let nodes = user_timeframe.children;
+            let hour_dom_node = document.querySelector(`#logged-user-timeframe .available.hour-time[data-time="${this.current_hour}"]`)
+            
+
+            if(hour_dom_node == null){
+                hour_dom_node = document.querySelector(`#logged-user-timeframe .hour-time ~ .hour-time[data-time="${this.current_hour}"]`)
+            }
+
+            position = hour_dom_node.offsetLeft
+            calculation = (arrow - position - 6);
+            user_timeframe.style.left = `${calculation}px`;
+                
 
         },
         available_hour(start_hour, end_hour) {

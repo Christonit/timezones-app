@@ -320,7 +320,7 @@
 
 .hour-time.available:first-child{
     &::before{
-        background-color: red;
+        background-color:$ruler-color;
     }
 }
 .hour-time.available::before{
@@ -332,7 +332,7 @@
     width: 36px;
     left: 18px;
     margin: auto;
-    background-color: #3cbf7b;
+    background-color: $ruler-color;
     z-index: -1;
     
 }

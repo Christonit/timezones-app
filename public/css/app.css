@@ -11586,7 +11586,7 @@ body {
 }
 
 .hour-time.available:first-child::before {
-  background-color: red;
+  background-color: #3cbf7b;
 }
 
 .hour-time.available::before {

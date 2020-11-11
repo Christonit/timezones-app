@@ -2326,8 +2326,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       clients: [],
+      og_clients: [],
       hasClients: false,
-      team_members_to_group: []
+      team_members_to_group: [],
+      og_teammates: []
     };
   },
   mounted: function mounted() {
@@ -2336,6 +2338,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     if (this.$route.query.id != null) {
       var project_name = this.$route.params.projectName;
       var id = this.$route.query.id;
+      var team_id = this.team_project.id;
+      this.getTeamMembers();
       fetch("".concat(project_name, "/project?id=").concat(id)).then(function (res) {
         return res.text();
       }).then(function (data) {
@@ -2343,12 +2347,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         members.forEach(function (member) {
           if (member.member_type == "teammate") {
             _this.team_members_to_group.push(member);
+
+            _this.og_teammates.push(member);
           } else {
             var _id = member.id;
             var member_type = member.member_type;
             var name = member.name;
-            var timezone = {};
-            timezone.id = member.timezone;
+            var timezone = member.timezone;
+
+            _this.og_clients.push({
+              id: _id,
+              name: name,
+              member_type: member_type,
+              timezone: timezone
+            });
 
             _this.clients.push({
               id: _id,
@@ -2391,12 +2403,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     isProjectToEdit: function isProjectToEdit() {
       if (this.$route.query.name != undefined && this.$route.query.id != undefined && this.$route.query.name.length > 0) {
         return true;
-      } else {
-        return false;
       }
+
+      return false;
     }
   }),
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal', 'setNewClient', 'addTeamProjects', 'emptyProjectGroup'])), {}, {
+  methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['openModal', 'setNewClient', 'addTeamProjects', 'emptyProjectGroup', 'getTeamMembers'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getTeamMembers'])), {}, {
     closeNewGroup: function closeNewGroup() {
       this.emptyProjectGroup();
       this.$router.go(-1);
@@ -2425,8 +2437,53 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.removeTeammateOfCategory(id);
       document.querySelector("[data-teammate-id=\"".concat(id, "\"] input[type=\"checkbox\"]")).checked = false;
     },
-    createGroup: function createGroup() {
+    submitFunction: function submitFunction() {
+      if (this.isProjectToEdit) {
+        return this.updateGroup();
+      } else {
+        return this.createGroup();
+      }
+    },
+    updateGroup: function updateGroup() {
       var _this3 = this;
+
+      var body = {};
+      var project_id = this.$route.query.id;
+      var teammates_ids = this.team_members_to_group.map(function (teammate) {
+        return teammate.id;
+      });
+      var og_teammates_ids = this.og_teammates.map(function (teammate) {
+        return teammate.id;
+      });
+      body.teammates = teammates_ids;
+      body.og_teammates = og_teammates_ids;
+      body._method = "PUT";
+
+      if (this.hasClients == true && this.clients.length > 0) {
+        body.clients = this.clients;
+      }
+
+      body.og_clients = this.og_clients;
+      return fetch("/update-project-category-members/".concat(project_id), {
+        method: 'PUT',
+        headers: this.basic_header,
+        body: JSON.stringify(body)
+      }).then(function (res) {
+        if (res.status == 201 || res.status == 200) {
+          return res.text();
+        }
+      }).then(function (data) {
+        var project_nav = document.querySelector('.project-list .item.active');
+
+        _this3.emptyProjectGroup();
+
+        _this3.$router.go(-1);
+
+        project_nav != null && project_nav != undefined ? project_nav.classList.remove('active') : null;
+      });
+    },
+    createGroup: function createGroup() {
+      var _this4 = this;
 
       var teammates_ids = this.team_members_to_group.map(function (teammate) {
         return teammate.id;
@@ -2453,11 +2510,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (data) {
         var project = JSON.parse(data);
 
-        _this3.emptyProjectGroup();
+        _this4.emptyProjectGroup();
 
-        _this3.addTeamProjects(project);
+        _this4.addTeamProjects(project);
 
-        _this3.$router.go(-1);
+        _this4.$router.go(-1);
       });
     }
   })
@@ -4715,8 +4772,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapState"])(['screen_sizes', 'device_width', 'hour_clock'])), {}, {
     username: function username() {
       if (this.device_width < this.screen_sizes.md) {
-        if (this.user.name.length >= 16) {
-          return "".concat(this.user.name.substring(0, 16), "...");
+        if (this.user.name.length >= 15) {
+          return "".concat(this.user.name.substring(0, 15), "...");
         }
       } else {
         if (this.user.name.length > 20 & this.viewMode == "card") {
@@ -4903,6 +4960,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -5197,11 +5258,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     this.setCurrentTarget();
     this.moveTimeRuler();
+    this.moveTimeRulerForUsers();
 
     var _int = setInterval(function () {
       _this.setCurrentTarget();
 
       _this.moveTimeRuler();
+
+      _this.moveTimeRulerForUsers();
 
       clearInterval(_int);
     }, 100);
@@ -5210,7 +5274,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       _this.setCurrentTarget();
 
       _this.moveTimeRuler();
+
+      _this.moveTimeRulerForUsers();
     }, 180 * 1000);
+
+    window.onresize = function () {
+      _this.setCurrentTarget();
+
+      _this.moveTimeRuler();
+
+      _this.moveTimeRulerForUsers();
+    };
   },
   components: {
     UserItem: _user_item_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -5281,7 +5355,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           });
         } else {
           this.teammates_current_time.forEach(function (hour) {
-            arr.push(hour);
+            if (hour.split("")[0] == 0) {
+              arr.push(hour.split("")[1]);
+            } else {
+              arr.push(hour);
+            }
           });
         }
 
@@ -5346,16 +5424,67 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       teammates_rulers.forEach(function (ruler, key) {
         var nodes = ruler.children;
-        var hour_dom_node = document.querySelector(".hour-timeframe[data-teammate=\"".concat(key + 1, "\"] .available.hour-time[data-time=\"").concat(_this2.teammates_current_hour[key], "\"]"));
+        var hour_dom_node = document.querySelector(".hour-timeframe[data-teammate=\"".concat(ruler.getAttribute('data-teammate'), "\"] .available.hour-time[data-time=\"").concat(_this2.teammates_current_hour[key], "\"]"));
 
         if (hour_dom_node == null) {
-          hour_dom_node = document.querySelector(".hour-timeframe[data-teammate=\"".concat(key + 1, "\"] .hour-time.available.leave ~ .hour-time[data-time=\"").concat(_this2.teammates_current_hour[key], "\"]"));
+          hour_dom_node = document.querySelector(".hour-timeframe[data-teammate=\"".concat(ruler.getAttribute('data-teammate'), "\"] .hour-time ~ .hour-time[data-time=\"").concat(_this2.teammates_current_hour[key], "\"]"));
         }
 
         position = hour_dom_node.offsetLeft;
         calculation = arrow - position - 6;
         ruler.style.left = "".concat(calculation, "px");
       });
+    },
+    moveTimeRulerForUsers: function moveTimeRulerForUsers() {
+      var _this3 = this;
+
+      var current_hour = this.current_hour_timeframe;
+      var current_hour_pos = current_hour.offsetLeft;
+      var arrow = document.querySelector(".timeline-arrow").offsetLeft;
+      var timeframe_ruler = document.querySelector("#logged-user-timeframe");
+      var teammates_rulers = [];
+      var position = null;
+      var hour_counter_12 = this.hour_counter_12;
+      var hour_counter_24 = this.hour_counter_24;
+      var calculation = arrow - current_hour_pos - 6;
+      var user_timeframe = document.querySelector("#logged-user-timeframe.hour-timeframe");
+
+      if (current_hour_pos < arrow) {
+        if (this.hour_counter_12.length < 52) {
+          var new_12 = [{
+            original: 20,
+            time: 8,
+            meridie: "pm"
+          }, {
+            original: 21,
+            time: 9,
+            meridie: "pm"
+          }, {
+            original: 22,
+            time: 10,
+            meridie: "pm"
+          }, {
+            original: 23,
+            time: 11,
+            meridie: "pm"
+          }];
+          var new_24 = this.hour_counter_24.splice(35);
+          new_12.reverse().map(function (item) {
+            _this3.hour_counter_12.unshift(item);
+          });
+        }
+      }
+
+      var nodes = user_timeframe.children;
+      var hour_dom_node = document.querySelector("#logged-user-timeframe .available.hour-time[data-time=\"".concat(this.current_hour, "\"]"));
+
+      if (hour_dom_node == null) {
+        hour_dom_node = document.querySelector("#logged-user-timeframe .hour-time ~ .hour-time[data-time=\"".concat(this.current_hour, "\"]"));
+      }
+
+      position = hour_dom_node.offsetLeft;
+      calculation = arrow - position - 6;
+      user_timeframe.style.left = "".concat(calculation, "px");
     },
     available_hour: function available_hour(start_hour, end_hour) {
       var start = start_hour.split(":");
@@ -64846,11 +64975,14 @@ var render = function() {
             on: { click: _vm.closeNewGroup }
           }),
           _vm._v(" "),
-          _vm.isProjectEdit
+          _vm.isProjectToEdit == true
             ? _c("h2", { staticClass: "title text-center mb-0" }, [
                 _vm._v(_vm._s(_vm.$route.query.name))
               ])
-            : _c(
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.isProjectToEdit == false
+            ? _c(
                 "h2",
                 {
                   staticClass: "title text-center mb-0",
@@ -64872,9 +65004,10 @@ var render = function() {
                       )
                   )
                 ]
-              ),
+              )
+            : _vm._e(),
           _vm._v(" "),
-          _c("continue-btn", { on: { click: _vm.createGroup } })
+          _c("continue-btn", { on: { click: _vm.submitFunction } })
         ],
         1
       ),
@@ -67353,6 +67486,7 @@ var render = function() {
                       _c(
                         "span",
                         {
+                          key: key,
                           staticClass: "hour-time",
                           class: _vm.startOrEnd24({
                             hour: hour,
@@ -67378,6 +67512,7 @@ var render = function() {
                       _c(
                         "span",
                         {
+                          key: key,
                           staticClass: "hour-time",
                           class: _vm.startOrEnd12({
                             original: hour.original,
@@ -67412,6 +67547,7 @@ var render = function() {
                   ? _c(
                       "span",
                       {
+                        key: key,
                         staticClass: "hour-time",
                         class: _vm.startOrEnd24({
                           hour: hour,
@@ -67434,6 +67570,7 @@ var render = function() {
                   ? _c(
                       "span",
                       {
+                        key: key,
                         staticClass: "hour-time",
                         class: _vm.startOrEnd12({
                           original: hour.original,
@@ -67934,7 +68071,7 @@ var render = function() {
                   alt: "More options delete icon"
                 }
               }),
-              _vm._v("\n            Add teammate\n        ")
+              _vm._v("\n            Modify project\n        ")
             ]
           )
         : _vm._e(),
