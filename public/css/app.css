@@ -11004,13 +11004,6 @@ body {
   }
 }
 
-.app-brading {
-  display: inline-flex;
-  justify-content: center;
-  margin-bottom: 96px;
-  width: 100%;
-}
-
 .app-container {
   width: 100%;
   margin-right: auto;
@@ -11022,6 +11015,7 @@ body {
   .app-container {
     overflow-y: initial;
     width: calc(100% - 248px);
+    margin-right: initial;
   }
 }
 
@@ -11103,21 +11097,39 @@ body {
   left: -248px;
   transition: all 300ms ease;
   opacity: 0;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 @media (min-width: 1200px) {
   .app-sidebar {
-    position: -webkit-sticky;
-    position: sticky;
+    position: fixed;
     z-index: 9;
     left: initial;
     opacity: 1;
   }
 }
 
+.app-sidebar:hover {
+  overflow-y: auto;
+}
+
 .app-sidebar.active {
   left: 0;
   opacity: 1;
+}
+
+.app-brading {
+  display: inline-flex;
+  justify-content: center;
+  margin-bottom: 64px;
+  width: 100%;
+  background: #05060d;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 9;
+  padding: 24px 0;
 }
 
 .clock-type-switch {
@@ -11325,7 +11337,7 @@ body {
   background-color: rgba(150, 163, 163, 0.25);
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   .user-img {
     height: 42px;
     width: 42px;
@@ -11342,7 +11354,7 @@ body {
 .user-img span {
   display: block;
   align-items: center;
-  line-height: 2.85;
+  line-height: 2.1;
   text-align: center;
   height: 100%;
   color: #fff;
@@ -11350,6 +11362,12 @@ body {
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
   font-weight: bold;
+}
+
+@media (min-width: 1200px) {
+  .user-img span {
+    line-height: 2.85;
+  }
 }
 
 .user-status-dot {
@@ -11518,7 +11536,7 @@ body {
 }
 
 .hour-timeframe {
-  height: 66px;
+  height: 62px;
   margin: 8px 0;
   display: inline-flex;
   align-items: center;
@@ -11561,6 +11579,12 @@ body {
   background-position-y: top;
   background-origin: border-box;
   background-position-x: left;
+}
+
+@media (min-width: 1200px) {
+  .hour-timeframe {
+    height: 66px;
+  }
 }
 
 .hour-timeframe-start {
@@ -12860,6 +12884,7 @@ input.input-field::placeholder {
   z-index: -1;
   transition: all 200ms ease;
   font-family: "Open Sans", sans-serif;
+  right: 0;
 }
 
 .more-options-item {

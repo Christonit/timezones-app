@@ -15,17 +15,19 @@
                     <input  class="form-control top-searchbar-input" 
                         type="text"
                         @click="openSearchbox" 
+                        v-model="query"
+                        @keyup="searchKeywords"
                         placeholder="Employee name, New York, GTM-1, project 01"/>
                 </div>
 
-                <div class="selected-keywords">
-                    <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
-                    <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
-                    <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
-                    <span class="keyword-chip">GMT + 1 <i class="keyword-chip-del">close</i> </span>
+                <div class="selected-keywords" v-if="active_query_keywords.length > 0">
+                    <span class="keyword-chip" v-for="(keyword,key) in active_query_keywords">{{keyword.value}}<i class="keyword-chip-del" @click="updateQueryKeywords(key)">close</i> </span>
                 </div>
 
-                <searchbox v-if="team_project.searchbox_visible"></searchbox>
+                <searchbox v-if="team_project.searchbox_visible && queryResults.length > 0" 
+                    @clearQuery="query = ''"
+                    :team_id="team_project.id" 
+                    :results="queryResults"></searchbox>
             
             </div>
             <div class="view-toggle">
@@ -87,6 +89,8 @@
 <script>
 import Searchbox from '../components/utils/searchbox.vue';
 import {mapState,mapMutations, mapActions} from 'vuex';
+
+import utils from '../mixins/utils';
 export default {
     data(){
         return {
@@ -95,6 +99,7 @@ export default {
             keywords_selected:[]
         }
     },
+    mixins:[utils],
     computed:{
         ...mapState(['team_project','active_query_keywords','screen_sizes','device_width','hour_clock']),
         viewModeToggle(){

@@ -4414,6 +4414,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_utils_searchbox_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/utils/searchbox.vue */ "./resources/js/components/utils/searchbox.vue");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _mixins_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/utils */ "./resources/js/mixins/utils.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -4506,6 +4507,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4516,6 +4520,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       keywords_selected: []
     };
   },
+  mixins: [_mixins_utils__WEBPACK_IMPORTED_MODULE_2__["default"]],
   computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['team_project', 'active_query_keywords', 'screen_sizes', 'device_width', 'hour_clock'])), {}, {
     viewModeToggle: function viewModeToggle() {
       this.team_project.view_mode;
@@ -5057,7 +5062,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       current_time: null,
       current_hour_timeframe: null,
       teammates_current_time: [],
-      hour_counter_24: ["00", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, "00", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+      hour_counter_24: ["00", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, "00", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, "00", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
       hour_counter_12: [{
         original: 0,
         time: 12,
@@ -5250,6 +5255,78 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         original: 23,
         time: 11,
         meridie: "pm"
+      }, {
+        original: 0,
+        time: 12,
+        meridie: "pm"
+      }, {
+        original: 1,
+        time: 1,
+        meridie: "am"
+      }, {
+        original: 2,
+        time: 2,
+        meridie: "am"
+      }, {
+        original: 3,
+        time: 3,
+        meridie: "am"
+      }, {
+        original: 4,
+        time: 4,
+        meridie: "am"
+      }, {
+        original: 5,
+        time: 5,
+        meridie: "am"
+      }, {
+        original: 6,
+        time: 6,
+        meridie: "am"
+      }, {
+        original: 7,
+        time: 7,
+        meridie: "am"
+      }, {
+        original: 8,
+        time: 8,
+        meridie: "am"
+      }, {
+        original: 9,
+        time: 9,
+        meridie: "am"
+      }, {
+        original: 10,
+        time: 10,
+        meridie: "am"
+      }, {
+        original: 11,
+        time: 11,
+        meridie: "am"
+      }, {
+        original: 12,
+        time: 12,
+        meridie: "am"
+      }, {
+        original: 13,
+        time: 1,
+        meridie: "pm"
+      }, {
+        original: 14,
+        time: 2,
+        meridie: "pm"
+      }, {
+        original: 15,
+        time: 3,
+        meridie: "pm"
+      }, {
+        original: 16,
+        time: 4,
+        meridie: "pm"
+      }, {
+        original: 17,
+        time: 5,
+        meridie: "pm"
       }]
     };
   },
@@ -5424,10 +5501,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       teammates_rulers.forEach(function (ruler, key) {
         var nodes = ruler.children;
-        var hour_dom_node = document.querySelector(".hour-timeframe[data-teammate=\"".concat(ruler.getAttribute('data-teammate'), "\"] .available.hour-time[data-time=\"").concat(_this2.teammates_current_hour[key], "\"]"));
+        var hour_dom_node = document.querySelectorAll(".hour-timeframe[data-teammate=\"".concat(ruler.getAttribute('data-teammate'), "\"] .hour-time ~ .available.hour-time[data-time=\"").concat(_this2.teammates_current_hour[key], "\"]"));
+        hour_dom_node.length > 1 ? hour_dom_node = hour_dom_node[1] : hour_dom_node = document.querySelector(".hour-timeframe[data-teammate=\"".concat(ruler.getAttribute('data-teammate'), "\"] .hour-time ~ .available.hour-time[data-time=\"").concat(_this2.teammates_current_hour[key], "\"]"));
 
         if (hour_dom_node == null) {
-          hour_dom_node = document.querySelector(".hour-timeframe[data-teammate=\"".concat(ruler.getAttribute('data-teammate'), "\"] .hour-time ~ .hour-time[data-time=\"").concat(_this2.teammates_current_hour[key], "\"]"));
+          hour_dom_node = document.querySelectorAll(".hour-timeframe[data-teammate=\"".concat(ruler.getAttribute('data-teammate'), "\"] .hour-time ~ .hour-time[data-time=\"").concat(_this2.teammates_current_hour[key], "\"]"));
+          hour_dom_node.length > 1 ? hour_dom_node = hour_dom_node[1] : hour_dom_node = document.querySelector(".hour-timeframe[data-teammate=\"".concat(ruler.getAttribute('data-teammate'), "\"] .hour-time ~ .hour-time[data-time=\"").concat(_this2.teammates_current_hour[key], "\"]"));
         }
 
         position = hour_dom_node.offsetLeft;
@@ -5476,10 +5555,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       var nodes = user_timeframe.children;
-      var hour_dom_node = document.querySelector("#logged-user-timeframe .available.hour-time[data-time=\"".concat(this.current_hour, "\"]"));
+      var hour_dom_node = document.querySelectorAll("#logged-user-timeframe .available.hour-time[data-time=\"".concat(this.current_hour, "\"]"));
+      hour_dom_node.length > 1 ? hour_dom_node = hour_dom_node[1] : hour_dom_node = document.querySelector("#logged-user-timeframe .available.hour-time[data-time=\"".concat(this.current_hour, "\"]"));
 
       if (hour_dom_node == null) {
-        hour_dom_node = document.querySelector("#logged-user-timeframe .hour-time ~ .hour-time[data-time=\"".concat(this.current_hour, "\"]"));
+        hour_dom_node = document.querySelectorAll("#logged-user-timeframe .hour-time ~ .hour-time[data-time=\"".concat(this.current_hour, "\"]"));
+        hour_dom_node.length > 1 ? hour_dom_node = hour_dom_node[1] : hour_dom_node = document.querySelector("#logged-user-timeframe .hour-time ~ .hour-time[data-time=\"".concat(this.current_hour, "\"]"));
       }
 
       position = hour_dom_node.offsetLeft;
@@ -66895,18 +66976,71 @@ var render = function() {
                 _c("i", { staticClass: "search-icon" }),
                 _vm._v(" "),
                 _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.query,
+                      expression: "query"
+                    }
+                  ],
                   staticClass: "form-control top-searchbar-input",
                   attrs: {
                     type: "text",
                     placeholder: "Employee name, New York, GTM-1, project 01"
                   },
-                  on: { click: _vm.openSearchbox }
+                  domProps: { value: _vm.query },
+                  on: {
+                    click: _vm.openSearchbox,
+                    keyup: _vm.searchKeywords,
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.query = $event.target.value
+                    }
+                  }
                 })
               ]),
               _vm._v(" "),
-              _vm._m(0),
+              _vm.active_query_keywords.length > 0
+                ? _c(
+                    "div",
+                    { staticClass: "selected-keywords" },
+                    _vm._l(_vm.active_query_keywords, function(keyword, key) {
+                      return _c("span", { staticClass: "keyword-chip" }, [
+                        _vm._v(_vm._s(keyword.value)),
+                        _c(
+                          "i",
+                          {
+                            staticClass: "keyword-chip-del",
+                            on: {
+                              click: function($event) {
+                                return _vm.updateQueryKeywords(key)
+                              }
+                            }
+                          },
+                          [_vm._v("close")]
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                : _vm._e(),
               _vm._v(" "),
-              _vm.team_project.searchbox_visible ? _c("searchbox") : _vm._e()
+              _vm.team_project.searchbox_visible && _vm.queryResults.length > 0
+                ? _c("searchbox", {
+                    attrs: {
+                      team_id: _vm.team_project.id,
+                      results: _vm.queryResults
+                    },
+                    on: {
+                      clearQuery: function($event) {
+                        _vm.query = ""
+                      }
+                    }
+                  })
+                : _vm._e()
             ],
             1
           ),
@@ -67039,34 +67173,7 @@ var render = function() {
         ])
       ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "selected-keywords" }, [
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "keyword-chip" }, [
-        _vm._v("GMT + 1 "),
-        _c("i", { staticClass: "keyword-chip-del" }, [_vm._v("close")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -85329,6 +85436,11 @@ var app = new Vue({
     window.addEventListener("orientationchange", function () {
       _this2.setDeviceWidth();
     });
+
+    window.onresize = function () {
+      _this2.setDeviceWidth();
+    };
+
     var csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     this.$store.commit('setCsrf', csrf);
     fetch('/user-information', {

@@ -85,7 +85,7 @@
     overflow: hidden;
     display: block;
     background-color: rgba($color: $gray, $alpha: 0.25);
-    @include breakpoint(md){
+    @include breakpoint(lg){
         height: 42px;
         width: 42px;    
     }
@@ -99,12 +99,15 @@
     span{
         display: block;
         align-items: center;
-        line-height: 2.85;
+        line-height: 2.1;
         text-align: center;
         height: 100%;
         color: #fff;
         text-transform: uppercase;
         @include text-14-bold;
+        @include breakpoint(lg){
+            line-height: 2.85;
+        }
     }
 }
 
@@ -254,7 +257,7 @@
 
 .hour-timeframe{
     // width: 34px;
-    height: 66px;
+    height: 62px;
     margin: 8px 0;
     display: inline-flex;
     align-items: center;
@@ -292,6 +295,10 @@
         background-position-y: top;
         background-origin: border-box;
         background-position-x: left;
+    }
+
+    @include breakpoint(lg){
+        height: 66px;
     }
 
 }

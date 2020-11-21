@@ -95,6 +95,10 @@ const app = new Vue({
             this.setDeviceWidth();
         })
 
+        window.onresize = () => {
+            this.setDeviceWidth();
+        }
+
         let csrf= document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         this.$store.commit('setCsrf', csrf);

@@ -11,12 +11,7 @@ body{
     }
 }
 
-.app-brading{
-    display: inline-flex;
-    justify-content: center;
-    margin-bottom: 96px;
-    width: 100%;
-}
+
 
 .app-container{
     width: 100%;
@@ -28,6 +23,7 @@ body{
     @include breakpoint(lg){
         overflow-y: initial;
         width: calc(100% - 248px);
+        margin-right: initial;
 
     }
 }

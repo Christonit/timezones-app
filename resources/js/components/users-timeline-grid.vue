@@ -98,7 +98,7 @@ export default {
             current_hour_timeframe:null,
             teammates_current_time: [],
             hour_counter_24:["00", 1, 2, 3,4, 5,6,7,8, 9, 10,11,12,13,14,15,16,17,18, 19,20,21,22, 23,
-                "00", 1, 2, 3,4, 5,6,7,8, 9, 10,11,12,13,14,15,16,17,18, 19,20,21,22, 23],
+                "00", 1, 2, 3,4, 5,6,7,8, 9, 10,11,12,13,14,15,16,17,18, 19,20,21,22, 23, "00", 1, 2, 3,4, 5,6,7,8, 9, 10,11,12,13],
             hour_counter_12:[
             { original: 0, time: 12, meridie: "pm" },{ original: 1, time: 1, meridie: "am" },{ original: 2, time: 2, meridie: "am" },{ original: 3, time: 3, meridie: "am" },{ original: 4, time: 4, meridie: "am" },{ original: 5, time: 5, meridie: "am" },
             { original: 6, time: 6, meridie: "am" },{ original: 7, time: 7, meridie: "am" },{ original: 8, time: 8, meridie: "am" },{ original: 9, time: 9, meridie: "am" },
@@ -113,7 +113,13 @@ export default {
             { original: 13, time: 1, meridie: "pm" },{ original: 14, time: 2, meridie: "pm" },{ original: 15, time: 3, meridie: "pm" },
             { original: 16, time: 4, meridie: "pm" },{ original: 17, time: 5, meridie: "pm" },{ original: 18, time: 6, meridie: "pm" },
             { original: 19, time: 7, meridie: "pm" },{ original: 20, time: 8, meridie: "pm" },{ original: 21, time: 9, meridie: "pm" },
-            { original: 22, time: 10, meridie: "pm" },{ original: 23, time: 11, meridie: "pm" }]
+            { original: 22, time: 10, meridie: "pm" },{ original: 23, time: 11, meridie: "pm" },
+            { original: 0, time: 12, meridie: "pm" },{ original: 1, time: 1, meridie: "am" },{ original: 2, time: 2, meridie: "am" },{ original: 3, time: 3, meridie: "am" },
+            { original: 4, time: 4, meridie: "am" },{ original: 5, time: 5, meridie: "am" },{ original: 6, time: 6, meridie: "am" },
+            { original: 7, time: 7, meridie: "am" },{ original: 8, time: 8, meridie: "am" },{ original: 9, time: 9, meridie: "am" },
+            { original: 10, time: 10, meridie: "am" },{ original: 11, time: 11, meridie: "am" },{ original: 12, time: 12, meridie: "am" },
+            { original: 13, time: 1, meridie: "pm" },{ original: 14, time: 2, meridie: "pm" },{ original: 15, time: 3, meridie: "pm" },
+            { original: 16, time: 4, meridie: "pm" },{ original: 17, time: 5, meridie: "pm" }]
 
         };
     },
@@ -266,11 +272,13 @@ export default {
             teammates_rulers.forEach( (ruler,key) => {
 
                 let nodes = ruler.children;
-                let hour_dom_node = document.querySelector(`.hour-timeframe[data-teammate="${ruler.getAttribute('data-teammate')}"] .available.hour-time[data-time="${this.teammates_current_hour[key]}"]`)
-
+                let hour_dom_node = document.querySelectorAll(`.hour-timeframe[data-teammate="${ruler.getAttribute('data-teammate')}"] .hour-time ~ .available.hour-time[data-time="${this.teammates_current_hour[key]}"]`)
+                                hour_dom_node.length > 1 ? hour_dom_node = hour_dom_node[1] : hour_dom_node= document.querySelector(`.hour-timeframe[data-teammate="${ruler.getAttribute('data-teammate')}"] .hour-time ~ .available.hour-time[data-time="${this.teammates_current_hour[key]}"]`);
                 if(hour_dom_node == null){
-                    hour_dom_node = document.querySelector(`.hour-timeframe[data-teammate="${ruler.getAttribute('data-teammate')}"] .hour-time ~ .hour-time[data-time="${this.teammates_current_hour[key]}"]`)
+                    hour_dom_node = document.querySelectorAll(`.hour-timeframe[data-teammate="${ruler.getAttribute('data-teammate')}"] .hour-time ~ .hour-time[data-time="${this.teammates_current_hour[key]}"]`)
+                    hour_dom_node.length > 1 ? hour_dom_node = hour_dom_node[1] : hour_dom_node= document.querySelector(`.hour-timeframe[data-teammate="${ruler.getAttribute('data-teammate')}"] .hour-time ~ .hour-time[data-time="${this.teammates_current_hour[key]}"]`);
                 }
+
 
                 position = hour_dom_node.offsetLeft
                 calculation = (arrow - position - 6);
@@ -304,11 +312,12 @@ export default {
             }                
            
             let nodes = user_timeframe.children;
-            let hour_dom_node = document.querySelector(`#logged-user-timeframe .available.hour-time[data-time="${this.current_hour}"]`)
-            
+            let hour_dom_node = document.querySelectorAll(`#logged-user-timeframe .available.hour-time[data-time="${this.current_hour}"]`)
+            hour_dom_node.length > 1 ? hour_dom_node = hour_dom_node[1] : hour_dom_node = document.querySelector(`#logged-user-timeframe .available.hour-time[data-time="${this.current_hour}"]`)
 
             if(hour_dom_node == null){
-                hour_dom_node = document.querySelector(`#logged-user-timeframe .hour-time ~ .hour-time[data-time="${this.current_hour}"]`)
+                hour_dom_node = document.querySelectorAll(`#logged-user-timeframe .hour-time ~ .hour-time[data-time="${this.current_hour}"]`)
+                hour_dom_node.length > 1 ? hour_dom_node = hour_dom_node[1] : hour_dom_node =  document.querySelector(`#logged-user-timeframe .hour-time ~ .hour-time[data-time="${this.current_hour}"]`)
             }
 
             position = hour_dom_node.offsetLeft
