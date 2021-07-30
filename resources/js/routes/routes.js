@@ -1,7 +1,7 @@
 import TeamProjectOverview from '../components/team-project-overview.vue';
 import AddNewTeamMember from '../components/add-new-team-member.vue';
 import CreateGroup from '../components/create-group.vue';
-
+import FourOhFour from '../views/404.vue';
 import VueRouter from 'vue-router';
 
 
@@ -11,10 +11,6 @@ export default new VueRouter({
             path: '/',
             component:TeamProjectOverview
         },
-        // {
-        //     path: '/:projct-name',
-        //     component:TeamProjectOverview
-        // },
         {
             path: '/team/:projectName',
             component:AddNewTeamMember
@@ -25,9 +21,12 @@ export default new VueRouter({
             props: true
         },
         {
-            path: '/:projectName/edit-project',
-            component:CreateGroup,
-            props: true
+            path: '*',
+            redirect: '/404'
+        },
+        {
+            path: '/404',
+            component: FourOhFour
         }
     ]
 })

@@ -1,4 +1,9 @@
-
+.hero-title{
+    font-size: 50px;
+    @include font-ubuntu;
+    font-weight: bold;
+    color: $black;
+}
 .title{
     @include font-ubuntu;
     font-size: 28px;
@@ -61,4 +66,9 @@
 
 .white{
     color: white;
+}
+
+.text{
+    @include text-16;
+    color: $black;
 }

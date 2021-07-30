@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="app-container container-fluid">
         <header class="row section-header">
             <router-link to='/' tag='button' class="btn btn-secondary-link prev">
                 <span>

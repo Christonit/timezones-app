@@ -1,6 +1,9 @@
 <template>
-    <span class="more-option-btn" :class="mode">
-        <div class="more-options">
+    <span class="more-option-btn" ref="moreOptionsBtn" 
+    @click="toggleOptions" :class="mode">
+        <div class="more-options"    
+        @mouseleave="toggleOptions" 
+        ref="moreOptions">
            
             <span v-if="editGroup" @click="editProjectGroup" class="more-options-item">
                 <img src="../../../img/add-icon.svg" class="more-options-icon" alt="More options delete icon">
@@ -83,6 +86,13 @@ export default {
         deleteProject(e){
 
             this.openModal({name:'delete-project', resource: this.resource})
+            e.stopPropagation();
+            e.preventDefault();
+        },
+        toggleOptions(e){
+            this.$refs.moreOptions.classList.contains('active') ? this.$refs.moreOptions.classList.remove('active') : this.$refs.moreOptions.classList.add('active')
+
+
             e.stopPropagation();
             e.preventDefault();
         }

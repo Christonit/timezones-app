@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid d-flex">
+    <div class="app-container container-fluid d-flex">
 
         <aside class="contact-list">
 

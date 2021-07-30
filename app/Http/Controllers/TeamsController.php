@@ -81,19 +81,20 @@ class TeamsController extends Controller
     }
 
     public function getTeamMembers($team){
-        $projects = Teams::find(1)->projectsGroup;
+        $projects = Teams::find($team)->projectsGroup;
 
         $projects = $projects->pluck('id');
 
         $clients = [];
         $client_list = collect([]);
-
+       
         foreach ($projects as $key => $id) {
             $clients[] = Clients::where('project_id', $id)->get(['id','name','timezone']);
         }
         foreach ($clients as $key => $client) {
             $client_list = $client_list->concat($client);
         }
+
 
         $client_list = $client_list->unique('name');
 
@@ -108,7 +109,6 @@ class TeamsController extends Controller
             $member['member_type'] = 'teammate';
         }
 
-        // return $team_members;
         return collect($team_members)->concat($client_list);
 
     }
@@ -141,9 +141,9 @@ class TeamsController extends Controller
         $presence_in_projects = ProjectsGroupMembers::where('team_members_id',$id)->pluck('id');
 
         if($presence_in_projects->count() > 0){
-                foreach ($presence_in_projects as $teammate) {
-                    ProjectsGroupMembers::destroy($teammate);
-                }
+            foreach ($presence_in_projects as $teammate) {
+                ProjectsGroupMembers::destroy($teammate);
+            }
         }
 
         return TeamMembers::destroy($id);

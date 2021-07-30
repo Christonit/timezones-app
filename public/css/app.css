@@ -10923,6 +10923,13 @@ a.text-dark:focus {
   }
 }
 
+.hero-title {
+  font-size: 50px;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: bold;
+  color: #05060d;
+}
+
 .title {
   font-family: "Ubuntu", sans-serif;
   font-size: 28px;
@@ -10988,6 +10995,12 @@ a.text-dark:focus {
   color: white;
 }
 
+.text {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  color: #05060d;
+}
+
 body {
   background-color: #f8fbfb;
 }
@@ -11017,14 +11030,6 @@ body {
     width: calc(100% - 248px);
     margin-right: initial;
   }
-}
-
-.container-fluid,
-.container-sm,
-.container-md,
-.container-lg,
-.container-xl {
-  overflow: hidden;
 }
 
 .new-group-container {
@@ -12867,12 +12872,6 @@ input.input-field::placeholder {
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-.more-option-btn:hover .more-options {
-  top: 26px;
-  opacity: 1;
-  z-index: 99;
-}
-
 .more-options {
   position: absolute;
   display: flex;
@@ -12885,6 +12884,12 @@ input.input-field::placeholder {
   transition: all 200ms ease;
   font-family: "Open Sans", sans-serif;
   right: 0;
+}
+
+.more-options.active {
+  top: 26px;
+  opacity: 1;
+  z-index: 99;
 }
 
 .more-options-item {
@@ -13226,5 +13231,26 @@ input.input-field::placeholder {
 
 .mb--16 {
   margin-bottom: 16px;
+}
+
+.mb--32 {
+  margin-bottom: 32px;
+}
+
+.mb--48 {
+  margin-bottom: 48px;
+}
+
+.mb--64 {
+  margin-bottom: 64px;
+}
+
+.py--96 {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+
+.state-img {
+  width: 120px;
 }
 
