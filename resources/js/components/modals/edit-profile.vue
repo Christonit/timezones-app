@@ -6,16 +6,21 @@
             <h2 class="subtitle text-center mb-0">Edit Profile</h2>
 
             <div class="popup-fields-container">
-                <span class="profile-pic-btn">
+                <span class="profile-pic-btn" 
+                    :style="info_edits.avatar == null ? 'background-color: #0e963f;' : ''">
                     <input type="file" name="profile-pic" @change="get_profile_pic"/>
 
-                    <img :src="info_edits.avatar" 
-                    :alt='"Avatar for" + info_edits.name' 
+                    <img :src="info_edits.avatar != null ? info_edits.avatar :''" 
+                    :alt='"Avatar for " + info_edits.avatar != null ? info_edits.avatar :""'
                     class="profile-pic-thumbnail"/>
                 </span>
 
                 <input-field name="Name" 
                 :input-value="user_name" @input="user_name = $event"></input-field>
+
+                <input-field name="Email" 
+                class="mt-0"
+                :input-value="email" @input="email = $event"></input-field>
 
                 <input-timezone :timezone_name="timezone.name"
                 @timezone-select="selectTimezones($event)"></input-timezone>
@@ -63,7 +68,8 @@ export default {
             start_time:null,
             end_time:null,
             profile_pic:null,
-            loading:false
+            loading:false,
+            email: null,
 
         }
     },
@@ -73,6 +79,7 @@ export default {
         this.end_time = this.info_edits.end_hour;
         this.timezone.id = this.info_edits.timezone;
         this.timezone.name = this.info_edits.timezone_abbr;
+        this.email = this.info_edits.email;
 
         this.user_name = this.info_edits.name;
 

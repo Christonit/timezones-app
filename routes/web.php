@@ -23,7 +23,7 @@ Route::get('/', function () {
 
     return view('index');
 
-})->middleware(['verified']);
+})->middleware(['verified'])->name('index');
 
 
 
@@ -67,6 +67,9 @@ Route::middleware('auth')->group( function (){
     Route::post('/add-team-members','TeamsController@addMembers');
     Route::delete('/team-members/{id}/delete','TeamsController@destroyTeamMember');
 
+    //Destroy a client for a project
+    Route::delete('/client/{id}/delete','TeamsController@destroyClient');
+
     Route::post('/upload-timezones','TimezonesController@upload');
     Route::post('/search-timezones','TimezonesController@search_timezone');
     Route::post('/update-user','HomeController@updateUser');
@@ -88,6 +91,15 @@ Route::middleware('auth')->group( function (){
     Route::get('/search','SearchController@searchbar');
     Route::post('/search-keywords','SearchController@searchQuery');
 
+    
 });
+
+Route::get('/500', function (){
+    return view('500');
+});
+Route::get('/404', function (){
+    return view('404');
+});
+
 
 

@@ -144,6 +144,14 @@ export default {
                     if(res.status == 200){
                         return res.text()
                     }
+
+                    if(res.status == 500){
+                        const host = window.location.hostname; 
+this.$router.push(`/500`);
+                        throw Error("Server Error");
+                    }
+            
+            
                 }).then( data => {
                     this.user_type = data;
                     if(data == 'new user'){
@@ -202,6 +210,14 @@ export default {
                     if(status == 200){
                         window.location.replace('/')
                     }
+                    
+                    if(status == 500){
+                        const host = window.location.hostname; 
+this.$router.push(`/500`);
+                        throw Error("Server Error");
+                    }
+            
+            
                 })
 
             }else{
@@ -220,7 +236,15 @@ export default {
                     headers: this.basic_header,
                     body: JSON.stringify(form)
                 })
-                .then( res => res.text() )
+                .then( res => {
+                    if(res.status == 500){
+                        const host = window.location.hostname; 
+this.$router.push(`/500`);
+                        throw Error("Server Error");
+                    }
+                    return res.text()
+                
+                })
                 .then(data=>{
                     if(data == 200){
                         return window.location.replace('/')

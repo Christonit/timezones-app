@@ -70,6 +70,13 @@ export default {
                headers: this.basic_header,
                body: JSON.stringify({name: this.name})
                }).then(res =>{ 
+                   
+                    if(res.status == 500){
+                        const host = window.location.hostname; 
+this.$router.push(`/500`);
+                        throw Error("Server Error");
+                    }
+                
                    if(res.status == 200){
                        this.getLatestTeam().then( team => {
                            console.log(team)

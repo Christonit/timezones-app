@@ -19,7 +19,7 @@
                     <img :src="user.avatar" >
                 </span>
                 <span class="user-img" v-else>
-                    <span :style="`background-color:${$randomColor({luminosity:'dark'})}`">{{initialLetters}}</span>
+                    <span :style="`background-color:${color_profile}`">{{initialLetters}}</span>
                 </span>
                 <span class="user-status-dot" :class="isUserAvailable ? 'active':''"></span>
             </figure>
@@ -55,7 +55,7 @@ import moment from 'moment-timezone';
 import MoreOptionBtn from "./utils/more-option-btn.vue";
 import TimeWatch from "./utils/time-watch.vue";
 import CurrentDay from "./utils/current-day.vue";
-
+import generals from "../mixins/gerenals.vue";
 
 import { mapState } from 'vuex';
 
@@ -66,6 +66,7 @@ export default {
             time: null
         };
     },
+    mixins:[generals],
     created(){
 
         this.time = moment.tz(this.user.timezone).format('HH:mm');
@@ -83,6 +84,9 @@ export default {
                
         }, (60 * 1000) );
 
+    },
+    mounted(){
+        console.log(this.color_profile)
     },
     components:{
         MoreOptionBtn,
@@ -109,6 +113,17 @@ export default {
     },
     computed:{
         ...mapState(['screen_sizes','device_width','hour_clock']),
+        color_profile(){
+            if(this.index > 5) { 
+                return this.color_palette[(this.index - 6)]
+            }
+            else if( this.index == undefined  || this.index == null){
+                return this.color_palette[0]
+            }
+            else{ 
+                return this.color_palette[this.index]
+            }
+        },
         username(){
             if( this.device_width < this.screen_sizes.md){
                 if(this.user.name.length >= 15){
@@ -234,6 +249,7 @@ export default {
                 index: this.user.key,
                 name: this.user.name,
                 id: this.user.id,
+                member_type: this.user.member_type,
                 teammate: true}
         },
         isMarkedForDeletion(){

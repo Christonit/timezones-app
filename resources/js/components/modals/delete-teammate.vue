@@ -51,8 +51,18 @@ export default {
         ...mapMutations(['removeTeamMember','closeModal']),
         deleteThis(){
 
-            if(this.resource_to_delete.teammate){
-                this.deleteTeamMember(this.resource_to_delete.id).then( res => {
+            let resource_type = this.resource_to_delete.member_type;
+
+            if(resource_type == "teammate" || resource_type == "client"){
+                this.deleteTeamMember(this.resource_to_delete.id, resource_type ).then( res => {
+                    
+                    if(res.status == 500){
+                        const host = window.location.hostname; 
+                        this.$router.push(`/500`);
+                        throw Error("Server Error");
+                    }
+            
+            
                     if(res.status == 200){
                         return  this.removeTeamMember(this.resource_to_delete.index)
                     }else{
@@ -68,7 +78,7 @@ export default {
             }
 
 
-            if(this.resource_to_delete.resource_type =="team" ){
+            if(resource_type =="team" ){
 
                 fetch(`delete-team/${this.resource_to_delete.id}`, {
                     method:'DELETE',

@@ -135,7 +135,14 @@ export default {
             // END OF SOLUTION
 
             return fetch(`/search?team=${this.team_project.id}&q=${this.query}`)
-            .then(res => res.text())
+            .then(res => {
+                console.log(res.status)
+                if(res.status == 500){
+                    const host = window.location.hostname; 
+this.$router.push(`/500`);
+                    throw Error("Server Error");
+                }
+                return res.text()})
             .then(data =>{  
                 this.queryResults = JSON.parse(data)
             })
@@ -151,6 +158,10 @@ export default {
                         }
                     })
                 })
+            })
+            .catch( e => {
+                this.$router.push(`/500`);
+                console.log(e)
             })
         }
      

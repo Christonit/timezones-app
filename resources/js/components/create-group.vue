@@ -115,6 +115,11 @@ export default {
 
             fetch(`${project_name}/project?id=${id}`)
             .then( (res)=> {
+                if(res.status == 500){
+                    const host = window.location.hostname; 
+this.$router.push(`/500`);
+                    throw Error("Server Error");
+                }
                 return res.text();
             })
             .then( data =>{ 
@@ -252,6 +257,11 @@ export default {
                     if(res.status == 201 || res.status == 200){
                         return res.text();
                     }
+                    if(res.status == 500){
+                        const host = window.location.hostname; 
+this.$router.push(`/500`);
+                        throw Error("Server Error");
+                    }
                 }).then( data => {
                     let project_nav = document.querySelector('.project-list .item.active');
                     this.emptyProjectGroup();
@@ -284,6 +294,12 @@ export default {
                 }).then( res => {
                     if(res.status == 201 || res.status == 200){
                         return res.text();
+                    }
+
+                    if(res.status == 500){
+                        const host = window.location.hostname; 
+                        this.$router.push(`/500`);
+                        throw Error("Server Error");
                     }
                 }).then( data => {
                     let project = JSON.parse(data);

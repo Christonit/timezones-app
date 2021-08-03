@@ -61,7 +61,13 @@ export default {
         },
         fetch_timezones_list(){
             let timezones_data = null;
-            let x = fetch(`https://dev.virtualearth.net/REST/v1/TimeZone/List/?timezonestandard=IANA&key=AmdZGBzRdAtTx2w_t1j0Vsc4M5Apj5P83OKc-17qDE2ytTEoqLLgJS0_jPL-UrLw`).then(res => res.text() ).then( data =>{
+            let x = fetch(`https://dev.virtualearth.net/REST/v1/TimeZone/List/?timezonestandard=IANA&key=AmdZGBzRdAtTx2w_t1j0Vsc4M5Apj5P83OKc-17qDE2ytTEoqLLgJS0_jPL-UrLw`).then(res => {
+                if(res.status == 500){
+                    const host = window.location.hostname; 
+this.$router.push(`/500`);
+                    throw Error("Server Error");
+                }
+                return res.text() }).then( data =>{
                 timezones_data = JSON.parse(data) 
             }).then( () =>{
                 let timezones = timezones_data.resourceSets[0].resources;
@@ -95,7 +101,6 @@ export default {
         },
 
         updateProfile(){
-            console.log('ex1:'+ this.start_time)
             let payload = new FormData();
 
             payload.append('timezone',this.timezone.id);
@@ -114,6 +119,11 @@ export default {
                 headers:this.header,
                 body:payload
             }).then( res =>{
+                if(res.status == 500){
+                    const host = window.location.hostname; 
+                    this.$router.push(`/500`);
+                    throw Error("Server Error");
+                }
                 if(res.status == 200){
                    return res.text()
                 }else{
@@ -128,6 +138,12 @@ export default {
                 return fetch('/user-information').then(res => {
                     if(res.status == 200 ){
                         return res.text();
+                    }
+
+                    if(res.status == 500){
+                        const host = window.location.hostname; 
+this.$router.push(`/500`);
+                        throw Error("Server Error");
                     }
                 })
                 .then(data => {
@@ -149,10 +165,17 @@ export default {
 
             
         },
-        deleteTeamMember(id,teammate = true){
+        deleteTeamMember(id,resource_type = null){
 
-            if(teammate){
+            if(resource_type == "teammate"){
                 return fetch(`/team-members/${id}/delete`,{
+                    headers:this.header,
+                    method:'DELETE',
+                    body: JSON.stringify(this.ajax_delete)
+                })
+            }
+            if(resource_type == "client"){
+                return fetch(`/client/${id}/delete`,{
                     headers:this.header,
                     method:'DELETE',
                     body: JSON.stringify(this.ajax_delete)

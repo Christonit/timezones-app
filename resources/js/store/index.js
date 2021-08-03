@@ -297,7 +297,15 @@ export default new Vuex.Store({
             })
         },
         getLatestTeam({state,commit}){
-            return fetch('/list-latest-created-team').then(res=> res.text()).then(data => {
+            return fetch('/list-latest-created-team').then(res=> {
+                if(res.status == 500){
+                    const host = window.location.hostname; 
+this.$router.push(`/500`);
+                    throw Error("Server Error");
+                }
+                return res.text()
+            
+            }).then(data => {
                 let info = JSON.parse(data)
                 commit('addTeam',info);
 
@@ -306,7 +314,15 @@ export default new Vuex.Store({
         },
         getTeamMembers({state,commit}){
             return fetch(`/list-team-members/${state.team_project.id}`)
-                    .then(res => res.text())
+                    .then(res => {
+                        if(res.status == 500){
+                            const host = window.location.hostname; 
+this.$router.push(`/500`);
+                            throw Error("Server Error");
+                        }
+                        return res.text()
+                    
+                    })
                     .then(data => {
                         commit('setTeamMembers',JSON.parse(data))
                     })
@@ -315,7 +331,15 @@ export default new Vuex.Store({
             let url_name = name.toLowerCase().split(" ").join("-");
 
             return fetch(`${url_name}/team?id=${id}`)
-                    .then(res => res.text())
+                    .then(res => {
+                        if(res.status == 500){
+                            const host = window.location.hostname; 
+this.$router.push(`/500`);
+                            throw Error("Server Error");
+                        }
+                        return res.text()
+                    
+                    })
                     .then( data => {
                         let payload = JSON.parse(data);
                         commit('setTeamProjects',payload);
@@ -358,7 +382,15 @@ export default new Vuex.Store({
                 }).then(res => {
                     if(res.status == 200){
                      return res.text();   
-                    } 
+                    }
+                    
+                    if(res.status == 500){
+                        const host = window.location.hostname; 
+                        this.$router.push(`/500`);
+                        throw Error("Server Error");
+                    }
+                    
+                     
                 })
                 .then( data => {
                     let mates = JSON.parse(data)

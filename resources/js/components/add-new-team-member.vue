@@ -179,6 +179,11 @@ export default {
                 if(res.status == 199){
                     throw Error("no-new-member");
                 }
+                if(res.status == 500){
+                    const host = window.location.hostname; 
+this.$router.push(`/500`);
+                    throw Error("Server Error");
+                }
                 
             })
             .catch(e =>{

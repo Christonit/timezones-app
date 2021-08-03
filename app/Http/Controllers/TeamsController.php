@@ -149,6 +149,18 @@ class TeamsController extends Controller
         return TeamMembers::destroy($id);
         
     }
+    protected function destroyClient($id){
+        $presence_in_projects = ProjectsGroupMembers::where('clients_id',$id)->pluck('id');
+
+        if($presence_in_projects->count() > 0){
+            foreach ($presence_in_projects as $client) {
+                ProjectsGroupMembers::destroy($client);
+            }
+        }
+
+        return Clients::destroy($id);
+        
+    }
 
     protected function allProjectGroups(Request $request, $name){
         $id = $request->id;

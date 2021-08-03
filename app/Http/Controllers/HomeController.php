@@ -54,6 +54,9 @@ class HomeController extends Controller
         if($request->has('name') && $request->name != Auth::user()->name){
             $user->name = $request->input('name');
         }
+        if($request->has('email') && $request->name != Auth::user()->email){
+            $user->email = $request->input('email');
+        }
 
         if($request->has('start_hour') && $request->start_hour != Auth::user()->start_hour ){
 
@@ -79,6 +82,7 @@ class HomeController extends Controller
         $user->save();
 
         return $user;
+
 
     }
 }

@@ -63,6 +63,13 @@ export default {
                 body:JSON.stringify({_method,team_id})
             })
             .then( res => {
+                
+                if(res.status == 500){
+                    const host = window.location.hostname; 
+this.$router.push(`/500`);
+                    throw Error("Server Error");
+                }            
+            
                 if(res.status == 200){
                     let active_project = document.querySelector('.project-list .item-lists .item.active');
 

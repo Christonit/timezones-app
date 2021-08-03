@@ -110,6 +110,15 @@ export default {
                         this.editTeam({index: this.info_edits.index,name:this.name})
 
                     }
+
+                    
+                    if(res.status == 500){
+                        const host = window.location.hostname; 
+this.$router.push(`/500`);
+                        throw Error("Server Error");
+                    }
+            
+            
                 })
                 .then( () => {
                     this.closeModal('change-name')
@@ -126,6 +135,12 @@ export default {
                 .then( res => {
                     if(res.status == 200){
                         return res.text();
+                    }
+
+                    if(res.status == 500){
+                        const host = window.location.hostname; 
+this.$router.push(`/500`);
+                        throw Error("Server Error");
                     }
                 })
                 .then( (data) => {

@@ -5,7 +5,8 @@
     >
         {{current_project.name}}
         
-        <more-option-btn mode="dark" :edit-group="true" :edit-name="true" 
+        <more-option-btn
+        mode="dark" :edit-group="true" :edit-name="true" 
         :delete-project-btn="true" :add-btn="true" 
         :resource="resource_wrapper(current_project,index)"></more-option-btn>
 </li> 
@@ -54,7 +55,15 @@ export default {
             (el != null) ? el.classList.remove('active') : '';
 
             fetch( `/${this.current_project.name}/project?id=${project_id}`)
-            .then(res => res.text())
+            .then(res => {
+                if(res.status == 500){
+                    const host = window.location.hostname; 
+this.$router.push(`/500`);
+                    throw Error("Server Error");
+                }
+                return res.text()
+            
+            })
             .then(data => this.setTeamMembers(JSON.parse(data) ))
             e.target.classList.add('active')
             

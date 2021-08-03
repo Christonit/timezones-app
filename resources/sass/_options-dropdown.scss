@@ -35,12 +35,14 @@
     transition: all 200ms ease;
     @include font;
     right: 0;
+    pointer-events:none;
 }
 
 .more-options.active{
     top: 26px;
     opacity: 1;
     z-index: 99;
+    pointer-events:initial;
 }
 
 .more-options-item{

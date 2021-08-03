@@ -1,7 +1,9 @@
 <template>
     <span class="more-option-btn" ref="moreOptionsBtn" 
-    @click="toggleOptions" :class="mode">
-        <div class="more-options"    
+    @click="toggleOptions"
+    :class="mode">
+        <div 
+        class="more-options"    
         @mouseleave="toggleOptions" 
         ref="moreOptions">
            
@@ -20,6 +22,12 @@
 <script>
 import {mapMutations, mapState} from 'vuex';
 export default {
+    data(){
+        return {
+            show_options : false
+        }
+
+    },
     props:{
         mode:{
             type:String,
@@ -90,8 +98,10 @@ export default {
             e.preventDefault();
         },
         toggleOptions(e){
-            this.$refs.moreOptions.classList.contains('active') ? this.$refs.moreOptions.classList.remove('active') : this.$refs.moreOptions.classList.add('active')
-
+            
+            this.$refs.moreOptions.classList.contains('active') ? 
+            this.$refs.moreOptions.classList.remove('active') : 
+            this.$refs.moreOptions.classList.add('active')
 
             e.stopPropagation();
             e.preventDefault();

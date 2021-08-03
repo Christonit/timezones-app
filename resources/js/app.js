@@ -27,6 +27,7 @@ Vue.use(VueRouter)
 import store from './store/index.js'
 import router from './routes/routes.js'
 
+import ServerErrorPage from './views/500.vue';
 import Sidebar from './components/sidebar.vue';
 import TeamProjectOverview from './components/team-project-overview.vue';
 import AddNewTeamMember from './components/add-new-team-member.vue';
@@ -82,7 +83,8 @@ const app = new Vue({
         DeleteProjectModal,
         DeleteTeammateModal,
         NewTeamModal,
-        NameProjectCategoryModal
+        NameProjectCategoryModal,
+        ServerErrorPage
     },
     computed:{
         ...mapState(['modal_visible','modal','sidebar_visible']),
@@ -106,7 +108,15 @@ const app = new Vue({
         fetch('/user-information', {
             method:'GET',
             headers: this.header
-        }).then(res => res.text()).then( data => {
+        }).then(res =>{ 
+            if(res.status == 500){
+                const host = window.location.hostname; 
+                this.$router.push(`/500`);
+                throw Error("Server Error");
+            }
+            return res.text()
+
+        }).then( data => {
             
             let user = JSON.parse(data)
             this.$store.commit('setUserInformation',user);
