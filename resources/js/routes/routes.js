@@ -11,6 +11,14 @@ export default new VueRouter({
     routes: [
         {
             path: '/',
+            query:{
+                name: '',
+                id:''
+            },
+            component:TeamProjectOverview
+        },
+        {
+            path: '/timeline',
             component:TeamProjectOverview
         },
         {
@@ -19,6 +27,11 @@ export default new VueRouter({
         },
         {
             path: '/:projectName/new-project',
+            component:CreateGroup,
+            props: true
+        },
+        {
+            path: '/:projectName/edit-project',
             component:CreateGroup,
             props: true
         },

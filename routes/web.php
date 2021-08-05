@@ -97,7 +97,7 @@ Route::middleware('auth')->group( function (){
 Route::get('/500', function (){
     return view('500');
 });
-Route::get('/404', function (){
+Route::fallback( function (){
     return view('404');
 });
 

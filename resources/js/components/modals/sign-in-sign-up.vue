@@ -8,9 +8,9 @@
             <h2 class="title">Sign in or Signup</h2>
 
             <div class="popup-fields-container">
-                <input-field key="email" class="slim" name="Email" :input-value="email" @input="email = $event"></input-field>
+                <input-field key="email" :class="`slim ${error ? 'invalid' : ''}`" name="Email" :input-value="email" @input="email = $event"></input-field>
             </div>
-            <div class="w-100" v-if="error == 'bad email'">
+            <div class="w-100 text-error" v-if="error == 'bad email'">
                 <p>Please, insert a valid email</p>
             </div>
             <div class="w-100 ">
@@ -43,17 +43,17 @@
 
             <div class="popup-fields-container">
 
-                <input-field key="password" class="slim" type="password" name="Password" :input-value="password" @input="password = $event"></input-field>
-
+                <input-field key="password" :class="`slim ${error ? 'invalid' : ''}`" type="password" name="Password" :input-value="password" @input="password = $event"></input-field>
+                <div class="w-100 text-error mb--116" v-if="error == 'invalid password'">
+                    <p>Password has to be at least 6 characters length.</p>
+                </div>
+                <div class="w-100 text-error mb--116" v-if="error == 'invalid information'">
+                    <p>Invalid credentials. Please review your email & password.</p>
+                </div>
                 <a :href="'/password/reset'" v-if="!(user_type == 'new user')">Forgot password?</a>
             </div>
 
-            <div class="w-100" v-if="error == 'invalid password'">
-                <p>Password has to be at least 6 characters length.</p>
-            </div>
-            <div class="w-100" v-if="error == 'invalid information'">
-                <p>Invalid credentials. Please review your email & password.</p>
-            </div>
+            
 
             <div class="footnote-buttons">
 
@@ -78,7 +78,7 @@
 
             </div>
 
-            <div class="w-100" v-if="error == 'password dont match'">
+            <div class="w-100 text-error" v-if="error == 'password dont match'">
                 <p>Passwords doesnt match.</p>
             </div>
 

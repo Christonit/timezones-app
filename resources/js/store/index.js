@@ -166,6 +166,7 @@ export default new Vuex.Store({
                 return state.modal.change_name = true;
             }
             if(typeof(payload) == "object" & payload.name == 'edit-info'){
+                console.log(payload)
                 state.info_edits = payload.userToEdit;
                 return state.modal.edit_my_profile = true;
             }

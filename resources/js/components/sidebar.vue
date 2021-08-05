@@ -79,7 +79,31 @@
         </ul>
         
     </div>
-        <a href="/logout" class="btn-logout">Logout user</a>
+        <div class="user-dropdown" v-if="user" @click="toggleOptions">
+            <span class="user-dropdown-img">
+                <img :src="user.avatar" :alt="`Avatar picture for ${user.name}`" >
+            </span>     
+            <span class="text white size-14">{{user.name}}</span>
+            <span class="material-icons white ml-auto">
+                expand_more
+            </span>
+
+            <div 
+                class="more-options"    
+                @mouseleave="toggleOptions" 
+                ref="moreOptions">
+
+                <span class="more-options-item" @click="openModal({name:'edit-info',userToEdit})"><img src="../../img/edit-icon.svg" class="more-options-icon" alt="More options delete icon"> Edit info </span>
+                <a :href="path" @click="logout" class="more-options-item">
+                    <span class="material-icons size-18 mr-2">
+                        logout
+                    </span> 
+                Logout user</a>
+
+            </div>
+        </div>
+
+        
     </aside>
 </template>
 
@@ -90,10 +114,26 @@ import MoreOptionBtn from "./utils/more-option-btn.vue";
 import ProjectListItem from "./sidebar/project-list-item.vue";
 
 export default {
+    
+    props:{
+        user:{
+            type:Object,
+            default:{
+                avatar:"#",
+                name:"######",
+                email:"############",
+                id:0
+            },
+            required: true
+        }
+    },
     mounted() {
         bus.$on('changedProjectName',() => {
            this.$forceUpdate();
        })
+
+
+
     },
     computed:{
         ...mapState(['teams','team_project','sidebar_visible','team_projects_groups']),
@@ -103,6 +143,12 @@ export default {
         },
         team_name(){
             return this.team_project.name.toLowerCase().split(' ').join('-');
+        },
+        userToEdit() {
+            return this.user;
+        },
+        path(){
+            return window.location.origin + "/logout";
         }
 
     },
@@ -140,7 +186,20 @@ export default {
             (active_project != null || active_project != undefined) ? active_project.classList.remove('active'): '';
             
             this.getTeamMembers();
+        },
+        toggleOptions(e){
+            
+            this.$refs.moreOptions.classList.contains('active') ? 
+            this.$refs.moreOptions.classList.remove('active') : 
+            this.$refs.moreOptions.classList.add('active')
+
+            e.stopPropagation();
+            e.preventDefault();
+        },
+        logout(){
+            return location.replace(this.path);
         }
+    
     },
     components:{
         MoreOptionBtn,

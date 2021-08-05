@@ -289,3 +289,34 @@
 .state-img{
     width: 120px;
 }
+
+.user-dropdown {
+    display: flex;
+    align-items: center;
+    padding: 16px 26px;
+    position: fixed;
+    bottom: 8px;
+    width: 248px;
+    left: 0;
+    z-index: 9;
+    background-color: $black;
+    border-top: solid 1px #0e1125;
+    cursor: pointer;
+
+    &:hover{
+        background-color: #0e1122;
+    }
+}
+.user-dropdown-img {
+    width: 24px;
+    height: 24px;
+    border-radius: 25px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    img{
+        width: 100%;
+    }
+}

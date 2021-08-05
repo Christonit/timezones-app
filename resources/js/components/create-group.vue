@@ -117,7 +117,7 @@ export default {
             .then( (res)=> {
                 if(res.status == 500){
                     const host = window.location.hostname; 
-this.$router.push(`/500`);
+                    this.$router.push(`/500`);
                     throw Error("Server Error");
                 }
                 return res.text();
@@ -259,7 +259,7 @@ this.$router.push(`/500`);
                     }
                     if(res.status == 500){
                         const host = window.location.hostname; 
-this.$router.push(`/500`);
+                        this.$router.push(`/500`);
                         throw Error("Server Error");
                     }
                 }).then( data => {

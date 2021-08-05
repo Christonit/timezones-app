@@ -27,6 +27,11 @@ Vue.use(VueRouter)
 import store from './store/index.js'
 import router from './routes/routes.js'
 
+import ModalTemplate from './components/modals/template.vue';
+import ContinueBtn from './components/utils/buttons/continue-btn.vue';
+import CancelBtn from './components/utils/buttons/cancel-btn.vue';
+import InputField from './components/utils/forms/input-field.vue';
+
 import ServerErrorPage from './views/500.vue';
 import Sidebar from './components/sidebar.vue';
 import TeamProjectOverview from './components/team-project-overview.vue';
@@ -69,6 +74,7 @@ const app = new Vue({
         });
     },
     components:{
+        
         Sidebar,
         TeamProjectOverview,
         AddNewTeamMember,     
@@ -84,10 +90,14 @@ const app = new Vue({
         DeleteTeammateModal,
         NewTeamModal,
         NameProjectCategoryModal,
-        ServerErrorPage
+        ServerErrorPage,
+        ModalTemplate,
+        ContinueBtn,
+        CancelBtn,
+        InputField,
     },
     computed:{
-        ...mapState(['modal_visible','modal','sidebar_visible']),
+        ...mapState(['user','modal_visible','modal','sidebar_visible']),
         ...mapGetters(['header'])
         
     },

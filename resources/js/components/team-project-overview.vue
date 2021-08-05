@@ -22,6 +22,7 @@
     
 </template>
 <script>
+
 import TopBar from './top-bar.vue';
 import UserControlBar from './user-control-bar.vue';
 import UsersCardGrid from './users-card-grid.vue';

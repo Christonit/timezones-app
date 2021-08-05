@@ -80,7 +80,7 @@ export default {
     methods:{
         ...mapMutations(['openModal']),
         editProjectGroup(e){
-            
+            // this.openModal({name:'project_category_name', resource: this.current_project})
             this.$router.push(`${this.team_project.name.split(' ').join('-').toLowerCase()}/edit-project?id=${this.resource.id}&name=${this.resource.name}`)
             e.stopPropagation();
             e.preventDefault();

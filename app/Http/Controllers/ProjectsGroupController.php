@@ -140,7 +140,7 @@ class ProjectsGroupController extends Controller
             $clients = null;
 
             #Members to remove.
-            if( count($request->teammates) > 0 ){
+            if( count($request->teammates) >= 0 ){
                 $teammate_to_remove = collect($request->og_teammates)->diff($request->teammates);
                 if(count($teammate_to_remove) > 0){
 
