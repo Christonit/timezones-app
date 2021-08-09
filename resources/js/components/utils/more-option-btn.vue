@@ -15,6 +15,7 @@
             <span class="more-options-item" v-if="editName" @click="changeName"><img src="../../../img/edit-icon.svg" class="more-options-icon" alt="More options delete icon"> Edit name </span>
             <span class="more-options-item delete" v-if="deleteMemberBtn" @click="openModal({name:'delete-teammate', resource})"><img src="../../../img/delete-icon-white.svg" class="more-options-icon" alt="More options delete icon"> Delete teammate</span>
             <span class="more-options-item delete" v-if="deleteProjectBtn" @click="deleteProject"><img src="../../../img/delete-icon-white.svg" class="more-options-icon" alt="More options delete icon"> Delete project</span>
+            <span class="more-options-item delete" v-if="deleteTeamBtn" @click="deleteTeam"><img src="../../../img/delete-icon-white.svg" class="more-options-icon" alt="More options delete icon"> Delete Team</span>
         </div>
     </span>
 </template>
@@ -50,6 +51,10 @@ export default {
             default:false
         },
         deleteProjectBtn:{
+            type:Boolean,
+            default:false
+        },
+        deleteTeamBtn:{
             type:Boolean,
             default:false
         },
@@ -94,6 +99,12 @@ export default {
         deleteProject(e){
 
             this.openModal({name:'delete-project', resource: this.resource})
+            e.stopPropagation();
+            e.preventDefault();
+        },
+        deleteTeam(e){
+
+            this.openModal({name:'delete-team', resource: this.resource})
             e.stopPropagation();
             e.preventDefault();
         },

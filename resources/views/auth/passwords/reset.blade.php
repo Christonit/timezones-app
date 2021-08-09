@@ -2,10 +2,7 @@
 
 @section('content')
 <div id="app" >
-    <modal-template width-type='slim' :has_close="false">
-        <h2 class="title">{{ __('Reset Password') }}</h2>
-
-    </modal-template>
+    
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">

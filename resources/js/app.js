@@ -33,6 +33,7 @@ import CancelBtn from './components/utils/buttons/cancel-btn.vue';
 import InputField from './components/utils/forms/input-field.vue';
 
 import ServerErrorPage from './views/500.vue';
+import MobileNotAvailable from './views/mobile-not-available.vue';
 import Sidebar from './components/sidebar.vue';
 import TeamProjectOverview from './components/team-project-overview.vue';
 import AddNewTeamMember from './components/add-new-team-member.vue';
@@ -47,6 +48,7 @@ import UsersCreatedModal from './components/modals/users-created-successfully.vu
 import TeamCreatedModal from './components/modals/team-created.vue'
 import AddTeammateModal from './components/modals/add-teammate.vue'
 import DeleteProjectModal from './components/modals/delete-project.vue';
+import DeleteTeamModal from './components/modals/delete-team.vue';
 import DeleteTeammateModal from './components/modals/delete-teammate.vue';
 import {mapState,mapActions, mapMutations} from 'vuex';
 import moment from 'moment';
@@ -62,19 +64,28 @@ const app = new Vue({
     store,
     router,
     moment,
+    data:{
+        is_mobile: false
+    },
     created(){
-        this.getUserTeams().then(data =>{
-            if(data.length > 0){
-                let name = data[0].name;
-                let id = data[0].id;
-                this.$store.commit("setActiveTeam",{ name, id })
-                // router.push(name.toLowerCase().split(" ").join('-'));
-                this.getTeamProjects({ name, id })
-            }
-        });
+
+        // if(this.user != null){
+            this.getUserTeams().then(data =>{
+                if(data.length > 0){
+                    let name = data[0].name;
+                    let id = data[0].id;
+                    this.$store.commit("setActiveTeam",{ name, id })
+                    // router.push(name.toLowerCase().split(" ").join('-'));
+                    this.getTeamProjects({ name, id })
+                }
+            });
+
+            window.innerWidth < this.screen_sizes.md ? this.is_mobile = true : this.is_mobile = false;
+
+        // }
     },
     components:{
-        
+        MobileNotAvailable,
         Sidebar,
         TeamProjectOverview,
         AddNewTeamMember,     
@@ -87,6 +98,7 @@ const app = new Vue({
         EditTeamProfileModal,
         EditProfileModal,
         DeleteProjectModal,
+        DeleteTeamModal,
         DeleteTeammateModal,
         NewTeamModal,
         NameProjectCategoryModal,
@@ -97,7 +109,7 @@ const app = new Vue({
         InputField,
     },
     computed:{
-        ...mapState(['user','modal_visible','modal','sidebar_visible']),
+        ...mapState(['user','modal_visible','modal','sidebar_visible','screen_sizes']),
         ...mapGetters(['header'])
         
     },
@@ -109,30 +121,43 @@ const app = new Vue({
 
         window.onresize = () => {
             this.setDeviceWidth();
+            console.log('fsdj')
+            window.innerWidth < this.screen_sizes.md ? this.is_mobile = true : this.is_mobile = false;
         }
 
         let csrf= document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         this.$store.commit('setCsrf', csrf);
 
-        fetch('/user-information', {
-            method:'GET',
-            headers: this.header
-        }).then(res =>{ 
-            if(res.status == 500){
-                const host = window.location.hostname; 
-                this.$router.push(`/500`);
-                throw Error("Server Error");
-            }
-            return res.text()
+        // if(this.user != null){
+            fetch('/user-information', {
+                method:'GET',
+                headers: this.header
+            }).then(res =>{ 
+                console.log(res.status)
 
-        }).then( data => {
-            
-            let user = JSON.parse(data)
-            this.$store.commit('setUserInformation',user);
-            this.getTeamMembers();
+                if(res.status == 500){
+                    const host = window.location.hostname; 
+                    this.$router.push(`/500`);
+                    throw Error("Server Error");
+                }
+                
+                return res.text()
 
-        })
+            }).then( data => {
+                try{
+                    let user = JSON.parse(data)
+                    this.$store.commit('setUserInformation',user);
+                    this.getTeamMembers();
+                } catch(e){
+                    throw Error("User not logged.");
+                }
+                
+
+
+
+            })
+        // }
 
 
     },

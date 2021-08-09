@@ -66,6 +66,7 @@ Route::middleware('auth')->group( function (){
     
     Route::post('/add-team-members','TeamsController@addMembers');
     Route::delete('/team-members/{id}/delete','TeamsController@destroyTeamMember');
+    Route::delete('/teams/{id}/delete','TeamsController@destroy');
 
     //Destroy a client for a project
     Route::delete('/client/{id}/delete','TeamsController@destroyClient');

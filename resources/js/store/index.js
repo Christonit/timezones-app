@@ -22,6 +22,7 @@ export default new Vuex.Store({
             change_name:false,
             delete_teammate:false,
             delete_project:false,
+            delete_team:false,
             edit_my_profile:false,
             invite_people:false,
             project_category_name:false
@@ -161,6 +162,10 @@ export default new Vuex.Store({
                 state.resource_to_delete = payload;
                 return state.modal.delete_project = true;
             }
+            if(payload.name == 'delete-team'){
+                state.resource_to_delete = payload;
+                return state.modal.delete_team = true;
+            }
             if(payload.name == 'change-name' ){
                 state.info_edits = payload.resource;
                 return state.modal.change_name = true;
@@ -193,6 +198,10 @@ export default new Vuex.Store({
             if(payload == 'delete-project'){
                state.resource_to_project = null;
                return state.modal.delete_project = false;
+            }
+            if(payload == 'delete-team'){
+               state.resource_to_project = null;
+               return state.modal.delete_team = false;
             }
             if(payload == 'change-name'){
                 state.info_edits = null;
@@ -287,21 +296,29 @@ export default new Vuex.Store({
 
 
             return fetch('/list-teams').then( res => {
+
                 if(res.status == 200){
                     return res.text();
-                }
+                }                
+
             }).then( data => {
-                let teams = JSON.parse(data);
-                teams.forEach( team => commit('addTeam',team))
+                try{
+                    let teams = JSON.parse(data);
+                    teams.forEach( team => commit('addTeam',team))
+                    
+                    return teams;
+
+                } catch(e){
+                    throw Error("User not logged.");
+                }
                 
-                return teams;
             })
         },
         getLatestTeam({state,commit}){
             return fetch('/list-latest-created-team').then(res=> {
                 if(res.status == 500){
                     const host = window.location.hostname; 
-this.$router.push(`/500`);
+                    this.$router.push(`/500`);
                     throw Error("Server Error");
                 }
                 return res.text()

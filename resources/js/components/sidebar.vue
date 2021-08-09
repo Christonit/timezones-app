@@ -8,8 +8,11 @@
             <div class="dropdown team-dropdown">
 
                 <button 
-                class="btn btn-secondary dropdown-toggle team-dropdown-btn" role="button" 
-                id="teams-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                class="btn btn-secondary dropdown-toggle team-dropdown-btn" 
+                role="button" 
+                id="teams-list" data-toggle="dropdown" 
+                aria-haspopup="true" 
+                aria-expanded="false"
                 v-if="team_project.id != null">
                     {{team_project.name}}
                 </button>
@@ -28,7 +31,7 @@
                         <button class="dropdown-item" ref="selectTeam" @click="selectTeam(team.name, team.id)">
                             {{team.name}}
 
-                            <more-option-btn mode="dark" :edit-name="true" :delete-project-btn="true" 
+                            <more-option-btn mode="dark" :edit-name="true" :delete-team-btn="true" 
                             :resource="{id:team.id, name:team.name, resource_type:'team', index:key}"></more-option-btn>
                         </button>
                     </template>

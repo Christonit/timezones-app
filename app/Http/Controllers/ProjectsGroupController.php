@@ -125,7 +125,7 @@ class ProjectsGroupController extends Controller
             return response($project_group,200);
 
         }catch( Exception $e){
-            return response('Rrror in projects group creation', 500);
+            return response('Error in projects group creation', 500);
         }
         
 
@@ -200,7 +200,7 @@ class ProjectsGroupController extends Controller
             return response($project,200);
 
         }catch( Exception $e){
-            return response('Rrror in projects group creation', 500);
+            return response('Error in projects group creation', 500);
         }
         
 

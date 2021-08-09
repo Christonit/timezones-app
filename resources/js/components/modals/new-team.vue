@@ -43,7 +43,7 @@ export default {
         ...mapGetters(['basic_header'])
     },
     methods:{
-        ...mapMutations(['addTeam','setActiveTeam']),
+        ...mapMutations(['addTeam','setActiveTeam','setTeamMembers']),
         ...mapActions(['getLatestTeam']),
 
         changeName(){
@@ -73,7 +73,7 @@ export default {
                    
                     if(res.status == 500){
                         const host = window.location.hostname; 
-this.$router.push(`/500`);
+                        this.$router.push(`/500`);
                         throw Error("Server Error");
                     }
                 
@@ -81,8 +81,15 @@ this.$router.push(`/500`);
                        this.getLatestTeam().then( team => {
                            console.log(team)
                            this.setActiveTeam(team);
+                           
+                       })
+                       .then( () =>{ 
+                            let empty_arr = [];
+                            this.setTeamMembers(empty_arr);
+                            this.$store.commit('closeModal', 'new-team')
                        });
-                       this.$store.commit('closeModal', 'new-team');
+                       
+                       
                    }
                 });
 

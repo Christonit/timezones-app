@@ -11,6 +11,7 @@ use App\Clients;
 use App\Projects;
 use App\TeamMembers;
 use App\ProjectsGroupMembers;
+use App\ProjectsGroup;
 
 class TeamsController extends Controller
 {
@@ -42,9 +43,17 @@ class TeamsController extends Controller
 
         return $team->save();
     }
-    public function destroy($id){
 
-        return Teams::destroy($id);
+    public function destroy($id){
+        try{
+            TeamMembers::where("teams_id", $id)->delete();
+            ProjectsGroup::where("teams_id", $id)->delete();
+            return Teams::destroy($id);
+        
+        }catch(Throwable $e){
+            report($e);
+            return response('Cannot delete resource: Team', 500);
+        }
     }
 
 
@@ -74,8 +83,10 @@ class TeamsController extends Controller
 
             return $counter;
 
-        }catch(Throwable $e){
-            return report($e);
+        }
+        catch(Throwable $e){
+            report($e);
+            return response('Cannot add teammates to team', 500);
         }
         
     }
